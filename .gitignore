@@ -1,6 +1,6 @@
 # CocoaPods
 Pods/
-*.xcworkspace
+*.lock
 
 # Xcode
 build/
