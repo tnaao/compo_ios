@@ -1,0 +1,18 @@
+# CocoaPods
+Pods/
+*.xcworkspace
+
+# Xcode
+build/
+*.xcuserdatad
+*.pbxuser
+!default.pbxuser
+
+# Swift Package Manager
+.build/
+Packages/
+Package.pins
+Package.resolved
+
+# macOS
+.DS_Store
