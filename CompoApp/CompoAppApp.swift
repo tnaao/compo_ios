@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import AppRouter
 
 @main
 struct CompoAppApp: App {
+    @Bindable private var appRouter = AppRouter()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().environment(appRouter)
         }
     }
 }

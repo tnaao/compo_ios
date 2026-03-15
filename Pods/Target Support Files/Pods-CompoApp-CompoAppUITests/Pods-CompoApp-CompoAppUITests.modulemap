@@ -1,0 +1,6 @@
+framework module Pods_CompoApp_CompoAppUITests {
+  umbrella header "Pods-CompoApp-CompoAppUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

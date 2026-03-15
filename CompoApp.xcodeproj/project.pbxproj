@@ -6,6 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		0203DE94FA0F7F9780450E6A /* Pods_CompoApp_CompoAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97314B6554E52541EB84EE53 /* Pods_CompoApp_CompoAppUITests.framework */; };
+		AF076F069DEC319469769714 /* Pods_CompoAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30780D27F8EDDCAB914CFD77 /* Pods_CompoAppTests.framework */; };
+		BA37514C99C52C846A88289E /* Pods_CompoApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69D9AB6EFD5F43D4E22BC1DA /* Pods_CompoApp.framework */; };
+		BED3F95F2F66525D0001DFD9 /* AppRouter in Frameworks */ = {isa = PBXBuildFile; productRef = BED3F95E2F66525D0001DFD9 /* AppRouter */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		BE8A5F6E2F6651DD002FB3EE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,9 +31,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		09B5C0FD57E2D247F5061DEB /* Pods-CompoAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CompoAppTests.debug.xcconfig"; path = "Target Support Files/Pods-CompoAppTests/Pods-CompoAppTests.debug.xcconfig"; sourceTree = "<group>"; };
+		251AD6596564F6F3CC426331 /* Pods-CompoAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CompoAppTests.release.xcconfig"; path = "Target Support Files/Pods-CompoAppTests/Pods-CompoAppTests.release.xcconfig"; sourceTree = "<group>"; };
+		30780D27F8EDDCAB914CFD77 /* Pods_CompoAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CompoAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		401BECE3E4704ECC0B6F7B0D /* Pods-CompoApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CompoApp.debug.xcconfig"; path = "Target Support Files/Pods-CompoApp/Pods-CompoApp.debug.xcconfig"; sourceTree = "<group>"; };
+		69D9AB6EFD5F43D4E22BC1DA /* Pods_CompoApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CompoApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		74A10D13C0BBC797D26B3E24 /* Pods-CompoApp-CompoAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CompoApp-CompoAppUITests.release.xcconfig"; path = "Target Support Files/Pods-CompoApp-CompoAppUITests/Pods-CompoApp-CompoAppUITests.release.xcconfig"; sourceTree = "<group>"; };
+		97314B6554E52541EB84EE53 /* Pods_CompoApp_CompoAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CompoApp_CompoAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A0808D4D6CB100D2DD57B2A1 /* Pods-CompoApp-CompoAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CompoApp-CompoAppUITests.debug.xcconfig"; path = "Target Support Files/Pods-CompoApp-CompoAppUITests/Pods-CompoApp-CompoAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		BE8A5F602F6651DC002FB3EE /* CompoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CompoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE8A5F6D2F6651DD002FB3EE /* CompoAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CompoAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE8A5F772F6651DD002FB3EE /* CompoAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CompoAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E983EFA72ADFA5FA18FA3E5A /* Pods-CompoApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CompoApp.release.xcconfig"; path = "Target Support Files/Pods-CompoApp/Pods-CompoApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -52,6 +68,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA37514C99C52C846A88289E /* Pods_CompoApp.framework in Frameworks */,
+				BED3F95F2F66525D0001DFD9 /* AppRouter in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,6 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF076F069DEC319469769714 /* Pods_CompoAppTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,12 +85,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0203DE94FA0F7F9780450E6A /* Pods_CompoApp_CompoAppUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		850446DD4134AA5590D03D0B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				401BECE3E4704ECC0B6F7B0D /* Pods-CompoApp.debug.xcconfig */,
+				E983EFA72ADFA5FA18FA3E5A /* Pods-CompoApp.release.xcconfig */,
+				A0808D4D6CB100D2DD57B2A1 /* Pods-CompoApp-CompoAppUITests.debug.xcconfig */,
+				74A10D13C0BBC797D26B3E24 /* Pods-CompoApp-CompoAppUITests.release.xcconfig */,
+				09B5C0FD57E2D247F5061DEB /* Pods-CompoAppTests.debug.xcconfig */,
+				251AD6596564F6F3CC426331 /* Pods-CompoAppTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		BE8A5F572F6651DC002FB3EE = {
 			isa = PBXGroup;
 			children = (
@@ -79,6 +112,8 @@
 				BE8A5F702F6651DD002FB3EE /* CompoAppTests */,
 				BE8A5F7A2F6651DD002FB3EE /* CompoAppUITests */,
 				BE8A5F612F6651DC002FB3EE /* Products */,
+				850446DD4134AA5590D03D0B /* Pods */,
+				FC4EA9AE87BC90E1ED15C92D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -92,6 +127,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		FC4EA9AE87BC90E1ED15C92D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				69D9AB6EFD5F43D4E22BC1DA /* Pods_CompoApp.framework */,
+				97314B6554E52541EB84EE53 /* Pods_CompoApp_CompoAppUITests.framework */,
+				30780D27F8EDDCAB914CFD77 /* Pods_CompoAppTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -99,6 +144,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BE8A5F812F6651DD002FB3EE /* Build configuration list for PBXNativeTarget "CompoApp" */;
 			buildPhases = (
+				5DA7EC54245F5D156D58BE63 /* [CP] Check Pods Manifest.lock */,
 				BE8A5F5C2F6651DC002FB3EE /* Sources */,
 				BE8A5F5D2F6651DC002FB3EE /* Frameworks */,
 				BE8A5F5E2F6651DC002FB3EE /* Resources */,
@@ -111,8 +157,6 @@
 				BE8A5F622F6651DC002FB3EE /* CompoApp */,
 			);
 			name = CompoApp;
-			packageProductDependencies = (
-			);
 			productName = CompoApp;
 			productReference = BE8A5F602F6651DC002FB3EE /* CompoApp.app */;
 			productType = "com.apple.product-type.application";
@@ -121,6 +165,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BE8A5F842F6651DD002FB3EE /* Build configuration list for PBXNativeTarget "CompoAppTests" */;
 			buildPhases = (
+				B8FF3E414DCBBFEC852C7222 /* [CP] Check Pods Manifest.lock */,
 				BE8A5F692F6651DD002FB3EE /* Sources */,
 				BE8A5F6A2F6651DD002FB3EE /* Frameworks */,
 				BE8A5F6B2F6651DD002FB3EE /* Resources */,
@@ -134,8 +179,6 @@
 				BE8A5F702F6651DD002FB3EE /* CompoAppTests */,
 			);
 			name = CompoAppTests;
-			packageProductDependencies = (
-			);
 			productName = CompoAppTests;
 			productReference = BE8A5F6D2F6651DD002FB3EE /* CompoAppTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -144,6 +187,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BE8A5F872F6651DD002FB3EE /* Build configuration list for PBXNativeTarget "CompoAppUITests" */;
 			buildPhases = (
+				CD086FDE6E6ED6E500490208 /* [CP] Check Pods Manifest.lock */,
 				BE8A5F732F6651DD002FB3EE /* Sources */,
 				BE8A5F742F6651DD002FB3EE /* Frameworks */,
 				BE8A5F752F6651DD002FB3EE /* Resources */,
@@ -157,8 +201,6 @@
 				BE8A5F7A2F6651DD002FB3EE /* CompoAppUITests */,
 			);
 			name = CompoAppUITests;
-			packageProductDependencies = (
-			);
 			productName = CompoAppUITests;
 			productReference = BE8A5F772F6651DD002FB3EE /* CompoAppUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -195,6 +237,9 @@
 			);
 			mainGroup = BE8A5F572F6651DC002FB3EE;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				BED3F95D2F66525D0001DFD9 /* XCRemoteSwiftPackageReference "AppRouter" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = BE8A5F612F6651DC002FB3EE /* Products */;
 			projectDirPath = "";
@@ -230,6 +275,75 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5DA7EC54245F5D156D58BE63 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CompoApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B8FF3E414DCBBFEC852C7222 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CompoAppTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CD086FDE6E6ED6E500490208 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CompoApp-CompoAppUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		BE8A5F5C2F6651DC002FB3EE /* Sources */ = {
@@ -392,6 +506,7 @@
 		};
 		BE8A5F822F6651DD002FB3EE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 401BECE3E4704ECC0B6F7B0D /* Pods-CompoApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -424,6 +539,7 @@
 		};
 		BE8A5F832F6651DD002FB3EE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E983EFA72ADFA5FA18FA3E5A /* Pods-CompoApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -456,6 +572,7 @@
 		};
 		BE8A5F852F6651DD002FB3EE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 09B5C0FD57E2D247F5061DEB /* Pods-CompoAppTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -478,6 +595,7 @@
 		};
 		BE8A5F862F6651DD002FB3EE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 251AD6596564F6F3CC426331 /* Pods-CompoAppTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -500,6 +618,7 @@
 		};
 		BE8A5F882F6651DD002FB3EE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A0808D4D6CB100D2DD57B2A1 /* Pods-CompoApp-CompoAppUITests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -520,6 +639,7 @@
 		};
 		BE8A5F892F6651DD002FB3EE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 74A10D13C0BBC797D26B3E24 /* Pods-CompoApp-CompoAppUITests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -578,6 +698,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BED3F95D2F66525D0001DFD9 /* XCRemoteSwiftPackageReference "AppRouter" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dimillian/AppRouter.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BED3F95E2F66525D0001DFD9 /* AppRouter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BED3F95D2F66525D0001DFD9 /* XCRemoteSwiftPackageReference "AppRouter" */;
+			productName = AppRouter;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BE8A5F582F6651DC002FB3EE /* Project object */;
 }
