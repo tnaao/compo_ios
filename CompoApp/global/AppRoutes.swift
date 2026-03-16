@@ -11,6 +11,7 @@ import SwiftUI
 enum Destination: DestinationType {
   case detail(id: String)
   case settings
+  case login
   case profile(userId: String)
 
   static func from(path: String, fullPath: [String], parameters: [String: String]) -> Destination? {
@@ -30,7 +31,7 @@ enum Destination: DestinationType {
 }
 
 enum Sheet: SheetType {
-  case compose
+  case login
   case settings
 
   var id: Int { hashValue }
@@ -66,6 +67,39 @@ enum AppTab: String, TabType, CaseIterable, Hashable {
 @Observable class AppRouter {
   var appRouter = Router<AppTab, Destination, Sheet>(initialTab: .wakuku)
   var selectedTab: AppTab = .wakuku
+  var isLoggedIn: Bool = false
 
   static let shared = AppRouter()
+    
+    @ViewBuilder
+    func sheetView(for sheet: Sheet) -> some View {
+      switch sheet {
+      case .settings:
+        VStack {
+          Text("Settings Sheet")
+        }
+      case .login:
+        LoginView()
+      }
+    }
+    
+    @ViewBuilder
+    private func destinationView(for destination: Destination) -> some View {
+      switch destination {
+      case .detail(let id):
+        VStack {
+          Text("Detail \(id)")
+        }
+      case .settings:
+        VStack {
+          Text("Settings")
+        }
+      case .profile(let userId):
+        VStack {
+          Text("Profile \(userId)")
+        }
+      case .login:
+          LoginView()
+      }
+    }
 }

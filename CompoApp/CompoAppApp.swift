@@ -10,11 +10,15 @@ import AppRouter
 
 @main
 struct CompoAppApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Bindable private var appRouter = AppRouter()
     
     var body: some Scene {
         WindowGroup {
             ContentView().environment(appRouter)
+                .onAppear {
+                    
+                }
         }
     }
 }

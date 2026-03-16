@@ -10,6 +10,7 @@
 		0203DE94FA0F7F9780450E6A /* Pods_CompoApp_CompoAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97314B6554E52541EB84EE53 /* Pods_CompoApp_CompoAppUITests.framework */; };
 		AF076F069DEC319469769714 /* Pods_CompoAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30780D27F8EDDCAB914CFD77 /* Pods_CompoAppTests.framework */; };
 		BA37514C99C52C846A88289E /* Pods_CompoApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69D9AB6EFD5F43D4E22BC1DA /* Pods_CompoApp.framework */; };
+		BE8B94272F6847B900D8BFA5 /* AdapterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = BE8B94262F6847B900D8BFA5 /* AdapterSwift */; };
 		BED3F95F2F66525D0001DFD9 /* AppRouter in Frameworks */ = {isa = PBXBuildFile; productRef = BED3F95E2F66525D0001DFD9 /* AppRouter */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +71,7 @@
 			files = (
 				BA37514C99C52C846A88289E /* Pods_CompoApp.framework in Frameworks */,
 				BED3F95F2F66525D0001DFD9 /* AppRouter in Frameworks */,
+				BE8B94272F6847B900D8BFA5 /* AdapterSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,6 +241,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				BED3F95D2F66525D0001DFD9 /* XCRemoteSwiftPackageReference "AppRouter" */,
+				BE8B94252F6847B900D8BFA5 /* XCRemoteSwiftPackageReference "AdapterSwift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = BE8A5F612F6651DC002FB3EE /* Products */;
@@ -700,6 +703,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		BE8B94252F6847B900D8BFA5 /* XCRemoteSwiftPackageReference "AdapterSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/intsig171/AdapterSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.2;
+			};
+		};
 		BED3F95D2F66525D0001DFD9 /* XCRemoteSwiftPackageReference "AppRouter" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/dimillian/AppRouter.git";
@@ -711,6 +722,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		BE8B94262F6847B900D8BFA5 /* AdapterSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BE8B94252F6847B900D8BFA5 /* XCRemoteSwiftPackageReference "AdapterSwift" */;
+			productName = AdapterSwift;
+		};
 		BED3F95E2F66525D0001DFD9 /* AppRouter */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BED3F95D2F66525D0001DFD9 /* XCRemoteSwiftPackageReference "AppRouter" */;

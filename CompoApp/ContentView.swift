@@ -9,66 +9,47 @@ import AppRouter
 import SwiftUI
 
 struct ContentView: View {
-  @State private var router = Router<AppTab, Destination, Sheet>(initialTab: .wakuku)
+    @State private var router = AppRouter.shared.appRouter
+    @State private var isLoggedIn: Bool = AppRouter.shared.isLoggedIn
 
   var body: some View {
-    ZStack {
-      // Main content
-      Group {
-        switch router.selectedTab {
-        case .wakuku:
-          HomeView()
-        case .personality:
-          PersonalityView()
-        case .diary:
-          DiaryView()
-        case .profile:
-          ProfileView()
+      
+      if(!isLoggedIn){
+          LoginView().onAppear {
+              AppRouter.shared.isLoggedIn = true
+          }
+      }else {
+          ZStack {
+            // Main content
+            Group {
+              switch router.selectedTab {
+              case .wakuku:
+                HomeView()
+              case .personality:
+                PersonalityView()
+              case .diary:
+                DiaryView()
+              case .profile:
+                ProfileView()
+              }
+            }.onAppear {
+                router.presentSheet(.login)
+            }
+
+            // Custom bottom tab bar
+            GeometryReader { geometry in
+                VStack {
+                  Spacer()
+                    CustomTabBar(selectedTab: $router.selectedTab,bottom: geometry.safeAreaInsets.bottom)
+                }
+            }
+          }
+          .sheet(item: $router.presentedSheet) { sheet in
+              AppRouter.shared.sheetView(for: sheet)
+          }
         }
       }
-
-      // Custom bottom tab bar
-      GeometryReader { geometry in
-          VStack {
-            Spacer()
-              CustomTabBar(selectedTab: $router.selectedTab,bottom: geometry.safeAreaInsets.bottom)
-          }
-      }
-    }
-    .sheet(item: $router.presentedSheet) { sheet in
-      sheetView(for: sheet)
-    }
-  }
-
-  @ViewBuilder
-  private func destinationView(for destination: Destination) -> some View {
-    switch destination {
-    case .detail(let id):
-      VStack {
-        Text("Detail \(id)")
-      }
-    case .settings:
-      VStack {
-        Text("Settings")
-      }
-    case .profile(let userId):
-      VStack {
-        Text("Profile \(userId)")
-      }
-    }
-  }
-
-  @ViewBuilder
-  private func sheetView(for sheet: Sheet) -> some View {
-    switch sheet {
-    case .settings:
-      VStack {
-        Text("Settings Sheet")
-      }
-    case .compose:
-      ComposeView()
-    }
-  }
+    
 }
 
 // MARK: - Custom Tab Bar
