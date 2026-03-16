@@ -7,6 +7,7 @@
 
 import AppRouter
 import SwiftUI
+internal import Combine
 
 enum Destination: DestinationType {
   case detail(id: String)
@@ -38,35 +39,32 @@ enum Sheet: SheetType {
 }
 
 enum AppTab: String, TabType, CaseIterable, Hashable {
-  case wakuku
-  case personality
-  case diary
-  case profile
+  case all
+  case ongoing
+  case finished
 
   var id: String { rawValue }
 
   var icon: String {
     switch self {
-    case .wakuku: return "Tab1"
-    case .personality: return "Tab2"
-    case .diary: return "Tab3"
-    case .profile: return "Tab4"
+    case .all: return "Tab1"
+    case .ongoing: return "Tab2"
+    case .finished: return "Tab3"
     }
   }
 
   var title: String {
     switch self {
-    case .wakuku: return "wakuku"
-    case .personality: return "性格分析"
-    case .diary: return "心事日历"
-    case .profile: return "我的"
+    case .all: return "全部"
+    case .ongoing: return "进行中"
+    case .finished: return "已完成"
     }
   }
 }
 
 @Observable class AppRouter {
-  var appRouter = Router<AppTab, Destination, Sheet>(initialTab: .wakuku)
-  var selectedTab: AppTab = .wakuku
+  var appRouter = Router<AppTab, Destination, Sheet>(initialTab: .all)
+  var selectedTab: AppTab = .all
   var isLoggedIn: Bool = false
 
   static let shared = AppRouter()

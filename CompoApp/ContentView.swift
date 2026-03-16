@@ -7,55 +7,49 @@
 
 import AppRouter
 import SwiftUI
+import AdapterSwift
 
 struct ContentView: View {
-    @State private var router = AppRouter.shared.appRouter
-    @State private var isLoggedIn: Bool = AppRouter.shared.isLoggedIn
-
-  var body: some View {
-      
-      if(!isLoggedIn){
-          LoginView().onAppear {
-              AppRouter.shared.isLoggedIn = true
-          }
-      }else {
-          ZStack {
-            // Main content
-            Group {
-              switch router.selectedTab {
-              case .wakuku:
-                HomeView()
-              case .personality:
-                PersonalityView()
-              case .diary:
-                DiaryView()
-              case .profile:
-                ProfileView()
-              }
-            }.onAppear {
-                router.presentSheet(.login)
-            }
-
-            // Custom bottom tab bar
-            GeometryReader { geometry in
+    @State private var appRouter = AppRouter.shared
+    @State private var router:Router<AppTab, Destination, Sheet> = AppRouter.shared.appRouter
+    @State private var isLoggedIn: Bool = true
+    
+    var body: some View {
+        
+        if(!isLoggedIn){
+            LoginView()
+        }else {
+            ZStack {
+                // Main content
+                Group {
+                    switch router.selectedTab {
+                    case .all:
+                        let a = $router[.all]
+                        HomeView()
+                    default:
+                        ProfileView()
+                    }
+                }.padding(.top,56.adapter)
+                .sheet(item: $router.presentedSheet) { sheet in
+                    AppRouter.shared.sheetView(for: sheet)
+                }
+                
                 VStack {
-                  Spacer()
-                    CustomTabBar(selectedTab: $router.selectedTab,bottom: geometry.safeAreaInsets.bottom)
+                    HStack(spacing: 0) {
+                        
+                    }.frame(height: 22.adapter)
+                    HomeTopBar(selectedTab: $router.selectedTab)
+                    Spacer()
                 }
             }
-          }
-          .sheet(item: $router.presentedSheet) { sheet in
-              AppRouter.shared.sheetView(for: sheet)
-          }
         }
-      }
-    
+        
+    }
 }
 
 // MARK: - Custom Tab Bar
 struct CustomTabBar: View {
   @Binding var selectedTab: AppTab
-  let bottom: CGFloat
 
   var body: some View {
     HStack(spacing: 0) {
