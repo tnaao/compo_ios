@@ -38,7 +38,7 @@ enum Sheet: SheetType {
   var id: Int { hashValue }
 }
 
-enum AppTab: String, TabType, CaseIterable, Hashable {
+enum AppTab: String, TabType, CaseIterable, Hashable,Codable {
   case all
   case ongoing
   case finished

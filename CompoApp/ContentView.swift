@@ -25,7 +25,7 @@ struct ContentView: View {
                     switch router.selectedTab {
                     case .all:
                         let a = $router[.all]
-                        HomeView()
+                        GameOnGoingListView(rootPath: a)
                     default:
                         ProfileView()
                     }
@@ -35,13 +35,36 @@ struct ContentView: View {
                 }
                 
                 VStack {
-                    HStack(spacing: 0) {
-                        
-                    }.frame(height: 22.adapter)
+                    ZStack(alignment: .center, content: {
+                        Text("Zswing")
+                          .font(Font.custom("DouyinSans", size: 16.adapter))
+                          .foregroundColor(.black)
+                        Button {
+                            
+                        } label: {
+                            HStack(spacing: 0) {
+                                Spacer()
+                                Image(systemName: "person.fill")
+                                    .resizable()
+                                    .scaledToFill()
+                                    .foregroundColor(Color(hex: "FF6E5DFF"))
+                                    .frame(width: 12.adapter,height: 12.adapter)
+                                
+                                Text("退出")
+                                    .foregroundStyle(Color.init(hex: "#FF3D3D3D"))
+                                    .font(.system(size: 12.adapter))
+                                    .padding(
+                                        EdgeInsets(top: 0, leading: 4.adapter, bottom: 0, trailing: 12.adapter)
+                                    )
+                                    
+                            }
+                        }
+
+                    }).frame(height: 22.adapter)
                     HomeTopBar(selectedTab: $router.selectedTab)
                     Spacer()
                 }
-            }
+            }.loginBg()
         }
         
     }

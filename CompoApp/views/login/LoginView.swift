@@ -52,7 +52,7 @@ struct LoginView: View {
               .cornerRadius(2)
 
             Text("Zswing")
-              .font(.system(size: 16, weight: .bold))
+              .font(Font.custom("DouyinSans", size: 12.adapter))
               .foregroundColor(.black)
           }
         }
@@ -60,7 +60,7 @@ struct LoginView: View {
 
         // Welcome text
         Text("欢迎来到Zswing裁判端登录界面")
-          .font(.system(size: 12.adapter, weight: .medium))
+          .font(Font.custom("DouyinSans", size: 12.adapter))
           .foregroundColor(Color(hex: "#FF333333"))
           .padding(.top, 11.5.adapter)
 
@@ -73,7 +73,7 @@ struct LoginView: View {
 
           TextField("请输入手机号", text: $phoneNumber)
             .font(.system(size: 15))
-            .keyboardType(.numberPad)
+            .keyboardType(.phonePad)
         }
         .padding(.horizontal, 16)
         .frame(width: 190.adapter, height: 30.adapter)

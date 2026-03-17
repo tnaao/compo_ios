@@ -11,6 +11,7 @@
 		AF076F069DEC319469769714 /* Pods_CompoAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30780D27F8EDDCAB914CFD77 /* Pods_CompoAppTests.framework */; };
 		BA37514C99C52C846A88289E /* Pods_CompoApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69D9AB6EFD5F43D4E22BC1DA /* Pods_CompoApp.framework */; };
 		BE8B94272F6847B900D8BFA5 /* AdapterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = BE8B94262F6847B900D8BFA5 /* AdapterSwift */; };
+		BEA398832F68CFF00069B1C8 /* DouyinSans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BEA398822F68CD990069B1C8 /* DouyinSans.ttf */; };
 		BED3F95F2F66525D0001DFD9 /* AppRouter in Frameworks */ = {isa = PBXBuildFile; productRef = BED3F95E2F66525D0001DFD9 /* AppRouter */; };
 /* End PBXBuildFile section */
 
@@ -43,12 +44,26 @@
 		BE8A5F602F6651DC002FB3EE /* CompoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CompoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE8A5F6D2F6651DD002FB3EE /* CompoAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CompoAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE8A5F772F6651DD002FB3EE /* CompoAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CompoAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BEA398822F68CD990069B1C8 /* DouyinSans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DouyinSans.ttf; sourceTree = "<group>"; };
 		E983EFA72ADFA5FA18FA3E5A /* Pods-CompoApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CompoApp.release.xcconfig"; path = "Target Support Files/Pods-CompoApp/Pods-CompoApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		BEA398802F68CA790069B1C8 /* Exceptions for "CompoApp" folder in "CompoApp" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = BE8A5F5F2F6651DC002FB3EE /* CompoApp */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		BE8A5F622F6651DC002FB3EE /* CompoApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				BEA398802F68CA790069B1C8 /* Exceptions for "CompoApp" folder in "CompoApp" target */,
+			);
 			path = CompoApp;
 			sourceTree = "<group>";
 		};
@@ -111,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				BE8A5F622F6651DC002FB3EE /* CompoApp */,
+				BEA398812F68CD650069B1C8 /* Font */,
 				BE8A5F702F6651DD002FB3EE /* CompoAppTests */,
 				BE8A5F7A2F6651DD002FB3EE /* CompoAppUITests */,
 				BE8A5F612F6651DC002FB3EE /* Products */,
@@ -127,6 +143,14 @@
 				BE8A5F772F6651DD002FB3EE /* CompoAppUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		BEA398812F68CD650069B1C8 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				BEA398822F68CD990069B1C8 /* DouyinSans.ttf */,
+			);
+			path = Font;
 			sourceTree = "<group>";
 		};
 		FC4EA9AE87BC90E1ED15C92D /* Frameworks */ = {
@@ -262,6 +286,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEA398832F68CFF00069B1C8 /* DouyinSans.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -563,6 +588,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CompoApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -597,6 +623,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CompoApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
