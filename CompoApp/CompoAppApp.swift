@@ -11,14 +11,13 @@ import AppRouter
 @main
 struct CompoAppApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @Bindable private var appRouter = AppRouter()
+    @Bindable private var appRouter = AppRouter.shared
+    @State private var router = AppRouter.shared.appRouter
     
     var body: some Scene {
         WindowGroup {
-            ContentView().environment(appRouter)
-                .onAppear {
-                    
-                }
+            RootView(router: $router)
+                .environment(appRouter)
         }
     }
 }

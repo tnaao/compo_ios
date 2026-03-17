@@ -10,8 +10,8 @@ import SwiftUI
 import AdapterSwift
 
 struct ContentView: View {
-    @State private var appRouter = AppRouter.shared
-    @State private var router:Router<AppTab, Destination, Sheet> = AppRouter.shared.appRouter
+    @Environment(SimpleRouter<Destination, Sheet>.self) private var router
+    @State private  var tabRouter = Router<AppTab, Destination, Sheet>(initialTab: .all)
     @State private var isLoggedIn: Bool = true
     
     var body: some View {
@@ -22,17 +22,13 @@ struct ContentView: View {
             ZStack {
                 // Main content
                 Group {
-                    switch router.selectedTab {
+                    switch tabRouter.selectedTab {
                     case .all:
-                        let a = $router[.all]
-                        GameOnGoingListView(rootPath: a)
+                        GameOnGoingListView()
                     default:
                         ProfileView()
                     }
                 }.padding(.top,56.adapter)
-                .sheet(item: $router.presentedSheet) { sheet in
-                    AppRouter.shared.sheetView(for: sheet)
-                }
                 
                 VStack {
                     ZStack(alignment: .center, content: {
@@ -61,7 +57,7 @@ struct ContentView: View {
                         }
 
                     }).frame(height: 22.adapter)
-                    HomeTopBar(selectedTab: $router.selectedTab)
+                    HomeTopBar(selectedTab: $tabRouter.selectedTab)
                     Spacer()
                 }
             }.loginBg()
@@ -139,6 +135,12 @@ struct DiaryView: View {
 struct ProfileView: View {
   var body: some View {
     Text("我的")
+      .font(.largeTitle)
+  }
+}
+struct BlankView: View {
+  var body: some View {
+    Text("开发中")
       .font(.largeTitle)
   }
 }

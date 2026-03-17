@@ -7,9 +7,9 @@
 
 import SwiftUI
 import AdapterSwift
+import AppRouter
 
 struct GameOnGoingListView: View {
-  let rootPath: Binding<[Destination]>
   let matches = [
     MatchModel(
       title: "2025年VICTOR萧山区第六届青少年羽毛球冠军赛1",
@@ -27,11 +27,18 @@ struct GameOnGoingListView: View {
     ),
   ]
 
+  @Environment(SimpleRouter<Destination, Sheet>.self) private var router
   var body: some View {
+
     ScrollView {
         LazyVStack(spacing: 12.adapter) {
         ForEach(matches) { match in
-          GameCard(match: match)
+            Button {
+                router.navigateTo(.gamedetailHome)
+            } label: {
+                GameCard(match: match)
+            }
+
         }
       }
         .padding(EdgeInsets(top: 17.adapter, leading: 12.adapter, bottom: 0, trailing: 12.adapter))

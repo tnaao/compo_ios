@@ -11,6 +11,8 @@ internal import Combine
 
 enum Destination: DestinationType {
   case detail(id: String)
+  case gamedetailItem(id: String)
+  case gamedetailHome
   case settings
   case login
   case profile(userId: String)
@@ -63,7 +65,8 @@ enum AppTab: String, TabType, CaseIterable, Hashable,Codable {
 }
 
 @Observable class AppRouter {
-  var appRouter = Router<AppTab, Destination, Sheet>(initialTab: .all)
+  var appRouter = SimpleRouter<Destination, Sheet>()
+  var tabRouter = Router<AppTab, Destination, Sheet>(initialTab: .all)
   var selectedTab: AppTab = .all
   var isLoggedIn: Bool = false
 
@@ -82,22 +85,24 @@ enum AppTab: String, TabType, CaseIterable, Hashable,Codable {
     }
     
     @ViewBuilder
-    private func destinationView(for destination: Destination) -> some View {
+    func destinationView(for destination: Destination) -> some View {
       switch destination {
-      case .detail(let id):
-        VStack {
-          Text("Detail \(id)")
-        }
-      case .settings:
-        VStack {
-          Text("Settings")
-        }
-      case .profile(let userId):
-        VStack {
-          Text("Profile \(userId)")
-        }
-      case .login:
-          LoginView()
-      }
+          case .gamedetailHome:
+            GameDetailHomeView()
+          case .settings:
+            VStack {
+              Text("Settings")
+            }
+          case .profile(let userId):
+            VStack {
+              Text("Profile \(userId)")
+            }
+          case .login:
+              LoginView()
+      default:
+          BlankView()
+          }
+        
+        
     }
 }
