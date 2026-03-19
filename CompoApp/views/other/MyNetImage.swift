@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct MyNetImage: View {
-    var url:String? = "https://ww1.sinaimg.cn/mw690/006CBe8Ggy1hr87f28gl9j30u01hctaj.jpg"
+    var url:String? = "https://theportablewife.com/wp-content/uploads/best-places-to-take-pictures-in-paris-newfeatured.jpg"
     var width:CGFloat = CGFloat.infinity
     var height:CGFloat = CGFloat.infinity
     var radius:CGFloat = 0
@@ -36,4 +36,9 @@ struct MyNetImage: View {
             }
         }
     }
+}
+
+
+#Preview {
+    MyNetImage(width: 200,height: 200)
 }
