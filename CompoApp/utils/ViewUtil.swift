@@ -9,10 +9,6 @@ import SwiftUI
 import AdapterSwift
 
 extension View {
-  func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-    clipShape(RoundedCorner(radius: radius, corners: corners))
-  }
-    
   func loginBg() -> some View {
       return ZStack {
           Image("bgLogin")
@@ -20,6 +16,56 @@ extension View {
             .aspectRatio(contentMode: .fill)
           self
       }
+    }
+}
+
+extension View {
+      func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+        clipShape(RoundedCorner(radius: radius, corners: corners))
+      }
+    
+      func hideNavigationBar() -> some View {
+          self.toolbarVisibility(.hidden, for: .navigationBar)
+      }
+    
+    func bgImage(_ name:String) -> some View {
+        return ZStack {
+            Image(name)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+            self
+        }
+    }
+    
+    @ViewBuilder
+    func xVisible(_ v:Bool) -> some View {
+        if v {
+            self
+        } else {
+            EmptyView()
+        }
+    }
+       
+    @ViewBuilder
+    func xDisplay(_ v: Bool) -> some View {
+        if v {
+            self.opacity(1.0)
+        } else {
+            self.opacity(0.0)
+        }
+    }
+    
+    func noClickEffect() -> some View {
+        self.buttonStyle(NoPressEffectStyle())
+    }
+}
+
+struct NoPressEffectStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            // The following line ensures no change in appearance based on the pressed state
+            // If you did want an effect, you'd use configuration.isPressed
+            .opacity(1.0)
     }
 }
 
@@ -36,3 +82,4 @@ struct RoundedCorner: Shape {
     return Path(path.cgPath)
   }
 }
+

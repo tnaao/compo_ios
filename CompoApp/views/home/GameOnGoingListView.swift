@@ -105,5 +105,5 @@ struct GameCard: View {
 }
 
 #Preview {
-    ContentView()
+    RootView()
 }

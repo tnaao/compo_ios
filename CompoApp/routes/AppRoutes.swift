@@ -10,8 +10,10 @@ import SwiftUI
 internal import Combine
 
 enum Destination: DestinationType {
+  case launch
   case detail(id: String)
   case gamedetailItem(id: String)
+  case matchScoring(id: String)
   case gamedetailHome
   case settings
   case login
@@ -88,17 +90,15 @@ enum AppTab: String, TabType, CaseIterable, Hashable,Codable {
     func destinationView(for destination: Destination) -> some View {
       switch destination {
           case .gamedetailHome:
-            GameDetailHomeView()
-          case .settings:
-            VStack {
-              Text("Settings")
-            }
+          GameDetailHomeView().hideNavigationBar()
+      case .matchScoring(id: let id):
+          MatchScoringView().hideNavigationBar()
           case .profile(let userId):
             VStack {
               Text("Profile \(userId)")
             }
           case .login:
-              LoginView()
+          LoginView().hideNavigationBar()
       default:
           BlankView()
           }

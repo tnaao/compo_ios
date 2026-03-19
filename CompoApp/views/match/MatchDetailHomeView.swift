@@ -124,7 +124,6 @@ struct GameDetailHomeView: View {
         }
       }
     }
-    .navigationBarHidden(true)
   }
 
   // MARK: - Navigation Bar
@@ -211,7 +210,7 @@ struct MatchDetailCard: View {
       HStack(spacing: 4.adapter) {
         Text(match.venue)
           .font(.system(size: 14.adapter, weight: .medium))
-          .foregroundColor(Color(hex: "#FF6E5DFF"))
+          .foregroundColor(Color(hex: "#FFFF7F23"))
 
         Text("｜")
           .font(.system(size: 14.adapter))
@@ -219,7 +218,7 @@ struct MatchDetailCard: View {
 
         Text(match.matchNumber)
           .font(.system(size: 14.adapter, weight: .bold))
-          .foregroundColor(Color(hex: "#FFFF6B00"))
+          .foregroundColor(Color(hex: "#FF5E66FF"))
 
         Text("（\(match.category) [\(match.matchCode)]）")
           .font(.system(size: 12.adapter))
@@ -234,7 +233,18 @@ struct MatchDetailCard: View {
         Spacer()
 
         // VS Section
-        vsSection
+          VStack {
+              vsSection
+                // Venue Swap (if exists)
+                if let swap = match.venueSwap {
+                  HStack {
+                    Spacer()
+                    venueSwapView(text: swap)
+                    Spacer()
+                  }
+                  .offset(y:8.adapter)
+                }
+          }
 
         Spacer()
 
@@ -247,15 +257,7 @@ struct MatchDetailCard: View {
         actionButtons
       }
 
-      // Venue Swap (if exists)
-      if let swap = match.venueSwap {
-        HStack {
-          Spacer()
-          venueSwapView(text: swap)
-          Spacer()
-        }
-        .padding(.top, -8.adapter)
-      }
+      
     }
     .padding(16.adapter)
     .background(Color.white)
@@ -381,5 +383,5 @@ struct MatchDetailCard: View {
 }
 
 #Preview {
-  GameDetailHomeView()
+    RootView(rootDestination: .gamedetailHome, )
 }

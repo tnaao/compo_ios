@@ -12,11 +12,10 @@ import AppRouter
 struct CompoAppApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Bindable private var appRouter = AppRouter.shared
-    @State private var router = AppRouter.shared.appRouter
     
     var body: some Scene {
         WindowGroup {
-            RootView(router: $router)
+            RootView()
                 .environment(appRouter)
         }
     }

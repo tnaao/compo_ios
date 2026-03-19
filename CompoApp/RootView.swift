@@ -9,7 +9,8 @@ import SwiftUI
 import AppRouter
 
 struct RootView: View {
-    @Binding var router:SimpleRouter<Destination, Sheet>
+    var rootDestination: Destination = .launch
+    @State private var router = AppRouter.shared.appRouter
     var body: some View {
         NavigationStack(path: $router.path) {
                     ContentView()
@@ -19,6 +20,10 @@ struct RootView: View {
                 }
                 .sheet(item: $router.presentedSheet) { sheet in
                     AppRouter.shared.sheetView(for: sheet)
-                }.environment(router)
+                }.environment(router).onAppear {
+                    if(rootDestination != .launch){
+                        router.navigateTo(rootDestination)
+                    }
+                }
     }
 }
