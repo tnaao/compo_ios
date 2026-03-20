@@ -15,14 +15,9 @@ struct LoginView: View {
   var body: some View {
     ZStack {
       // Background gradient
-      LinearGradient(
-        gradient: Gradient(colors: [
-          Color(hex: "#FF809AFF"),
-          Color(red: 0.88, green: 0.90, blue: 0.96),
-        ]),
-        startPoint: .topLeading,
-        endPoint: .bottomTrailing
-      )
+        ZStack(content: {
+            Spacer()
+        }).bgImage("bgLogin")
       .ignoresSafeArea()
 
       // Main card
@@ -31,7 +26,7 @@ struct LoginView: View {
         ZStack {
           Circle()
             .fill(Color.white)
-            .frame(width: 50.adapter, height: 50.adapter)
+            .frame(width: 50.adapter, height: 50.adapter).xVisible(false)
 
           // Zswing logo with diagonal stripe
           ZStack {
@@ -49,13 +44,14 @@ struct LoginView: View {
               )
               .frame(width: 60, height: 20)
               .rotationEffect(.degrees(-30))
-              .cornerRadius(2)
+              .cornerRadius(2).xVisible(false)
 
             Text("Zswing")
               .font(Font.custom("DouyinSans", size: 12.adapter))
-              .foregroundColor(.black)
+              .foregroundColor(.black).xVisible(false)
           }
         }
+        .bgImage("loginIcon").frame(width:50.adapter, height: 50.adapter)
         .padding(.top, 12.adapter)
 
         // Welcome text
@@ -66,7 +62,7 @@ struct LoginView: View {
 
         // Phone number input
         HStack(spacing: 12) {
-          Image(systemName: "iphone")
+          Image("etPhone")
             .resizable()
             .scaledToFit()
             .frame(width: 10.adapter, height: 10.adapter)
@@ -83,7 +79,7 @@ struct LoginView: View {
 
         // Verification code input
         HStack(spacing: 12) {
-          Image(systemName: "shield.lefthalf.filled")
+          Image("etPassword")
             .resizable()
             .scaledToFit()
             .frame(width: 10.adapter, height: 10.adapter)
