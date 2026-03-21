@@ -85,7 +85,7 @@ struct MatchCardView: View {
         // Left Team Players
         HStack(spacing: 7.adapter) {
           ForEach(match.team1) { player in
-            PlayerView(player: player)
+              PlayerView(player: player)
           }
         }
 
@@ -95,53 +95,54 @@ struct MatchCardView: View {
         Text("\(match.scoreTeam1)")
           .font(.system(size: 32, weight: .bold))
           .foregroundColor(Color(red: 51 / 255, green: 51 / 255, blue: 51 / 255))
+          .padding(.bottom,24.adapter)
 
-        Spacer(minLength: 20)
+        Spacer(minLength: 10)
 
         // Center VS Section
-        VStack(spacing: 6) {
+        VStack(spacing: 0) {
           VSLogoView()
-            .frame(height: 40)
 
           if let courtChange = match.courtChange {
-            HStack(spacing: 4) {
+              HStack(spacing: 2.adapter) {
               Text(courtChange.from)
-                .font(.system(size: 11))
+                    .font(.system(size: 9.adapter))
                 .foregroundColor(Color.black)
 
               ZStack {
                 Circle()
                   .fill(Color(red: 102 / 255, green: 72 / 255, blue: 255 / 255))
-                  .frame(width: 14, height: 14)
+                  .frame(width: 14.adapter, height: 14.adapter)
                 Text("换")
-                  .font(.system(size: 9))
+                      .font(.system(size: 8.adapter))
                   .foregroundColor(.white)
               }
+              
 
               Text(courtChange.to)
-                .font(.system(size: 11))
+                    .font(.system(size: 9.adapter))
                 .foregroundColor(Color.black)
             }
           } else {
             // Keep space balanced if no court change
-            Color.clear.frame(height: 14)
+              Color.clear.frame(height: 14.adapter)
           }
         }
-        .frame(width: 80)
+        .frame(maxWidth: 80.adapter).padding(.bottom,0.adapter)
 
-        Spacer(minLength: 20)
+        Spacer(minLength: 10)
 
         // Right Score
         Text("\(match.scoreTeam2)")
           .font(.system(size: 32, weight: .bold))
           .foregroundColor(Color(red: 51 / 255, green: 51 / 255, blue: 51 / 255))
-
+          .padding(.bottom,24.adapter)
         Spacer(minLength: 20)
 
         // Right Team Players
         HStack(spacing: 24) {
           ForEach(match.team2) { player in
-            PlayerView(player: player)
+              PlayerView(player: player)
           }
         }
 
@@ -186,51 +187,16 @@ struct PlayerView: View {
   let player: PlayerModel
 
   var body: some View {
-    VStack(spacing: 8) {
+      VStack(spacing: 6.adapter) {
       ZStack(alignment: .topLeading) {
         // Main Avatar background + gradient stroke
-        Circle()
-          .fill(Color(red: 235 / 255, green: 240 / 255, blue: 250 / 255))
-          .frame(width: 60, height: 60)
-          .overlay(
-            Image(systemName: "person.crop.circle.fill")
-              .resizable()
-              .foregroundColor(Color(red: 160 / 255, green: 170 / 255, blue: 190 / 255))
-          )
-          .overlay(
-            Circle()
-              .strokeBorder(
-                LinearGradient(
-                  colors: [
-                    Color(red: 102 / 255, green: 72 / 255, blue: 255 / 255).opacity(0.8),
-                    Color(red: 200 / 255, green: 180 / 255, blue: 255 / 255).opacity(0.4),
-                  ],
-                  startPoint: .topLeading,
-                  endPoint: .bottomTrailing
-                ),
-                lineWidth: 2
-              )
-          )
-
-        // Crown Badge
-        if player.hasCrown {
-          Image(systemName: "crown.fill")
-            .font(.system(size: 16))
-            .foregroundColor(Color(red: 255 / 255, green: 200 / 255, blue: 0 / 255))
-            .shadow(color: Color.black.opacity(0.1), radius: 1, x: 0, y: 1)
-            .offset(x: -8, y: -6)
-            .background(
-              Circle()
-                .fill(Color.white)
-                .frame(width: 22, height: 22)
-                .offset(x: -8, y: -6)
-            )
-        }
+          PlayerIconView(url: nil, hasWinnerBadge: player.hasCrown)
       }
 
       Text(player.name)
         .font(.system(size: 14, weight: .regular))
         .foregroundColor(Color(red: 102 / 255, green: 102 / 255, blue: 102 / 255))
+        .frame(height: 20.adapter)
     }
   }
 }
@@ -239,31 +205,11 @@ struct PlayerView: View {
 struct VSLogoView: View {
   var body: some View {
     ZStack {
-      Image(systemName: "tennis.racket")
-        .font(.system(size: 20))
-        .foregroundColor(Color.pink.opacity(0.6))
-        .rotationEffect(.degrees(45))
-        .offset(x: -6, y: 8)
-
-      Image(systemName: "tennis.racket")
-        .font(.system(size: 20))
-        .foregroundColor(Color.blue.opacity(0.6))
-        .rotationEffect(.degrees(-135))
-        .offset(x: 6, y: 8)
-
-      Text("VS")
-        .font(.system(size: 24, weight: .black, design: .rounded))
-        .foregroundStyle(
-          LinearGradient(
-            colors: [
-              Color.orange, Color.pink, Color(red: 102 / 255, green: 72 / 255, blue: 255 / 255),
-            ],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-          )
-        )
-        .italic()
-        .offset(y: -4)
+      MyAssetImage(
+        name: "vs",
+        width: 28.adapter,
+        height: 60.adapter
+      )
     }
   }
 }
@@ -272,7 +218,7 @@ struct VSLogoView: View {
 
 struct MatchCardView_Previews: PreviewProvider {
   static var previews: some View {
-    VStack(spacing: 120) {
+      VStack(spacing: 20.adapter) {
       // Card without court change
       MatchCardView(match: .sample)
 
@@ -281,7 +227,7 @@ struct MatchCardView_Previews: PreviewProvider {
     }
     .padding(.horizontal,12)
     .padding(.vertical,12)
-    .background(Color(red: 242 / 255, green: 243 / 255, blue: 249 / 255))
+    .background(Color.indigo)
     .previewInterfaceOrientation(.landscapeLeft)
   }
 }

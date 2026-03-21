@@ -251,7 +251,7 @@ struct MatchDetailCard: View {
         // Player 2
         playerView(player: match.player2, score: match.score2)
 
-        Spacer()
+          Spacer().fixedSize().frame(width: 135.adapter)
 
         // Action Buttons
         actionButtons
@@ -266,62 +266,29 @@ struct MatchDetailCard: View {
 
   // MARK: - Player View
   private func playerView(player: PlayerInfo, score: Int) -> some View {
-    VStack(spacing: 8.adapter) {
+      VStack(alignment: .leading,spacing: 8.adapter) {
       HStack(alignment: .center, spacing: 12.adapter) {
         // Avatar with badge
-        ZStack(alignment: .topLeading) {
-          Circle()
-            .stroke(Color(hex: "#FF6E5DFF").opacity(0.3), lineWidth: 2)
-            .frame(width: 50.adapter, height: 50.adapter)
-
-          Circle()
-            .fill(Color.gray.opacity(0.3))
-            .frame(width: 46.adapter, height: 46.adapter)
-            .overlay(
-              Image(systemName: "person.fill")
-                .font(.system(size: 20.adapter))
-                .foregroundColor(.gray)
-            )
-            .offset(x: 2.adapter, y: 2.adapter)
-
-          if player.hasWinnerBadge {
-            Text("🏆")
-              .font(.system(size: 14.adapter))
-              .offset(x: -4.adapter, y: -4.adapter)
-          }
-        }
+        PlayerIconView(url: nil, hasWinnerBadge: player.hasWinnerBadge).frame(width: 80.adapter)
 
         // Score
         Text("\(score)")
           .font(.system(size: 24.adapter, weight: .bold))
           .foregroundColor(Color(hex: "#FF222429"))
+          .padding(.leading,10.adapter)
       }
 
       // Player name and team
       Text("\(player.name)【\(player.team)】")
-        .font(.system(size: 11.adapter))
+              .font(.system(size: 8.5.adapter))
         .foregroundColor(Color(hex: "#FF848A98"))
+        .frame(width: 80.adapter)
     }
   }
 
   // MARK: - VS Section
   private var vsSection: some View {
-    VStack(spacing: 4.adapter) {
-      // Shuttlecock icon
-      Image(systemName: "figure.badminton")
-        .font(.system(size: 16.adapter))
-        .foregroundColor(Color(hex: "#FFFFC107"))
-
-      Text("VS")
-        .font(.system(size: 14.adapter, weight: .bold))
-        .foregroundColor(Color(hex: "#FF6E5DFF"))
-
-      // Another shuttlecock
-      Image(systemName: "figure.badminton")
-        .font(.system(size: 16.adapter))
-        .foregroundColor(Color(hex: "#FFFFC107"))
-        .rotationEffect(.degrees(180))
-    }
+    MyAssetImage(name: "vs",width: 27.adapter,height: 40.adapter)
   }
 
   // MARK: - Action Buttons

@@ -51,40 +51,139 @@ extension View {
     }
     
     @ViewBuilder
-    func xShadow(radius:CGFloat=2,bgColor:Color = .clear,blur:CGFloat = 0,blurColor:Color = .clear,innerBorderWidth:CGFloat=0,innerBorderColor:Color = .clear,outerBorderWidth:CGFloat = 0,outerBorderColor:Color = .clear) -> some View{
-        
-        let hassInnerBorder = innerBorderWidth > 0
-        ZStack {
-            RoundedRectangle(cornerRadius: radius.adapter) // 对应：圆角 2pt
-                .fill(bgColor) // 对应：填充颜色 #4DFFFFFF
-                .overlay(
-                                // 使用 strokeBorder 确保边框向内绘制
-                                RoundedRectangle(cornerRadius: radius)
-                                    .strokeBorder(Color.white, lineWidth: innerBorderWidth)
-                            )
-            // 1. 外边框 (Stroke)
-                .overlay(
-                    RoundedRectangle(cornerRadius: radius)
-                        .stroke(outerBorderColor, lineWidth: outerBorderWidth) // 对应：粗细 0.5pt, 颜色 #FFFFFFFF
-                )
-            
-            // 2. 外阴影 (Outer Shadow)
-            // SwiftUI 的 radius 等于设计稿 blur 的一半（近似算法），Spread 需通过 padding 或 inset 模拟
-                .shadow(
-                    color: blurColor, // 对应：阴影颜色 #14000000
-                    radius: blur / 2, // 对应：Effect blur 5.5pt
-                    x: 2,           // 对应：Offset X 2pt
-                    y: 3            // 对应：Offset Y 3pt
-                )
-            
-            GeometryReader { geoReader in
-                self
-            }
+    func playerIconShadow(size:CGFloat=0) -> some View {
+        ZStack(alignment: .center) {
+            let radius = size/2
+            Color.clear.frame(
+                width: size,height: size
+            ).xShadow(bgColor: Color.clear,radius: radius,innerBorderColor: Color(hex: "#CC6E5DFF"),innerBorderWidth: 0.5.adapter,blurColor: Color(hex: "#996E5DFF"),blur: 2)
+            self
         }
+    }
+    
+    @ViewBuilder
+    func xShadow(bgColor:Color = .clear,radius:CGFloat=2,innerBorderColor:Color = .clear,innerBorderWidth:CGFloat=0,outerBorderColor:Color = .clear,outerBorderWidth:CGFloat = 0,blurColor:Color = .clear,blur:CGFloat = 0,x:CGFloat = 0,y:CGFloat = 0) -> some View{
+        color(color: bgColor, cornerRadius: radius)
+            .outerBorder(color: outerBorderColor, lineWidth: outerBorderWidth, cornerRadius: radius)
+            .innerBorder(color: innerBorderColor, lineWidth: innerBorderWidth, cornerRadius: radius)
+            .shadow(color: blurColor, blur: blur, x: x.adapter, y: y.adapter)
+    }
+    
+    @ViewBuilder
+    func color(color: Color, cornerRadius: CGFloat) -> some View {
+          self.modifier(ColorModifier(color: color, cornerRadius: cornerRadius))
+    }
+       
+    @ViewBuilder
+    func shadow(color: Color, blur: CGFloat, x: CGFloat,y:CGFloat) -> some View {
+          self.modifier(ShadowModifier(color: color, blur: blur, x: x, y: y))
+    }
+     
+    @ViewBuilder
+    func innerBorder(color: Color, lineWidth: CGFloat, cornerRadius: CGFloat) -> some View {
+          self.modifier(InnerBorderModifier(color: color, lineWidth: lineWidth, cornerRadius: cornerRadius))
+    }
+    
+    @ViewBuilder
+    func innerBorderCircle(color: Color, lineWidth: CGFloat) -> some View {
+          self.modifier(InnerBorderCircleModifier(color: color, lineWidth: lineWidth))
+    }
+    
+    @ViewBuilder
+    func outerBorder(color: Color, lineWidth: CGFloat, cornerRadius: CGFloat) -> some View {
+          self.modifier(OuterBorderModifier(color: color, lineWidth: lineWidth, cornerRadius: cornerRadius))
+    }
+        
+    @ViewBuilder
+    func outerBorderCircle(color: Color, lineWidth: CGFloat, cornerRadius: CGFloat) -> some View {
+          self.modifier(OuterBorderCircleModifier(color: color, lineWidth: lineWidth))
     }
     
     func noClickEffect() -> some View {
         self.buttonStyle(NoPressEffectStyle())
+    }
+}
+
+struct InnerBorderModifier: ViewModifier {
+    var color: Color
+    var lineWidth: CGFloat
+    var cornerRadius: CGFloat
+
+    func body(content: Content) -> some View {
+        content
+            .overlay(
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .strokeBorder(color, lineWidth: lineWidth)
+            )
+    }
+}
+
+struct InnerBorderCircleModifier: ViewModifier {
+    var color: Color
+    var lineWidth: CGFloat
+
+    func body(content: Content) -> some View {
+        content
+            .overlay(
+                Circle()
+                    .strokeBorder(color, lineWidth: lineWidth)
+            )
+    }
+}
+
+struct ColorModifier: ViewModifier {
+    var color: Color
+    var cornerRadius: CGFloat
+    func body(content: Content) -> some View {
+        content
+            .background {
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .fill(color)
+            }
+    }
+}
+
+struct OuterBorderModifier: ViewModifier {
+    var color: Color
+    var lineWidth: CGFloat
+    var cornerRadius: CGFloat
+
+    func body(content: Content) -> some View {
+        content
+            .overlay(
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .stroke(color, lineWidth: lineWidth)
+            )
+    }
+}
+
+struct OuterBorderCircleModifier: ViewModifier {
+    var color: Color
+    var lineWidth: CGFloat
+
+    func body(content: Content) -> some View {
+        content
+            .overlay(
+                Circle()
+                    .stroke(color, lineWidth: lineWidth)
+            )
+    }
+}
+
+struct ShadowModifier: ViewModifier {
+    var color: Color
+    var blur: CGFloat
+    var x: CGFloat
+    var y: CGFloat
+
+    func body(content: Content) -> some View {
+        content
+            .shadow(
+                color: color, // 对应：阴影颜色 #14000000
+                radius: blur / 2, // 对应：Effect blur 5.5pt
+                x: x,           // 对应：Offset X 2pt
+                y: y            // 对应：Offset Y 3pt
+            )
     }
 }
 

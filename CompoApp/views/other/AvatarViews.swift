@@ -43,12 +43,10 @@ struct PlayerCourtInfoView: View {
                         ).background(Color(hex: "#33000000"))
                 }.frame(width: 48.adapter)
                 
-                MyNetImage(width: 25.adapter,height: 25.adapter)
-                    .clipShape(.circle)
-                    .overlay {
-                        Circle().stroke(Color.white,style: StrokeStyle(lineWidth: 3.adapter,)).frame(width: 25.adapter,height: 25.adapter)
-                }
-                
+                MyNetImage(width: 25.adapter,height: 25.adapter,isOval: true)
+                    .innerBorderCircle(color: Color.white, lineWidth: 3.adapter)
+                    .playerIconShadow(size: 25.adapter)
+                    
                 
                 
                 Spacer().fixedSize().frame(height: 4.adapter)
@@ -61,6 +59,31 @@ struct PlayerCourtInfoView: View {
     }
 }
 
+
+struct PlayerIconView:View {
+    var url:String? = nil
+    let hasWinnerBadge:Bool
+    var body: some View {
+        ZStack(alignment: .topLeading) {
+            MyNetImage(url: url,width: 35.adapter,height: 35.adapter,isOval: true)
+                .innerBorderCircle(color: Color.white, lineWidth: 4.adapter)
+                .playerIconShadow(size: 35.adapter,)
+
+          if hasWinnerBadge {
+            MyAssetImage(
+                name: "playerWinnerTag",
+                width: 19.adapter,
+                height: 19.adapter
+            )
+              .offset(x: -6.adapter, y: -6.adapter)
+          }
+        }
+    }
+}
+
 #Preview {
-    PlayerCourtInfoView()
+    VStack(spacing: 20.adapter) {
+        PlayerIconView(url: nil, hasWinnerBadge: true)
+        PlayerCourtInfoView()
+    }
 }

@@ -54,7 +54,7 @@ struct GameCard: View {
     HStack(spacing: 16) {
       // Image with status badge
       ZStack(alignment: .topLeading) {
-        MyNetImage(url:"",width: 140,height: 90,radius: 7)
+        MyNetImage(url:nil,width: 140,height: 90,radius: 7)
           
         // Status badge
         Text(match.status.title)
