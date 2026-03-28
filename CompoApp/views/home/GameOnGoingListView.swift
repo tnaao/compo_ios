@@ -27,7 +27,7 @@ struct GameOnGoingListView: View {
     ),
   ]
 
-  @Environment(SimpleRouter<Destination, Sheet>.self) private var router
+  @Environment(\.appRouter) private var router
   var body: some View {
 
     ScrollView {

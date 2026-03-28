@@ -10,26 +10,23 @@ import AdapterSwift
 
 struct HomeTopBar: View {
     @Binding var selectedTab: AppTab
+    let tabList = [AppTab.all,AppTab.ongoing,AppTab.finished]
 
     var body: some View {
-        GeometryReader { geometry in
-            HStack(spacing: 0) {
-              ForEach(AppTab.allCases) { tab in
-                  HomeTopBarItem(
-                  tab: tab,
-                  tabW:geometry.size.width / 3,
-                  isSelected: selectedTab == tab
-                ) {
-                  withAnimation(.easeInOut(duration: 0.2)) {
-                    selectedTab = tab
-                  }
-                }
+        HStack(spacing: 0) {
+          ForEach(tabList) { tab in
+              HomeTopBarItem(
+              tab: tab,
+              tabW: 0,
+              isSelected: selectedTab == tab
+            ) {
+              withAnimation(.easeInOut(duration: 0.2)) {
+                selectedTab = tab
               }
             }
-            .background(
-                Color.clear
-            )
-        }.padding(.horizontal,12.adapter)
+          }
+        }
+        .padding(.horizontal,12.adapter)
     }
 }
 
@@ -51,20 +48,29 @@ struct HomeTopBarItem: View {
               Spacer()
               if isSelected {
                   Spacer().frame(
-                    width: tabW,
                     height: 1.adapter
-                  )
+                  ).frame(maxWidth: tabW > 0 ? tabW : .infinity)
                       .background(Color(hex: "#FF6E5DFF"))
               }
           }
       }
       .frame(height: 22.adapter)
-      .frame(maxWidth: .infinity,maxHeight: 22.adapter)
+      .frame(maxWidth: .infinity)
       .padding(.top,11.adapter)
     }
   }
 }
 
+struct HomeTopBar_PreviewView :View {
+    @State var selTab:AppTab = .all
+    var body: some View {
+        ZStack(alignment: .top) {
+            Color.clear.ignoresSafeArea()
+            HomeTopBar(selectedTab: $selTab)
+        }
+    }
+}
+
 #Preview {
-  ContentView()
+    HomeTopBar_PreviewView()
 }

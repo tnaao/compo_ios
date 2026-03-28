@@ -19,8 +19,13 @@ extension View {
         clipShape(RoundedCorner(radius: radius, corners: corners))
       }
     
+      @ViewBuilder
       func hideNavigationBar() -> some View {
-          self.toolbarVisibility(.hidden, for: .navigationBar)
+          if #available(iOS 18.0, *) {
+            toolbarVisibility(.hidden, for: .navigationBar)
+          } else {
+            self.navigationBarHidden(true)
+          }
       }
     
     func bgImage(_ name:String) -> some View {
@@ -63,14 +68,14 @@ extension View {
     
     @ViewBuilder
     func xShadow(bgColor:Color = .clear,radius:CGFloat=2,innerBorderColor:Color = .clear,innerBorderWidth:CGFloat=0,outerBorderColor:Color = .clear,outerBorderWidth:CGFloat = 0,blurColor:Color = .clear,blur:CGFloat = 0,x:CGFloat = 0,y:CGFloat = 0) -> some View{
-        color(color: bgColor, cornerRadius: radius)
+        color(bgColor, cornerRadius: radius)
             .outerBorder(color: outerBorderColor, lineWidth: outerBorderWidth, cornerRadius: radius)
             .innerBorder(color: innerBorderColor, lineWidth: innerBorderWidth, cornerRadius: radius)
             .shadow(color: blurColor, blur: blur, x: x.adapter, y: y.adapter)
     }
     
     @ViewBuilder
-    func color(color: Color, cornerRadius: CGFloat) -> some View {
+    func color(_ color: Color, cornerRadius: CGFloat = 0) -> some View {
           self.modifier(ColorModifier(color: color, cornerRadius: cornerRadius))
     }
        
@@ -209,4 +214,26 @@ struct RoundedCorner: Shape {
     return Path(path.cgPath)
   }
 }
+
+struct SafeAreaInsetsKey: PreferenceKey {
+  static var defaultValue = EdgeInsets()
+  static func reduce(value: inout EdgeInsets, nextValue: () -> EdgeInsets) {
+    value = nextValue()
+  }
+}
+
+extension View {
+  func getSafeAreaInsets(_ safeInsets: Binding<EdgeInsets>) -> some View {
+    background(
+      GeometryReader { proxy in
+        Color.clear
+          .preference(key: SafeAreaInsetsKey.self, value: proxy.safeAreaInsets)
+      }
+      .onPreferenceChange(SafeAreaInsetsKey.self) { value in
+        safeInsets.wrappedValue = value
+      }
+    )
+  }
+}
+
 

@@ -41,6 +41,20 @@
 		74A10D13C0BBC797D26B3E24 /* Pods-CompoApp-CompoAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CompoApp-CompoAppUITests.release.xcconfig"; path = "Target Support Files/Pods-CompoApp-CompoAppUITests/Pods-CompoApp-CompoAppUITests.release.xcconfig"; sourceTree = "<group>"; };
 		97314B6554E52541EB84EE53 /* Pods_CompoApp_CompoAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CompoApp_CompoAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0808D4D6CB100D2DD57B2A1 /* Pods-CompoApp-CompoAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CompoApp-CompoAppUITests.debug.xcconfig"; path = "Target Support Files/Pods-CompoApp-CompoAppUITests/Pods-CompoApp-CompoAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		BE76F36B2F77BCDD005EF84F /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
+		BE76F36C2F77BCDD005EF84F /* URLRoutingExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRoutingExample.swift; sourceTree = "<group>"; };
+		BE76F36E2F77BCDD005EF84F /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		BE76F36F2F77BCDD005EF84F /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		BE76F3702F77BCDD005EF84F /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		BE76F3712F77BCDD005EF84F /* SimpleRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleRouter.swift; sourceTree = "<group>"; };
+		BE76F3722F77BCDD005EF84F /* URLNavigationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLNavigationHelper.swift; sourceTree = "<group>"; };
+		BE76F3752F77BCDD005EF84F /* AppRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouterTests.swift; sourceTree = "<group>"; };
+		BE76F3762F77BCDD005EF84F /* SimpleRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleRouterTests.swift; sourceTree = "<group>"; };
+		BE76F3792F77BCDD005EF84F /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		BE76F37A2F77BCDD005EF84F /* CLAUDE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CLAUDE.md; sourceTree = "<group>"; };
+		BE76F37B2F77BCDD005EF84F /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		BE76F37C2F77BCDD005EF84F /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		BE76F37D2F77BCDD005EF84F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BE8A5F602F6651DC002FB3EE /* CompoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CompoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE8A5F6D2F6651DD002FB3EE /* CompoAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CompoAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE8A5F772F6651DD002FB3EE /* CompoAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CompoAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -69,11 +83,15 @@
 		};
 		BE8A5F702F6651DD002FB3EE /* CompoAppTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = CompoAppTests;
 			sourceTree = "<group>";
 		};
 		BE8A5F7A2F6651DD002FB3EE /* CompoAppUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = CompoAppUITests;
 			sourceTree = "<group>";
 		};
@@ -122,6 +140,67 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		BE76F36D2F77BCDD005EF84F /* Examples */ = {
+			isa = PBXGroup;
+			children = (
+				BE76F36B2F77BCDD005EF84F /* AppRouter.swift */,
+				BE76F36C2F77BCDD005EF84F /* URLRoutingExample.swift */,
+			);
+			path = Examples;
+			sourceTree = "<group>";
+		};
+		BE76F3732F77BCDD005EF84F /* AppRouter */ = {
+			isa = PBXGroup;
+			children = (
+				BE76F36E2F77BCDD005EF84F /* Extensions.swift */,
+				BE76F36F2F77BCDD005EF84F /* Protocols.swift */,
+				BE76F3702F77BCDD005EF84F /* Router.swift */,
+				BE76F3712F77BCDD005EF84F /* SimpleRouter.swift */,
+				BE76F3722F77BCDD005EF84F /* URLNavigationHelper.swift */,
+			);
+			path = AppRouter;
+			sourceTree = "<group>";
+		};
+		BE76F3742F77BCDD005EF84F /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				BE76F3732F77BCDD005EF84F /* AppRouter */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		BE76F3772F77BCDD005EF84F /* AppRouterTests */ = {
+			isa = PBXGroup;
+			children = (
+				BE76F3752F77BCDD005EF84F /* AppRouterTests.swift */,
+				BE76F3762F77BCDD005EF84F /* SimpleRouterTests.swift */,
+			);
+			path = AppRouterTests;
+			sourceTree = "<group>";
+		};
+		BE76F3782F77BCDD005EF84F /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				BE76F3772F77BCDD005EF84F /* AppRouterTests */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		BE76F37E2F77BCDD005EF84F /* AppRouter */ = {
+			isa = PBXGroup;
+			children = (
+				BE76F36D2F77BCDD005EF84F /* Examples */,
+				BE76F3742F77BCDD005EF84F /* Sources */,
+				BE76F3782F77BCDD005EF84F /* Tests */,
+				BE76F3792F77BCDD005EF84F /* .gitignore */,
+				BE76F37A2F77BCDD005EF84F /* CLAUDE.md */,
+				BE76F37B2F77BCDD005EF84F /* LICENSE */,
+				BE76F37C2F77BCDD005EF84F /* Package.swift */,
+				BE76F37D2F77BCDD005EF84F /* README.md */,
+			);
+			path = AppRouter;
+			sourceTree = "<group>";
+		};
 		BE8A5F572F6651DC002FB3EE = {
 			isa = PBXGroup;
 			children = (
@@ -132,6 +211,7 @@
 				BE8A5F612F6651DC002FB3EE /* Products */,
 				850446DD4134AA5590D03D0B /* Pods */,
 				FC4EA9AE87BC90E1ED15C92D /* Frameworks */,
+				BE76F37E2F77BCDD005EF84F /* AppRouter */,
 			);
 			sourceTree = "<group>";
 		};
@@ -266,8 +346,8 @@
 			mainGroup = BE8A5F572F6651DC002FB3EE;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				BED3F95D2F66525D0001DFD9 /* XCRemoteSwiftPackageReference "AppRouter" */,
 				BE8B94252F6847B900D8BFA5 /* XCRemoteSwiftPackageReference "AdapterSwift" */,
+				BE76F37F2F77BD54005EF84F /* XCLocalSwiftPackageReference "AppRouter" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = BE8A5F612F6651DC002FB3EE /* Products */;
@@ -315,13 +395,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-CompoApp/Pods-CompoApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-CompoApp/Pods-CompoApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -358,13 +434,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-CompoApp-CompoAppUITests/Pods-CompoApp-CompoAppUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-CompoApp-CompoAppUITests/Pods-CompoApp-CompoAppUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -594,6 +666,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -632,6 +705,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -780,6 +854,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		BE76F37F2F77BD54005EF84F /* XCLocalSwiftPackageReference "AppRouter" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = AppRouter;
+		};
+/* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
 		BE8B94252F6847B900D8BFA5 /* XCRemoteSwiftPackageReference "AdapterSwift" */ = {

@@ -17,6 +17,7 @@ enum Destination: DestinationType {
   case gamedetailHome
   case settings
   case login
+  case HeaderPreviewView
   case profile(userId: String)
 
   static func from(path: String, fullPath: [String], parameters: [String: String]) -> Destination? {
@@ -35,10 +36,33 @@ enum Destination: DestinationType {
   }
 }
 
+typealias ApRoute = SimpleRouter<Destination, Sheet>
+
+struct AppRouterKey: EnvironmentKey {
+  // 必须提供一个默认值
+  static let defaultValue: ApRoute = AppRouter.shared.appRouter
+}
+
+struct SafeEdgesKey: EnvironmentKey {
+  // 必须提供一个默认值
+  static let defaultValue: EdgeInsets = ScreenInfo.shared.safeAreaInsets
+}
+
+extension EnvironmentValues {
+  var appRouter: ApRoute {
+    get { self[AppRouterKey.self] }
+    set { self[AppRouterKey.self] = newValue }
+  }
+  var safeAreaInsets: EdgeInsets {
+    get { self[SafeEdgesKey.self] }
+    set { self[SafeEdgesKey.self] = newValue }
+  }
+}
+
+
 enum Sheet: SheetType {
   case login
   case settings
-
   var id: Int { hashValue }
 }
 
@@ -66,7 +90,7 @@ enum AppTab: String, TabType, CaseIterable, Hashable,Codable {
   }
 }
 
-@Observable class AppRouter {
+class AppRouter : ObservableObject{
   var appRouter = SimpleRouter<Destination, Sheet>()
   var tabRouter = Router<AppTab, Destination, Sheet>(initialTab: .all)
   var selectedTab: AppTab = .all
@@ -91,15 +115,13 @@ enum AppTab: String, TabType, CaseIterable, Hashable,Codable {
       switch destination {
           case .gamedetailHome:
           GameDetailHomeView().hideNavigationBar()
-      case .matchScoring(id: let id):
+          case .matchScoring(id: let id):
           MatchScoringView().hideNavigationBar()
-          case .profile(let userId):
-            VStack {
-              Text("Profile \(userId)")
-            }
+          case .HeaderPreviewView:
+          HeaderPreviewView().hideNavigationBar()
           case .login:
           LoginView().hideNavigationBar()
-      default:
+          default:
           BlankView()
           }
         

@@ -10,58 +10,53 @@ import SwiftUI
 import AdapterSwift
 
 struct ContentView: View {
-    @Environment(SimpleRouter<Destination, Sheet>.self) private var router
-    @State private  var tabRouter = Router<AppTab, Destination, Sheet>(initialTab: .all)
-    @State private var isLoggedIn: Bool = true
-    
+    @Environment(\.appRouter) private var router
+    @State private  var selectedTab = AppTab.all
+    let matches = [
+      MatchModel(
+        title: "2025年VICTOR萧山区第六届青少年羽毛球冠军赛1",
+        dateTime: "2025-12-20 9:00至18:00",
+        location: "杭州市萧山区体育馆",
+        status: .ongoing,
+        imageName: "match_badminton_1"
+      ),
+      MatchModel(
+        title: "2025年VICTOR萧山区第六届青少年羽毛球冠军赛2",
+        dateTime: "2025-12-20 9:00至18:00",
+        location: "杭州市萧山区体育馆",
+        status: .completed,
+        imageName: "match_badminton_2"
+      ),
+    ]
+
+    @Environment(\.safeAreaInsets) var safeAreaInsets
     var body: some View {
         
-        if(!isLoggedIn){
-            LoginView()
-        }else {
-            ZStack {
-                // Main content
-                Group {
-                    switch tabRouter.selectedTab {
-                    case .all:
-                        GameOnGoingListView()
-                    default:
-                        ProfileView()
-                    }
-                }.padding(.top,56.adapter)
+        ZStack(alignment: .topLeading) {
+          Color.clear.ignoresSafeArea()
+            VStack() {
+                HomeHeaderView {
+                    //退出登录
+                }.padding(.top,safeAreaInsets.top)
+                HomeTopBar(selectedTab: $selectedTab)
                 
-                VStack {
-                    ZStack(alignment: .center, content: {
-                        Text("Zswing")
-                          .font(Font.custom("DouyinSans", size: 16.adapter))
-                          .foregroundColor(.black)
-                        Button {
-                            
-                        } label: {
-                            HStack(spacing: 0) {
-                                Spacer()
-                                Image(systemName: "person.fill")
-                                    .resizable()
-                                    .scaledToFill()
-                                    .foregroundColor(Color(hex: "FF6E5DFF"))
-                                    .frame(width: 12.adapter,height: 12.adapter)
-                                
-                                Text("退出")
-                                    .foregroundStyle(Color.init(hex: "#FF3D3D3D"))
-                                    .font(.system(size: 12.adapter))
-                                    .padding(
-                                        EdgeInsets(top: 0, leading: 4.adapter, bottom: 0, trailing: 12.adapter)
-                                    )
-                                    
+                // Main content
+                ScrollView {
+                    LazyVStack(spacing: 12.adapter){
+                        ForEach(matches) { match in
+                            Button {
+                                router.navigateTo(.gamedetailHome)
+                            } label: {
+                                GameCard(match: match)
                             }
+                            
                         }
-
-                    }).frame(height: 22.adapter)
-                    HomeTopBar(selectedTab: $tabRouter.selectedTab)
-                    Spacer()
-                }
-            }.loginBg()
-        }
+                    }
+                }.padding(.top,0.adapter)
+                Spacer()
+            }
+                
+    }.loginBg()
         
     }
 }
@@ -146,5 +141,5 @@ struct BlankView: View {
 }
 
 #Preview {
-  ContentView()
+    RootView(rootDestination: .launch)
 }
