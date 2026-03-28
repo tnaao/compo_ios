@@ -28,12 +28,13 @@ struct ContentView: View {
         imageName: "match_badminton_2"
       ),
     ]
-
+    @State var isRefreshing = false
     @Environment(\.safeAreaInsets) var safeAreaInsets
     var body: some View {
         
         ZStack(alignment: .topLeading) {
           Color.clear.ignoresSafeArea()
+            
             VStack() {
                 HomeHeaderView {
                     //退出登录
@@ -41,19 +42,20 @@ struct ContentView: View {
                 HomeTopBar(selectedTab: $selectedTab)
                 
                 // Main content
-                ScrollView {
-                    LazyVStack(spacing: 12.adapter){
-                        ForEach(matches) { match in
-                            Button {
-                                router.navigateTo(.gamedetailHome)
-                            } label: {
-                                GameCard(match: match)
-                            }
-                            
-                        }
+                SwipeToRefreshListView(matches, isRefreshing: $isRefreshing,spacing: 12.verticaldapter) { idx, item in
+                    if idx == 0 {
+                        Text("\(safeAreaInsets.top)").zIndex(2)
                     }
-                }.padding(.top,0.adapter)
-                Spacer()
+                    Button {
+                        router.navigateTo(.gamedetailHome)
+                    } label: {
+                        GameCard(match: item).padding(.horizontal,12.adapter)
+                    }
+                }.onRefresh {
+                    DispatchQueue.main.asyncAfter(deadline: .now()+1.5, execute: {
+                        isRefreshing = false
+                    })
+                }
             }
                 
     }.loginBg()

@@ -37,7 +37,7 @@ struct HomeHeaderView: View {
                                     }.buttonStyle(.plain)
                                 }
 
-                            }).frame(height: 22.adapter)
+                            }).frame(height: 22.verticaldapter)
     }
 }
 

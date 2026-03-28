@@ -14,7 +14,7 @@ struct CompoAppApp: App {
     
     var body: some Scene {
         WindowGroup {
-            RootView()
+            RootView(rootDestination: .launch)
         }
     }
 }

@@ -19,23 +19,23 @@ struct RootView: View {
             }.getSafeAreaInsets($safeAreaInsets)
               .onAppear {
                 ScreenInfo.shared.safeAreaInsets = safeAreaInsets
-                  AppRouter.shared.appRouter = router
+                AppRouter.shared.appRouter = router
               }
              NavigationStack(path: $router.path) {
-                                    ContentView()
-                                        .navigationDestination(for: Destination.self) { destination in
-                                            AppRouter.shared.destinationView(for: destination)
-                                        }
-                                }
-                        .navigationDestination(for: Destination.self) { destination in
-                          AppRouter.shared.destinationView(for: destination)
-                        }
-                    .sheet(item: $router.presentedSheet) { sheet in
+                 ZStack {
+                     Text("\(safeAreaInsets.top)")
+                 }.navigationDestination(for: Destination.self) { destination in
+                     AppRouter.shared.destinationView(for: destination)
+                 }.onAppear {
+                     
+                 }
+            }.sheet(item: $router.presentedSheet) { sheet in
                         AppRouter.shared.sheetView(for: sheet)
                     }.environment(\.appRouter, router)
                     .environment(\.safeAreaInsets, screenInfo.safeAreaInsets)
                     .onAppear {
-                        if(rootDestination != .launch){
+                        AppRouter.shared.appRouter = router
+                        if(router.path.isEmpty || rootDestination != router.path.last){
                             router.navigateTo(rootDestination)
                         }
                     }

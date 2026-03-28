@@ -11,6 +11,7 @@ internal import Combine
 
 enum Destination: DestinationType {
   case launch
+  case home
   case detail(id: String)
   case gamedetailItem(id: String)
   case matchScoring(id: String)
@@ -119,6 +120,8 @@ class AppRouter : ObservableObject{
           MatchScoringView().hideNavigationBar()
           case .HeaderPreviewView:
           HeaderPreviewView().hideNavigationBar()
+      case .launch,.home:
+          ContentView().hideNavigationBar()
           case .login:
           LoginView().hideNavigationBar()
           default:
