@@ -98,7 +98,7 @@ struct GameDetailHomeView: View {
   ]
 
   var body: some View {
-    ZStack {
+      ZStack(alignment: .topLeading) {
       // Background
       Color(hex: "#FFF5F6FA")
         .ignoresSafeArea()

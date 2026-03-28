@@ -10,7 +10,7 @@ import AdapterSwift
 
 extension View {
   func loginBg() -> some View {
-      bgImage("loginBg")
+      bgImage("loginBg").ignoresSafeArea()
     }
 }
 
@@ -28,12 +28,12 @@ extension View {
           }
       }
     
+    @ViewBuilder
     func bgImage(_ name:String) -> some View {
-        return ZStack {
-            Image(name)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-            self
+        self.background {
+            GeometryReader { geo in
+                MyAssetImage(name: name,width: geo.size.width,height: geo.size.height,contentMode: .fill)
+            }
         }
     }
     

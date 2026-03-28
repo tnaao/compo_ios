@@ -33,7 +33,7 @@ public protocol Verticaldapterable {
 
 extension Verticaldapterable {
     func vdapterScale() -> Double {
-        Verticaldapter.share.currentScale()
+        true ? 1 : Verticaldapter.share.currentScale()
     }
 }
 

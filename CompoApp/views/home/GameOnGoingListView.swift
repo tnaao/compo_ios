@@ -51,56 +51,58 @@ struct GameCard: View {
   let match: MatchModel
 
   var body: some View {
-    HStack(spacing: 16) {
+      HStack(spacing: 16.adapter) {
       // Image with status badge
       ZStack(alignment: .topLeading) {
-        MyNetImage(url:nil,width: 140,height: 90,radius: 7)
+          MyNetImage(url:nil,width: 145.adapter,height: 90.verticaldapter,radius: 7.adapter)
           
         // Status badge
         Text(match.status.title)
-          .font(.system(size: 12, weight: .medium))
+              .font(.system(size: 12.adapter, weight: .medium))
           .foregroundColor(.white)
-          .padding(.horizontal, 10)
-          .padding(.vertical, 6)
+          .padding(.horizontal, 10.adapter)
+          .padding(.vertical, 6.verticaldapter)
           .background(match.status.backgroundColor)
-          .cornerRadius(7, corners: [.topLeft, .bottomRight])
+          .cornerRadius(7.adapter, corners: [.topLeft, .bottomRight])
       }
 
       // Content
-      VStack(alignment: .leading, spacing: 12) {
+          VStack(alignment: .leading, spacing: 12.verticaldapter) {
         Text(match.title)
-          .font(.system(size: 16, weight: .semibold))
+                  .font(.system(size: 16.adapter, weight: .semibold))
           .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
           .lineLimit(2)
 
         // Date & Time
-        HStack(spacing: 6) {
+              HStack(spacing: 6.adapter) {
           Image(systemName: "clock")
-            .font(.system(size: 14))
+                      .font(.system(size: 14.adapter))
             .foregroundColor(Color.gray)
 
           Text(match.dateTime)
-            .font(.system(size: 14))
+                      .font(.system(size: 14.adapter))
             .foregroundColor(Color.gray)
         }
 
         // Location
-        HStack(spacing: 6) {
+              HStack(spacing: 6.adapter) {
           Image(systemName: "mappin.circle")
-            .font(.system(size: 14))
+                      .font(.system(size: 14.adapter))
             .foregroundColor(Color.gray)
 
           Text(match.location)
-            .font(.system(size: 14))
+                      .font(.system(size: 14.adapter))
             .foregroundColor(Color.gray)
         }
       }
 
       Spacer()
     }
-    .padding(16)
+    .padding(.horizontal,16.adapter)
+    .padding(.vertical, 16.verticaldapter)
     .background(Color.white)
-    .cornerRadius(9)
+    .cornerRadius(9.adapter)
+    
   }
 }
 

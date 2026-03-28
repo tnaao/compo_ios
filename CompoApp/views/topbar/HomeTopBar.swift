@@ -57,7 +57,8 @@ struct HomeTopBarItem: View {
       .frame(height: 22.adapter)
       .frame(maxWidth: .infinity)
       .padding(.top,11.adapter)
-    }
+      .background(Color.clickColor)
+    }.noClickEffect()
   }
 }
 

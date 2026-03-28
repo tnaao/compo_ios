@@ -8,19 +8,48 @@
 internal import Combine
 import SVProgressHUD
 import SwiftUI
+import UIKit
 
 class ScreenInfo: ObservableObject {
 
   @Published
   var safeAreaInsets: EdgeInsets = EdgeInsets.init()
 
+  @Published
+  var orientation: UIDeviceOrientation = UIDevice.current.orientation
+
+  private var cancellables = Set<AnyCancellable>()
+
   static var shared: ScreenInfo = .init()
+  var ratio = 1.5
+  let baseW = Double(683)
+  var baseH:Double{
+     Double(683 / ratio)
+  }
 
   var width: CGFloat {
-    UIScreen.main.bounds.width
+      true ? UIScreen.main.bounds.width : UIScreen.main.bounds.height
   }
   var height: CGFloat {
-    UIScreen.main.bounds.height
+      true ? UIScreen.main.bounds.height : UIScreen.main.bounds.width
+  }
+
+  var isLandscape: Bool {
+    orientation.isLandscape
+  }
+
+  var isPortrait: Bool {
+      orientation.isPortrait
+  }
+  init() {
+    // Listen for orientation changes
+    NotificationCenter.default
+      .publisher(for: UIDevice.orientationDidChangeNotification)
+      .sink { [weak self] _ in
+        guard let self = self else { return }
+        self.orientation = UIDevice.current.orientation
+      }
+      .store(in: &cancellables)
   }
 }
 

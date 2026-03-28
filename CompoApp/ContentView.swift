@@ -12,44 +12,57 @@ import AdapterSwift
 struct ContentView: View {
     @Environment(\.appRouter) private var router
     @State private  var selectedTab = AppTab.all
+    
     let matches = [
-      MatchModel(
-        title: "2025年VICTOR萧山区第六届青少年羽毛球冠军赛1",
-        dateTime: "2025-12-20 9:00至18:00",
-        location: "杭州市萧山区体育馆",
-        status: .ongoing,
-        imageName: "match_badminton_1"
-      ),
-      MatchModel(
-        title: "2025年VICTOR萧山区第六届青少年羽毛球冠军赛2",
-        dateTime: "2025-12-20 9:00至18:00",
-        location: "杭州市萧山区体育馆",
-        status: .completed,
-        imageName: "match_badminton_2"
-      ),
+        MatchModel(
+            title: "2025年VICTOR萧山区第六届青少年羽毛球冠军赛1",
+            dateTime: "2025-12-20 9:00至18:00",
+            location: "杭州市萧山区体育馆",
+            status: .ongoing,
+            imageName: "match_badminton_1"
+        ),
+        MatchModel(
+            title: "2025年VICTOR萧山区第六届青少年羽毛球冠军赛2",
+            dateTime: "2025-12-20 9:00至18:00",
+            location: "杭州市萧山区体育馆",
+            status: .completed,
+            imageName: "match_badminton_2"
+        ),
+        MatchModel(
+            title: "2025年VICTOR萧山区第六届青少年羽毛球冠军赛3",
+            dateTime: "2025-12-20 9:00至18:00",
+            location: "杭州市萧山区体育馆",
+            status: .completed,
+            imageName: "match_badminton_2"
+        ),
+        MatchModel(
+            title: "2025年VICTOR萧山区第六届青少年羽毛球冠军赛4",
+            dateTime: "2025-12-20 9:00至18:00",
+            location: "杭州市萧山区体育馆",
+            status: .completed,
+            imageName: "match_badminton_2"
+        ),
     ]
     @State var isRefreshing = false
     @Environment(\.safeAreaInsets) var safeAreaInsets
     var body: some View {
-        
         ZStack(alignment: .topLeading) {
-          Color.clear.ignoresSafeArea()
-            
+            Color.clear.ignoresSafeArea()
             VStack() {
                 HomeHeaderView {
                     //退出登录
                 }.padding(.top,safeAreaInsets.top)
+                //HomeTopBar
                 HomeTopBar(selectedTab: $selectedTab)
-                
                 // Main content
-                SwipeToRefreshListView(matches, isRefreshing: $isRefreshing,spacing: 12.verticaldapter) { idx, item in
+                SwipeToRefreshListView(matches, isRefreshing: $isRefreshing,spacing: 6.verticaldapter) { idx, item in
                     if idx == 0 {
-                        Text("\(safeAreaInsets.top)").zIndex(2)
+                        Spacer().fixedSize().frame(height: 3.verticaldapter)
                     }
                     Button {
                         router.navigateTo(.gamedetailHome)
                     } label: {
-                        GameCard(match: item).padding(.horizontal,12.adapter)
+                        GameCard(match: item).padding(.horizontal,12.verticaldapter)
                     }
                 }.onRefresh {
                     DispatchQueue.main.asyncAfter(deadline: .now()+1.5, execute: {
@@ -57,9 +70,8 @@ struct ContentView: View {
                     })
                 }
             }
-                
-    }.loginBg()
-        
+            
+        }.loginBg()
     }
 }
 
