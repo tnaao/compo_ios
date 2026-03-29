@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AdapterSwift
 
 struct MyAssetImage: View {
     var name:String = "icon"
@@ -16,12 +17,14 @@ struct MyAssetImage: View {
     var body: some View {
         Image(name)
             .resizable()
-            .aspectRatio(contentMode: contentMode, )
+            .aspectRatio(contentMode: contentMode,)
             .frame(width: width, height: height)
+            .clipped()
             .background(bgColor ?? Color.gray.opacity(0.1))
     }
 }
 
 #Preview {
-    MyAssetImage(name:  "icon")
+    MyAssetImage(name:  "brCircleBg"
+                 ,width: 100.adapter,height: 100.adapter,contentMode: .fit,bgColor: Color.clear)
 }

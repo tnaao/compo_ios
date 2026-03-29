@@ -44,12 +44,19 @@ struct MyScorePlusBtn: View {
           action()
         }) {
           Image(systemName: "plus")
-            .font(.system(size: 32, weight: .light))
+                .font(.system(size: 50.adapter))
             .foregroundColor(.white)
             .frame(width: 73.adapter, height: 73.adapter)
-            .background(Color(hex: "#FF9E9E9E"))
+            .background(Color(hex: "#FF848A98"))
             .clipShape(Circle())
         }
+    }
+}
+
+
+#Preview {
+    MyScorePlusBtn {
+
     }
 }
 

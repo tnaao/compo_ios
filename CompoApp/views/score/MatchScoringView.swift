@@ -48,17 +48,13 @@ struct MatchScoringView: View {
 
   var body: some View {
     ZStack {
-      // Background
-      Color(hex: "#FFF0F4FF")
-        .ignoresSafeArea()
-
       VStack(spacing: 0) {
         // Navigation Bar
-          navigationBar.padding(.top,safeAreaInsets.top)
+        navigationBar.padding(.top,safeAreaInsets.top)
 
         // Score Board
         scoreBoard
-          .padding(.top, 20.adapter)
+              .padding(.top, 20.adapter)
 
         ZStack(alignment: .bottom) {
           // Court Area
@@ -80,20 +76,20 @@ struct MatchScoringView: View {
           .padding(.bottom, 40.adapter)
       }
     }
-    .navigationBarHidden(true)
+    .loginBg()
+    .ignoresSafeArea(.all, edges: .bottom)
   }
 
   // MARK: - Navigation Bar
   private var navigationBar: some View {
-    HStack(spacing: 12.adapter) {
+    HStack(spacing: 0) {
       LeadingBtn()
 
       Text(matchTitle)
-        .font(.system(size: 10.adapter, weight: .medium))
+        .font(.system(size: 16.adapter, weight: .medium))
         .foregroundColor(Color(hex: "#FF222429"))
 
       Spacer()
-
       // Action buttons
       HStack(spacing: 12.adapter) {
         // Badminton button
@@ -112,15 +108,9 @@ struct MatchScoringView: View {
           }
 
         // QR code button
-        Button(action: {}) {
-          Image(systemName: "qrcode")
-            .font(.system(size: 18))
-            .foregroundColor(Color(hex: "#FF6E5DFF"))
-            .frame(width: 25.adapter, height: 25.adapter)
-            .background(Color.white)
-            .clipShape(Circle())
-            .shadow(color: Color.black.opacity(0.1), radius: 4.adapter, x: 0, y: 2.adapter)
-        }
+          MyActionBtn(icon: "action_change") {
+
+          }
       }
     }
     .padding(.trailing, 16.adapter)
@@ -131,7 +121,7 @@ struct MatchScoringView: View {
     VStack(spacing: 0) {
       // Match type badge
       Text(matchType)
-        .font(.system(size: 14, weight: .medium))
+            .font(.system(size: 10.adapter, weight: .medium))
         .foregroundColor(.white)
         .padding(.horizontal, 24.adapter)
         .padding(.vertical, 6.adapter)
@@ -145,9 +135,7 @@ struct MatchScoringView: View {
         // Team 1
         Text(player1.team)
               .font(.system(size: 16.adapter, weight: .medium))
-          .foregroundColor(Color(hex: "#FF222429"))
-          .frame(maxWidth: .infinity)
-
+              .foregroundColor(Color(hex: "#FF222429")).frame(maxWidth: .infinity)
         // VS
         Text("VS")
           .font(.system(size: 14, weight: .bold))
@@ -156,12 +144,10 @@ struct MatchScoringView: View {
           .padding(.vertical, 4.adapter)
           .background(Color(hex: "#FF6E5DFF"))
           .cornerRadius(4.adapter)
-
         // Team 2
         Text(player2.team)
               .font(.system(size: 16.adapter, weight: .medium))
-          .foregroundColor(Color(hex: "#FF222429"))
-          .frame(maxWidth: .infinity)
+              .foregroundColor(Color(hex: "#FF222429")).frame(maxWidth: .infinity)
       }
       .bgWhiteGray()
       .padding(.horizontal, 45.adapter)
@@ -170,10 +156,9 @@ struct MatchScoringView: View {
       HStack(spacing: 20.adapter) {
         // Score 1
         Text("\(player1.score)")
-          .font(.system(size: 72, weight: .bold))
+              .font(.system(size: 50.adapter, weight: .bold))
           .foregroundColor(Color(hex: "#FF222429"))
           .padding(.horizontal,12.adapter)
-          .frame(height: 50.adapter)
           .background(
             RoundedRectangle(cornerRadius: 8)
               .stroke(Color(hex: "#FF6E5DFF"), style: StrokeStyle(lineWidth: 1, dash: [5]))
@@ -181,9 +166,8 @@ struct MatchScoringView: View {
 
         // Score 2
         Text("\(player2.score)")
-          .font(.system(size: 72, weight: .bold))
+              .font(.system(size: 50.adapter, weight: .bold))
           .foregroundColor(Color.red)
-          .frame(height: 50.adapter)
           .padding(.horizontal,12.adapter)
           .background(
             RoundedRectangle(cornerRadius: 8)
@@ -201,35 +185,27 @@ struct MatchScoringView: View {
         .fill(Color(hex: "#FF6E5DFF").opacity(0.8))
 
       // Court lines
-        Image("courtBg").resizable().scaledToFill()
+        Image("courtBg").resizable()
+            .clipped()
 
       // Center end game button
       Button(action: {}) {
-        VStack(spacing: 2) {
-          Text("结束")
-            .font(.system(size: 16, weight: .bold))
-            .foregroundColor(Color(hex: "#FFFF6B00"))
+          ZStack(alignment: .center) {
+              VStack(spacing: 0) {
+                Text("结束")
+                      .font(.system(size: 13.adapter, weight: .bold))
+                  .foregroundColor(Color(hex: "#FFFF6B00"))
 
-          Text("第一局")
-            .font(.system(size: 12))
-            .foregroundColor(Color(hex: "#FFFF6B00"))
+                Text("第一局")
+                      .font(.system(size: 10.adapter))
+                  .foregroundColor(Color(hex: "#FFFF6B00"))
+              }.offset(y:-5.adapter)
         }
         .padding(.horizontal, 20.adapter)
-        .padding(.vertical, 10.adapter)
         .background(
-          Capsule()
-            .fill(
-              LinearGradient(
-                gradient: Gradient(colors: [
-                  Color(hex: "#FFFFE0B2"),
-                  Color(hex: "#FFFFCC80"),
-                ]),
-                startPoint: .top,
-                endPoint: .bottom
-              )
-            )
+            MyAssetImage(name:  "brCircleBg"
+                         ,width: 100.adapter,height: 100.adapter,contentMode: .fit,bgColor: Color.clear)
         )
-        .shadow(color: Color.black.opacity(0.2), radius: 8.adapter, x: 0, y: 4.adapter)
       }
 
       // Player 1 (bottom left)
