@@ -28,11 +28,18 @@ class ScreenInfo: ObservableObject {
   }
 
   var width: CGFloat {
-      true ? UIScreen.main.bounds.width : UIScreen.main.bounds.height
+      false ? UIScreen.main.bounds.width : UIScreen.main.bounds.height
   }
   var height: CGFloat {
-      true ? UIScreen.main.bounds.height : UIScreen.main.bounds.width
+      false ? UIScreen.main.bounds.height : UIScreen.main.bounds.width
   }
+    
+    func calculateRatio(){
+        let width = ScreenInfo.shared.width
+        let height = ScreenInfo.shared.height
+        let ratio = width * 1.0 / height
+        ScreenInfo.shared.ratio = ratio
+    }
 
   var isLandscape: Bool {
     orientation.isLandscape
@@ -48,6 +55,7 @@ class ScreenInfo: ObservableObject {
       .sink { [weak self] _ in
         guard let self = self else { return }
         self.orientation = UIDevice.current.orientation
+        calculateRatio()
       }
       .store(in: &cancellables)
   }

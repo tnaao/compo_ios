@@ -19,6 +19,11 @@ class UserInfo {
       UserDefaults.standard.set(newValue, forKey: "user_token")
     }
   }
+    
+    var isLogin:Bool {
+        guard let token = token else { return false }
+        return token.isEmpty ? false : true
+    }
 
   var user: UserModel? {
     get {

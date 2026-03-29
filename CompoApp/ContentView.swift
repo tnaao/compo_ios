@@ -51,6 +51,9 @@ struct ContentView: View {
             VStack() {
                 HomeHeaderView {
                     //退出登录
+                    if !UserInfo.shared.isLogin {
+                        AppRouter.shared.appRouter.navigateTo(.login)
+                    }
                 }.padding(.top,safeAreaInsets.top)
                 //HomeTopBar
                 HomeTopBar(selectedTab: $selectedTab)
@@ -63,7 +66,7 @@ struct ContentView: View {
                         router.navigateTo(.gamedetailHome)
                     } label: {
                         GameCard(match: item).padding(.horizontal,12.verticaldapter)
-                    }
+                    }.noClickEffect()
                 }.onRefresh {
                     DispatchQueue.main.asyncAfter(deadline: .now()+1.5, execute: {
                         isRefreshing = false

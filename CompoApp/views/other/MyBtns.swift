@@ -14,6 +14,24 @@ struct MyActionBtn: View {
     var body: some View {
         Button(action: action) {
             MyAssetImage(name: icon,width: 25.adapter, height: 25.adapter,contentMode: .fit)
+        }.buttonStyle(.plain)
+    }
+}
+
+struct LeadingBtn:View {
+    @Environment(\.dismiss) var dismiss
+    var action:(()->Void)? = nil
+    var body: some View {
+        Button(action: {
+            if action == nil {
+                dismiss()
+            }else {
+                action?()
+            }
+        }) {
+            MyAssetImage(name: "btnBack",width: 15.adapter,height: 15.adapter)
+                .padding(.leading,16.adapter)
+                .padding(.trailing,8.adapter)
         }
     }
 }

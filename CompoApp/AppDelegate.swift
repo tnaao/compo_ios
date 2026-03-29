@@ -8,11 +8,8 @@ import SwiftUI
 import AdapterSwift
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        let width = ScreenInfo.shared.width
-        let height = ScreenInfo.shared.height
-        let ratio = width * 1.0 / height
-        ScreenInfo.shared.ratio = ratio
-        if ScreenInfo.shared.isPortrait {
+        ScreenInfo.shared.calculateRatio()
+        if ScreenInfo.shared.ratio > 1 {
             Adapter.share.mode = .width
             Adapter.share.base = ScreenInfo.shared.baseW
             Verticaldapter.share.base = ScreenInfo.shared.baseW

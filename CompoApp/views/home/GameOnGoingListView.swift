@@ -54,7 +54,7 @@ struct GameCard: View {
       HStack(spacing: 16.adapter) {
       // Image with status badge
       ZStack(alignment: .topLeading) {
-          MyNetImage(url:nil,width: 145.adapter,height: 90.verticaldapter,radius: 7.adapter)
+          MyNetImage(url:nil,width: 145.adapter,height: 90.adapter,radius: 7.adapter)
           
         // Status badge
         Text(match.status.title)
@@ -72,6 +72,7 @@ struct GameCard: View {
                   .font(.system(size: 16.adapter, weight: .semibold))
           .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
           .lineLimit(2)
+          .multilineTextAlignment(.leading)
 
         // Date & Time
               HStack(spacing: 6.adapter) {
@@ -99,7 +100,7 @@ struct GameCard: View {
       Spacer()
     }
     .padding(.horizontal,16.adapter)
-    .padding(.vertical, 16.verticaldapter)
+    .frame(height: 120.adapter)
     .background(Color.white)
     .cornerRadius(9.adapter)
     

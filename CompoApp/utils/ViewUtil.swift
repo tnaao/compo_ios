@@ -103,7 +103,9 @@ extension View {
     func outerBorderCircle(color: Color, lineWidth: CGFloat, cornerRadius: CGFloat) -> some View {
           self.modifier(OuterBorderCircleModifier(color: color, lineWidth: lineWidth))
     }
-    
+}
+
+extension Button {
     func noClickEffect() -> some View {
         self.buttonStyle(NoPressEffectStyle())
     }

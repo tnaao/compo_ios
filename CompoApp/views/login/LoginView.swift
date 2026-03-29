@@ -9,24 +9,30 @@ import AdapterSwift
 import SwiftUI
 
 struct LoginView: View {
+    
+    @Environment(\.safeAreaInsets) var safeAreaInsets
   @State private var phoneNumber: String = ""
   @State private var verificationCode: String = ""
 
   var body: some View {
-    ZStack {
+      ZStack(alignment: .center) {
       // Background gradient
-        ZStack(content: {
-            Spacer()
-        }).bgImage("bgLogin")
+        Color.clear.loginBg()
       .ignoresSafeArea()
+        
+        VStack(alignment: .leading) {
+            HStack {
+                LeadingBtn().padding(.top,safeAreaInsets.top)
+                Spacer()
+            }
+            Spacer()
+        }
 
       // Main card
       VStack(spacing: 0) {
         // Logo
         ZStack {
-          Circle()
-            .fill(Color.white)
-            .frame(width: 50.adapter, height: 50.adapter).xVisible(false)
+            MyAssetImage(name: "loginLogo",width: 50.adapter, height: 50.adapter).zIndex(2)
 
           // Zswing logo with diagonal stripe
           ZStack {
@@ -50,8 +56,7 @@ struct LoginView: View {
               .font(Font.custom("DouyinSans", size: 12.adapter))
               .foregroundColor(.black).xVisible(false)
           }
-        }
-        .bgImage("loginIcon").frame(width:50.adapter, height: 50.adapter)
+        }.frame(width:50.adapter, height: 50.adapter)
         .padding(.top, 12.adapter)
 
         // Welcome text
@@ -126,5 +131,5 @@ struct LoginView: View {
 }
 
 #Preview {
-  LoginView()
+  RootView()
 }

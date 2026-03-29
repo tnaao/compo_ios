@@ -63,11 +63,12 @@ struct PlayerCourtInfoView: View {
 struct PlayerIconView:View {
     var url:String? = nil
     let hasWinnerBadge:Bool
+    var size:CGFloat = 35.adapter
     var body: some View {
         ZStack(alignment: .topLeading) {
-            MyNetImage(url: url,width: 35.adapter,height: 35.adapter,isOval: true)
-                .innerBorderCircle(color: Color.white, lineWidth: 4.adapter)
-                .playerIconShadow(size: 35.adapter,)
+            MyNetImage(url: url,width: size,height: size,isOval: true)
+                .innerBorderCircle(color: Color.white, lineWidth: size < 35.adapter ? 2.adapter : 4.adapter)
+                .playerIconShadow(size: size,)
 
           if hasWinnerBadge {
             MyAssetImage(
@@ -77,7 +78,7 @@ struct PlayerIconView:View {
             )
               .offset(x: -6.adapter, y: -6.adapter)
           }
-        }
+        }.frame(width: size,height: size)
     }
 }
 

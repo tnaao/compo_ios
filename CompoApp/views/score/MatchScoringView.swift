@@ -18,7 +18,7 @@ struct PlayerScoreInfo {
 
 struct MatchScoringView: View {
   @Environment(\.dismiss) private var dismiss
-
+    @Environment(\.safeAreaInsets) var safeAreaInsets
   let matchTitle = "小学E组男子单打"
   let matchType = "男子单打"
   let heightOffset: CGFloat
@@ -54,7 +54,7 @@ struct MatchScoringView: View {
 
       VStack(spacing: 0) {
         // Navigation Bar
-        navigationBar
+          navigationBar.padding(.top,safeAreaInsets.top)
 
         // Score Board
         scoreBoard
@@ -86,11 +86,7 @@ struct MatchScoringView: View {
   // MARK: - Navigation Bar
   private var navigationBar: some View {
     HStack(spacing: 12.adapter) {
-      Button(action: {
-        dismiss()
-      }) {
-        MyAssetImage(name: "btnBack", width: 14.adapter, height: 14.adapter)
-      }
+      LeadingBtn()
 
       Text(matchTitle)
         .font(.system(size: 10.adapter, weight: .medium))
@@ -127,7 +123,7 @@ struct MatchScoringView: View {
         }
       }
     }
-    .padding(.horizontal, 16.adapter)
+    .padding(.trailing, 16.adapter)
   }
 
   // MARK: - Score Board

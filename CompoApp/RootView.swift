@@ -36,6 +36,7 @@ struct RootView: View {
                         AppRouter.shared.sheetView(for: sheet)
                     }.environment(\.appRouter, router)
                     .environment(\.safeAreaInsets, screenInfo.safeAreaInsets)
+                    .environment(\.isLandscape, screenInfo.isLandscape)
                     .onAppear {
                         AppRouter.shared.appRouter = router
                         if(router.path.isEmpty || rootDestination != router.path.last){
@@ -43,7 +44,7 @@ struct RootView: View {
                         }
                     }
         }.onChange(of: screenInfo.orientation) { newValue in
-            if newValue.isPortrait {
+            if ScreenInfo.shared.ratio > 1 {
                 Adapter.share.mode = .width
                 Adapter.share.base = ScreenInfo.shared.baseW
                 Verticaldapter.share.base = ScreenInfo.shared.baseW

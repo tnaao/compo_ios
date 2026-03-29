@@ -16,6 +16,7 @@ enum Destination: DestinationType {
   case gamedetailItem(id: String)
   case matchScoring(id: String)
   case gamedetailHome
+  case matchSignature
   case settings
   case login
   case HeaderPreviewView
@@ -49,6 +50,11 @@ struct SafeEdgesKey: EnvironmentKey {
   static let defaultValue: EdgeInsets = ScreenInfo.shared.safeAreaInsets
 }
 
+struct IsLandscapeKey: EnvironmentKey {
+  // 必须提供一个默认值
+    static let defaultValue: Bool = ScreenInfo.shared.orientation.isLandscape
+}
+
 extension EnvironmentValues {
   var appRouter: ApRoute {
     get { self[AppRouterKey.self] }
@@ -57,6 +63,10 @@ extension EnvironmentValues {
   var safeAreaInsets: EdgeInsets {
     get { self[SafeEdgesKey.self] }
     set { self[SafeEdgesKey.self] = newValue }
+  }
+  var isLandscape: Bool {
+    get { self[IsLandscapeKey.self] }
+    set { self[IsLandscapeKey.self] = newValue }
   }
 }
 
@@ -122,6 +132,8 @@ class AppRouter : ObservableObject{
           HeaderPreviewView().hideNavigationBar()
       case .launch,.home:
           ContentView().hideNavigationBar()
+      case .matchSignature:
+          MatchSignatureView().hideNavigationBar()
           case .login:
           LoginView().hideNavigationBar()
           default:
