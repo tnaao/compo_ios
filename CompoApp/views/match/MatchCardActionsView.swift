@@ -45,7 +45,12 @@ struct MatchCardActionsView: View {
           }.noClickEffect()
         }
         .padding(.trailing, 24)
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }
 
 #Preview {

@@ -163,7 +163,12 @@ struct MatchCardMultiView: View {
     .frame(height: 108.adapter)
     .background(Color.white)
     .cornerRadius(12.adapter)
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 // MARK: - Helper Subviews
@@ -180,7 +185,12 @@ struct PlayerView: View {
         .foregroundColor(Color(red: 102 / 255, green: 102 / 255, blue: 102 / 255))
         .lineLimit(1)
     }
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 // Custom Placeholder implementation for the VS icon
@@ -193,7 +203,12 @@ struct VSLogoView: View {
         height: 50.adapter
       )
     }
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 // MARK: - Single Match Components
@@ -334,7 +349,12 @@ struct MatchCardSingleView: View {
     .frame(height: 108.adapter)
     .background(Color.white)
     .cornerRadius(12.adapter)
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 struct MatchCardSingleGoingView: View {
@@ -421,7 +441,12 @@ struct MatchCardSingleGoingView: View {
     .frame(height: 108.adapter)
     .background(Color.white)
     .cornerRadius(12.adapter)
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 struct MatchCardMultiGoingView: View {
@@ -521,7 +546,12 @@ struct MatchCardMultiGoingView: View {
     .frame(height: 108.adapter)
     .background(Color.white)
     .cornerRadius(12.adapter)
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 // MARK: - Previews

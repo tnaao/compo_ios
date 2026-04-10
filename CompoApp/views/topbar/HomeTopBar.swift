@@ -27,7 +27,12 @@ struct HomeTopBar: View {
           }
         }
         .padding(.horizontal,12.adapter)
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }
 
 //mark HomeTopBarItem
@@ -59,7 +64,12 @@ struct HomeTopBarItem: View {
       .padding(.top,11.adapter)
       .background(Color.clickColor)
     }.noClickEffect()
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 struct HomeTopBar_PreviewView :View {
@@ -69,7 +79,12 @@ struct HomeTopBar_PreviewView :View {
             Color.clear.ignoresSafeArea()
             HomeTopBar(selectedTab: $selTab)
         }
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }
 
 #Preview {

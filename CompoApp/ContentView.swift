@@ -74,8 +74,10 @@ struct ContentView: View {
                 }
             }
             
-        }.loginBg()
+        }.loginBg().enableInjection()
     }
+    
+    @ObserveInjection var inject
 }
 
 // MARK: - Custom Tab Bar
@@ -101,7 +103,12 @@ struct CustomTabBar: View {
       Color(red: 1.0, green: 0.95, blue: 0.9)
         .ignoresSafeArea(edges: .bottom)
     )
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 // MARK: - Tab Bar Item
@@ -126,7 +133,12 @@ struct TabBarItem: View {
       .frame(maxWidth: .infinity)
       .padding(.vertical,4)
     }
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 // MARK: - Placeholder Views
@@ -134,27 +146,47 @@ struct PersonalityView: View {
   var body: some View {
     Text("性格分析")
       .font(.largeTitle)
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 struct DiaryView: View {
   var body: some View {
     Text("心事日历")
       .font(.largeTitle)
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 struct ProfileView: View {
   var body: some View {
     Text("我的")
       .font(.largeTitle)
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 struct BlankView: View {
   var body: some View {
     Text("开发中")
       .font(.largeTitle)
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 #Preview {

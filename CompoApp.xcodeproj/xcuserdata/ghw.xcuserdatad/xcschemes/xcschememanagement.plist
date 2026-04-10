@@ -7,7 +7,25 @@
 		<key>CompoApp.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>15</integer>
+			<integer>0</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>BE8A5F5F2F6651DC002FB3EE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BE8A5F6C2F6651DD002FB3EE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BE8A5F762F6651DD002FB3EE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>

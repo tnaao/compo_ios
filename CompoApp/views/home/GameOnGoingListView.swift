@@ -43,7 +43,12 @@ struct GameOnGoingListView: View {
       }
         .padding(EdgeInsets(top: 17.adapter, leading: 12.adapter, bottom: 0, trailing: 12.adapter))
     }
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 // MARK: - Game Card
@@ -104,7 +109,12 @@ struct GameCard: View {
     .background(Color.white)
     .cornerRadius(9.adapter)
     
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 #Preview {

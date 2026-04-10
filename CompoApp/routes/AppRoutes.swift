@@ -7,7 +7,7 @@
 
 import AppRouter
 import SwiftUI
-internal import Combine
+ import Combine
 
 enum Destination: DestinationType {
   case launch

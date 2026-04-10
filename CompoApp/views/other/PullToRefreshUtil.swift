@@ -48,7 +48,12 @@ struct RefreshActivityIndicator: View {
                 animRotation = 0
             }
         }
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }
 
 // MARK: - Refresh Header Logic
@@ -74,7 +79,12 @@ struct XPRefreshHeader: View {
         }
     }
     .frame(height: 0)
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 // MARK: - Main List Wrapper
@@ -149,7 +159,12 @@ struct SwipeToRefreshListView<T: Identifiable, V: View>: View {
     .onPreferenceChange(XPRScrollOffsetPreferenceKey.self) { value in
       currentOffset = value
     }
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 
@@ -224,7 +239,12 @@ struct XPSimpleSwipeToRefreshListView<T: Identifiable, V: View>: View {
     .onPreferenceChange(XPRScrollOffsetPreferenceKey.self) { value in
       currentOffset = value
     }
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 
@@ -303,7 +323,12 @@ struct SwipeToRefreshScrollView<Content: View>: View {
     .onPreferenceChange(XPRScrollOffsetPreferenceKey.self) { value in
       currentOffset = value
     }
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 struct SimpleListItem:Equatable,Identifiable {
@@ -333,7 +358,12 @@ struct SwipeToRefreshExample: View {
       }
       .navigationTitle("ZSwing Refresh")
     }
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 #Preview {

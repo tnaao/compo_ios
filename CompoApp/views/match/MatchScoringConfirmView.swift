@@ -190,7 +190,12 @@ struct MatchScoringConfirmView: View {
         .frame(maxHeight: .infinity)
         .loginBg()
         .ignoresSafeArea(.all, edges: .bottom)
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }
 
 // Player Card for Scoring View
@@ -225,7 +230,12 @@ struct ScoringPlayerCardView: View {
                     .cornerRadius(2.adapter, corners: [.topRight, .bottomLeft])
             }
         }
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }
 
 struct MatchScoringConfirmView_Previews: PreviewProvider {

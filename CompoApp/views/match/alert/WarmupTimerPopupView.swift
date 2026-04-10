@@ -209,7 +209,12 @@ struct WarmupTimerPopupView<Content: View>: View {
 
     }
     .transition(.opacity.combined(with: .scale(scale: 0.95)))
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 // MARK: - Scaled Reusable Timers Button
@@ -234,7 +239,12 @@ struct TimerOptionButton: View {
         .scaleEffect(isSelected ? 1.05 : 1.0)
         .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isSelected)
     }
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 // MARK: - Scaled Handcrafted Shuttlecock Icon Badge
@@ -258,7 +268,12 @@ struct ServerBadgeView: View {
         .offset(y: 3.adapter)
     }
     .rotationEffect(.degrees(30))
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 // MARK: - Timer Option Model
@@ -285,7 +300,12 @@ struct TimerSelectorView: View {
         )
       }
     }
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 struct WarmupTimerPopupView_Previews: PreviewProvider {

@@ -249,7 +249,12 @@ struct MatchEventLogPopupView: View {
       .shadow(color: Color.black.opacity(0.15), radius: 14.adapter, x: 0, y: 6.adapter)
     }
     .transition(.opacity.combined(with: .scale(scale: 0.95)))
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 // MARK: - Table Cell Helper
@@ -267,7 +272,12 @@ private struct EventTableCell: View {
         Rectangle()
           .stroke(Color(hex: "#806E5DFF"), lineWidth: 0.5.adapter)
       )
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 // MARK: - Preview

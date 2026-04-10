@@ -229,7 +229,12 @@ struct DoubleMatchResultEntryView: View {
       .shadow(color: Color.black.opacity(0.15), radius: 14.adapter, x: 0, y: 6.adapter)
     }
     .transition(.opacity.combined(with: .scale(scale: 0.95)))
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 // MARK: - Score Input Row
@@ -255,7 +260,12 @@ private struct ScoreInputRow: View {
       ScoreTextField(text: $score2, placeholder: placeholder2)
     }
     .padding(.horizontal, 40.adapter)
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 // MARK: - Score Text Field
@@ -283,7 +293,12 @@ private struct ScoreTextField: View {
           }
         }
       )
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 }
 
 // MARK: - Preview

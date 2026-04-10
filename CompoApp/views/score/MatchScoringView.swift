@@ -78,7 +78,12 @@ struct MatchScoringView: View {
     }
     .loginBg()
     .ignoresSafeArea(.all, edges: .bottom)
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 
   // MARK: - Navigation Bar
   private var navigationBar: some View {

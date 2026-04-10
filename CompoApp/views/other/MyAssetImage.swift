@@ -21,7 +21,12 @@ struct MyAssetImage: View {
             .frame(width: width, height: height)
             .clipped()
             .background(bgColor ?? Color.gray.opacity(0.1))
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }
 
 #Preview {

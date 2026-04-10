@@ -36,7 +36,12 @@ struct ScoreCenterView: View {
             // 对应：layerView.frame 的位置 (x: 313.5, y: 313)
             // 注意：SwiftUI 的 position 是基于中心点的
             .position(x: 313.5 + 28, y: 313 + 22.75)
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }
 
 

@@ -19,7 +19,12 @@ struct ConfirmPopUpView: View {
       onSkip: onSkip,
       isCustomContent: true,
     )
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 
   private var confirmContent: some View {
     VStack(spacing: 12.adapter) {

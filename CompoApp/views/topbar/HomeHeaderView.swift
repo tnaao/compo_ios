@@ -41,7 +41,12 @@ struct HomeHeaderView: View {
             }
 
                             }).frame(height: 22.verticaldapter)
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }
 
 struct HeaderPreviewView :View {
@@ -53,7 +58,12 @@ struct HeaderPreviewView :View {
                 
             }).padding(.top,safeAreaInsets.top)
         }.loginBg()
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }
 
 #Preview {

@@ -56,7 +56,12 @@ struct WarmupTimerExampleView: View {
                 .zIndex(1)
             }
         }
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }
 
 struct WarmupTimerExampleView_Previews: PreviewProvider {

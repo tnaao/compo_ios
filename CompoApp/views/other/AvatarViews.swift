@@ -56,7 +56,12 @@ struct PlayerCourtInfoView: View {
             
         }.frame(width: 48.adapter, height: 60.adapter)
             .clipShape(RoundedRectangle(cornerRadius: 2.adapter))
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }
 
 
@@ -79,7 +84,12 @@ struct PlayerIconView:View {
               .offset(x: -6.adapter, y: -6.adapter)
           }
         }.frame(width: size,height: size)
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }
 
 #Preview {

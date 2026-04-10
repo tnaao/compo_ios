@@ -10,6 +10,7 @@
 		0203DE94FA0F7F9780450E6A /* Pods_CompoApp_CompoAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97314B6554E52541EB84EE53 /* Pods_CompoApp_CompoAppUITests.framework */; };
 		AF076F069DEC319469769714 /* Pods_CompoAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30780D27F8EDDCAB914CFD77 /* Pods_CompoAppTests.framework */; };
 		BA37514C99C52C846A88289E /* Pods_CompoApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69D9AB6EFD5F43D4E22BC1DA /* Pods_CompoApp.framework */; };
+		BE104F342F8957F6006CCB44 /* AppRouter in Frameworks */ = {isa = PBXBuildFile; productRef = BE104F332F8957F6006CCB44 /* AppRouter */; };
 		BE8B94272F6847B900D8BFA5 /* AdapterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = BE8B94262F6847B900D8BFA5 /* AdapterSwift */; };
 		BEA398832F68CFF00069B1C8 /* DouyinSans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BEA398822F68CD990069B1C8 /* DouyinSans.ttf */; };
 		BED3F95F2F66525D0001DFD9 /* AppRouter in Frameworks */ = {isa = PBXBuildFile; productRef = BED3F95E2F66525D0001DFD9 /* AppRouter */; };
@@ -59,6 +60,7 @@
 		BE8A5F6D2F6651DD002FB3EE /* CompoAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CompoAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE8A5F772F6651DD002FB3EE /* CompoAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CompoAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEA398822F68CD990069B1C8 /* DouyinSans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DouyinSans.ttf; sourceTree = "<group>"; };
+		BEE9F8B52F8972730025959C /* HotSwiftUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = HotSwiftUI; sourceTree = "<group>"; };
 		E983EFA72ADFA5FA18FA3E5A /* Pods-CompoApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CompoApp.release.xcconfig"; path = "Target Support Files/Pods-CompoApp/Pods-CompoApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -83,11 +85,15 @@
 		};
 		BE8A5F702F6651DD002FB3EE /* CompoAppTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = CompoAppTests;
 			sourceTree = "<group>";
 		};
 		BE8A5F7A2F6651DD002FB3EE /* CompoAppUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = CompoAppUITests;
 			sourceTree = "<group>";
 		};
@@ -101,6 +107,7 @@
 				BA37514C99C52C846A88289E /* Pods_CompoApp.framework in Frameworks */,
 				BED3F95F2F66525D0001DFD9 /* AppRouter in Frameworks */,
 				BE8B94272F6847B900D8BFA5 /* AdapterSwift in Frameworks */,
+				BE104F342F8957F6006CCB44 /* AppRouter in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -208,6 +215,7 @@
 				850446DD4134AA5590D03D0B /* Pods */,
 				FC4EA9AE87BC90E1ED15C92D /* Frameworks */,
 				BE76F37E2F77BCDD005EF84F /* AppRouter */,
+				BEE9F8B52F8972730025959C /* HotSwiftUI */,
 			);
 			sourceTree = "<group>";
 		};
@@ -250,6 +258,7 @@
 				BE8A5F5C2F6651DC002FB3EE /* Sources */,
 				BE8A5F5D2F6651DC002FB3EE /* Frameworks */,
 				BE8A5F5E2F6651DC002FB3EE /* Resources */,
+				E67443D2EA775F545F34DFC2 /* InjectionIII Bundle Copy */,
 				57CBD86D24E19C83C69C4294 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -343,7 +352,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				BE8B94252F6847B900D8BFA5 /* XCRemoteSwiftPackageReference "AdapterSwift" */,
-				BE76F37F2F77BD54005EF84F /* XCLocalSwiftPackageReference "AppRouter" */,
+				BE104F322F8957F6006CCB44 /* XCLocalSwiftPackageReference "AppRouter" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = BE8A5F612F6651DC002FB3EE /* Products */;
@@ -402,7 +411,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CompoApp/Pods-CompoApp-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		5DA7EC54245F5D156D58BE63 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -490,6 +498,24 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		E67443D2EA775F545F34DFC2 /* InjectionIII Bundle Copy */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "InjectionIII Bundle Copy";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "RESOURCES=/Applications/InjectionIII.app/Contents/Resources\nif [ -f \"$RESOURCES/copy_bundle.sh\" ]; then\n    \"$RESOURCES/copy_bundle.sh\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -658,13 +684,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = NBU5GFWU5V;
+				EMIT_FRONTEND_COMMAND_LINES = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CompoApp/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "App Need Network Access";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -676,8 +705,14 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.leaf.CompoApp;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-Xlinker",
+					"-interposable",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.yz.zswing.umpire.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -697,6 +732,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = NBU5GFWU5V;
@@ -704,6 +740,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CompoApp/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "App Need Network Access";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -715,8 +752,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.leaf.CompoApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yz.zswing.umpire.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -860,9 +898,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		BE76F37F2F77BD54005EF84F /* XCLocalSwiftPackageReference "AppRouter" */ = {
+		BE104F322F8957F6006CCB44 /* XCLocalSwiftPackageReference "AppRouter" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = AppRouter;
+			relativePath = ../../acode/AppRouter;
 		};
 /* End XCLocalSwiftPackageReference section */
 
@@ -886,6 +924,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		BE104F332F8957F6006CCB44 /* AppRouter */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AppRouter;
+		};
 		BE8B94262F6847B900D8BFA5 /* AdapterSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BE8B94252F6847B900D8BFA5 /* XCRemoteSwiftPackageReference "AdapterSwift" */;

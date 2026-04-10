@@ -15,7 +15,12 @@ struct MyActionBtn: View {
         Button(action: action) {
             MyAssetImage(name: icon,width: 25.adapter, height: 25.adapter,contentMode: .fit)
         }.buttonStyle(.plain)
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }
 
 struct LeadingBtn:View {
@@ -33,7 +38,12 @@ struct LeadingBtn:View {
                 .padding(.leading,16.adapter)
                 .padding(.trailing,8.adapter)
         }
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }
 
 
@@ -50,7 +60,12 @@ struct MyScorePlusBtn: View {
             .background(Color(hex: "#FF848A98"))
             .clipShape(Circle())
         }
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }
 
 

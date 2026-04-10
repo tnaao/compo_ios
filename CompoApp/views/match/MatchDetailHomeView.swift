@@ -102,7 +102,12 @@ struct GameDetailHomeView: View {
         }
       }
     }
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 
   // MARK: - Navigation Bar
   private var navigationBar: some View {
@@ -172,7 +177,12 @@ struct GameDetailTabItem: View {
       .frame(maxWidth: .infinity)
       .background(Color.clickColor)
     }.noClickEffect()
+      .enableInjection()
   }
+
+  #if DEBUG
+  @ObserveInjection var forceRedraw
+  #endif
 
 }
 

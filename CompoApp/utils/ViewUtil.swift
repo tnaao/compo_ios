@@ -122,7 +122,12 @@ struct InnerBorderModifier: ViewModifier {
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .strokeBorder(color, lineWidth: lineWidth)
             )
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }
 
 struct InnerBorderCircleModifier: ViewModifier {
@@ -135,7 +140,12 @@ struct InnerBorderCircleModifier: ViewModifier {
                 Circle()
                     .strokeBorder(color, lineWidth: lineWidth)
             )
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }
 
 struct ColorModifier: ViewModifier {
@@ -147,7 +157,12 @@ struct ColorModifier: ViewModifier {
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .fill(color)
             }
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }
 
 struct OuterBorderModifier: ViewModifier {
@@ -161,7 +176,12 @@ struct OuterBorderModifier: ViewModifier {
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .stroke(color, lineWidth: lineWidth)
             )
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }
 
 struct OuterBorderCircleModifier: ViewModifier {
@@ -174,7 +194,12 @@ struct OuterBorderCircleModifier: ViewModifier {
                 Circle()
                     .stroke(color, lineWidth: lineWidth)
             )
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }
 
 struct ShadowModifier: ViewModifier {
@@ -191,7 +216,12 @@ struct ShadowModifier: ViewModifier {
                 x: x,           // 对应：Offset X 2pt
                 y: y            // 对应：Offset Y 3pt
             )
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }
 
 struct NoPressEffectStyle: ButtonStyle {

@@ -68,5 +68,10 @@ struct RootView: View {
                 router.path.append(path)
             }
         }
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }

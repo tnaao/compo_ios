@@ -85,7 +85,12 @@ struct SignaturePadView: View {
             )
         }
         .clipped()
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
     
     mutating func clear() {
         lines.removeAll()
@@ -214,7 +219,12 @@ struct MatchSignatureView: View {
             }
             .frame(maxHeight: .infinity)
         }.loginBg()
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }
 
 // Helper for circular right icons
@@ -233,7 +243,12 @@ struct CircleActionIcon: View {
                 .font(.system(size: 14.adapter))
                 .foregroundColor(iconColor)
         }
+        .enableInjection()
     }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
 }
 
 struct MatchSignatureView_Previews: PreviewProvider {
