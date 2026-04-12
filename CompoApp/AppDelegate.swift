@@ -51,7 +51,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         browser.start(queue: .main)
         
         // Stop the browser after a short delay to save resources
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 105) {
             browser.cancel()
         }
     }
