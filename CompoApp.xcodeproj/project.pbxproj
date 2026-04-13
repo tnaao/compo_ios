@@ -85,15 +85,11 @@
 		};
 		BE8A5F702F6651DD002FB3EE /* CompoAppTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = CompoAppTests;
 			sourceTree = "<group>";
 		};
 		BE8A5F7A2F6651DD002FB3EE /* CompoAppUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = CompoAppUITests;
 			sourceTree = "<group>";
 		};
@@ -352,7 +348,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				BE8B94252F6847B900D8BFA5 /* XCRemoteSwiftPackageReference "AdapterSwift" */,
-				BE104F322F8957F6006CCB44 /* XCLocalSwiftPackageReference "AppRouter" */,
+				BE104F322F8957F6006CCB44 /* XCLocalSwiftPackageReference "../../acode/AppRouter" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = BE8A5F612F6651DC002FB3EE /* Products */;
@@ -898,7 +894,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		BE104F322F8957F6006CCB44 /* XCLocalSwiftPackageReference "AppRouter" */ = {
+		BE104F322F8957F6006CCB44 /* XCLocalSwiftPackageReference "../../acode/AppRouter" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../../acode/AppRouter;
 		};

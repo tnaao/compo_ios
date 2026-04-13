@@ -8,7 +8,7 @@
 import AdapterSwift
 import SwiftUI
 
-struct ConfirmPopUpView: View {
+struct ConfirmEndMatchPopUpView: View {
   var onConfirm: (() -> Void)?
   var onSkip: (() -> Void)?
 
@@ -48,6 +48,6 @@ struct ConfirmPopUpView: View {
 }
 
 #Preview {
-  ConfirmPopUpView()
+  ConfirmEndMatchPopUpView()
     .previewInterfaceOrientation(.landscapeLeft)
 }

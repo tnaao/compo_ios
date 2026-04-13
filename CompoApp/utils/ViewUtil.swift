@@ -10,7 +10,7 @@ import AdapterSwift
 
 extension View {
   func loginBg() -> some View {
-      bgImage("loginBg").ignoresSafeArea()
+      bgImage("loginBg",contentMode: .fill).ignoresSafeArea()
     }
 }
 
@@ -29,10 +29,10 @@ extension View {
       }
     
     @ViewBuilder
-    func bgImage(_ name:String) -> some View {
+    func bgImage(_ name:String,contentMode:ContentMode = .fit) -> some View {
         self.background {
             GeometryReader { geo in
-                MyAssetImage(name: name,width: geo.size.width,height: geo.size.height,contentMode: .fill)
+                MyAssetImage(name: name,width: geo.size.width,height: geo.size.height,contentMode: contentMode)
             }
         }
     }
@@ -102,6 +102,44 @@ extension View {
     @ViewBuilder
     func outerBorderCircle(color: Color, lineWidth: CGFloat, cornerRadius: CGFloat) -> some View {
           self.modifier(OuterBorderCircleModifier(color: color, lineWidth: lineWidth))
+    }
+
+    func messageNotificationPopup(
+        isPresented: Binding<Bool>,
+        reason: String = "弃权",
+        content: String = "",
+        onConfirm: (() -> Void)? = nil
+    ) -> some View {
+        self.overlay {
+            if isPresented.wrappedValue {
+                MessageNotificationPopupView(
+                    isPresented: isPresented,
+                    selectedReason: reason,
+                    messageContent: content,
+                    onConfirm: onConfirm
+                )
+            }
+        }
+    }
+
+    func courtChangePopup(
+        isPresented: Binding<Bool>,
+        oldCourt: String,
+        newCourt: String,
+        message: String,
+        onConfirm: (() -> Void)? = nil
+    ) -> some View {
+        self.overlay {
+            if isPresented.wrappedValue {
+                CourtChangePopupView(
+                    isPresented: isPresented,
+                    oldCourt: oldCourt,
+                    newCourt: newCourt,
+                    messageContent: message,
+                    onConfirm: onConfirm
+                )
+            }
+        }
     }
 }
 

@@ -59,15 +59,27 @@ struct MatchScoringView: View {
         ZStack(alignment: .bottom) {
           // Court Area
           HStack(alignment: .bottom, spacing: 0) {
-            MyScorePlusBtn {
+              VStack {
+                  MyScoreMinusBtn {
 
-            }
+                  }
+                  Spacer()
+                  MyScorePlusBtn {
+
+                  }
+              }.padding(.top,20.adapter)
             courtArea
               .padding(.horizontal, 1.adapter)
               .padding(.top, 20.adapter)
-            MyScorePlusBtn {
+              VStack {
+                  MyScoreMinusBtn {
 
-            }
+                  }
+                  Spacer()
+                  MyScorePlusBtn {
+
+                  }
+              }.padding(.top,20.adapter)
           }
 
           // Timer

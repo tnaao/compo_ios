@@ -68,10 +68,47 @@ struct MyScorePlusBtn: View {
     #endif
 }
 
+struct MyScoreMinusBtn: View {
+    var action:() -> Void = {}
+    var body: some View {
+        Button(action: {
+          action()
+        }) {
+          Image(systemName: "minus")
+                .font(.system(size: 50.adapter))
+            .foregroundColor(.white)
+            .frame(width: 73.adapter, height: 73.adapter)
+            .background(Color(hex: "#FF848A98"))
+            .clipShape(Circle())
+        }
+        .enableInjection()
+    }
+
+    #if DEBUG
+    @ObserveInjection var forceRedraw
+    #endif
+}
+
+struct BgAlertActions:View {
+    var body: some View {
+        HStack {
+            Spacer().frame(maxHeight: .infinity).bgImage("alert_btn_bg_s1",contentMode: .fit)
+                .offset(x: 2.adapter)
+          Spacer().frame(maxHeight: .infinity).bgImage("alert_btn_bg_s2").offset(x: -2.adapter)
+        }
+    }
+}
+
 
 #Preview {
-    MyScorePlusBtn {
+    VStack {
+        MyScorePlusBtn {
 
+        }
+        MyScoreMinusBtn{
+            
+        }
+        BgAlertActions().frame(height: 36.adapter)
     }
 }
 

@@ -193,10 +193,7 @@ struct WarmupTimerPopupView<Content: View>: View {
         }
         .frame(width: 180.adapter, height: 36.adapter)
         .background(content: {
-          HStack {
-            Spacer().bgImage("alert_btn_bg_s1").offset(x: 4.adapter)
-            Spacer().bgImage("alert_btn_bg_s2").offset(x: -4.adapter)
-          }
+          BgAlertActions().frame(height: 36.adapter)
         })
         .clipShape(Capsule())
         .padding(.bottom, padddingBottomNum.adapter)
