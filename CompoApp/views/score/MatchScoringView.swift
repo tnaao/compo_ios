@@ -53,8 +53,9 @@ struct MatchScoringView: View {
         navigationBar.padding(.top,safeAreaInsets.top)
 
         // Score Board
-        scoreBoard
+          scoreBoard
               .padding(.top, 20.adapter)
+              .padding(.bottom,10.adapter)
 
         ZStack(alignment: .bottom) {
           // Court Area
@@ -67,10 +68,10 @@ struct MatchScoringView: View {
                   MyScorePlusBtn {
 
                   }
-              }.padding(.top,20.adapter)
+              }.padding(.top,0.adapter)
             courtArea
               .padding(.horizontal, 1.adapter)
-              .padding(.top, 20.adapter)
+              .padding(.top, 0.adapter)
               VStack {
                   MyScoreMinusBtn {
 
@@ -79,7 +80,7 @@ struct MatchScoringView: View {
                   MyScorePlusBtn {
 
                   }
-              }.padding(.top,20.adapter)
+              }.padding(.top,0.adapter)
           }
 
           // Timer
@@ -170,27 +171,34 @@ struct MatchScoringView: View {
       .padding(.horizontal, 45.adapter)
 
       // Scores
-      HStack(spacing: 20.adapter) {
+        HStack(alignment:.top, spacing: 0.adapter) {
         // Score 1
         Text("\(player1.score)")
               .font(.system(size: 50.adapter, weight: .bold))
           .foregroundColor(Color(hex: "#FF222429"))
           .padding(.horizontal,12.adapter)
-          .background(
-            RoundedRectangle(cornerRadius: 8)
-              .stroke(Color(hex: "#FF6E5DFF"), style: StrokeStyle(lineWidth: 1, dash: [5]))
-          )
+          .dashedBorder()
+        // Score 1
+        Text("\(3)")
+              .font(.system(size: 30.adapter, weight: .bold))
+          .foregroundColor(Color(hex: "#FF222429"))
+          .padding(.horizontal,12.adapter)
+          .dashedBorder()
+            Spacer().fixedSize().frame(width:12.adapter)
+        // Score 1
+        Text("\(1)")
+              .font(.system(size: 30.adapter, weight: .bold))
+          .foregroundColor(Color(hex: "#FF222429"))
+          .padding(.horizontal,12.adapter)
+          .dashedBorder()
 
         // Score 2
         Text("\(player2.score)")
               .font(.system(size: 50.adapter, weight: .bold))
           .foregroundColor(Color.red)
           .padding(.horizontal,12.adapter)
-          .background(
-            RoundedRectangle(cornerRadius: 8)
-              .stroke(Color(hex: "#FF6E5DFF"), style: StrokeStyle(lineWidth: 1, dash: [5]))
-          )
-      }
+          .dashedBorder()
+        }
     }
   }
 

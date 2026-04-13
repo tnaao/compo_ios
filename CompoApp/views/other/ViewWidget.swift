@@ -20,4 +20,12 @@ extension View {
         }).frame(height: 22.adapter).cornerRadius(2.adapter)
             .shadow(color: Color.black.opacity(0.05), radius: 2.adapter, x: 0, y: 2.adapter)
     }
+    
+    
+    func dashedBorder() -> some View {
+        background(
+          RoundedRectangle(cornerRadius: 8)
+            .stroke(Color(hex: "#FF6E5DFF"), style: StrokeStyle(lineWidth: 1, dash: [5]))
+        )
+    }
 }
