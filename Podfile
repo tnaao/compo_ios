@@ -6,12 +6,12 @@ target 'CompoApp' do
   use_frameworks!
 
   # Pods for CompoApp
-  pod 'SnapKit', '~> 5.7.0'
   pod 'RxSwift', '~> 6.5'
   pod 'RxCocoa', '~> 6.5'
   pod 'Alamofire', '~> 5.6'
   pod 'RxAlamofire', '~> 6.1'
   pod 'SVProgressHUD'
+  pod 'CleanJSON'
 
   target 'CompoAppTests' do
     inherit! :search_paths

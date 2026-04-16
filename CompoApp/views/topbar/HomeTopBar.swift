@@ -55,7 +55,7 @@ struct HomeTopBarItem: View {
                   Spacer().frame(
                     height: 1.adapter
                   ).frame(maxWidth: tabW > 0 ? tabW : .infinity)
-                      .background(Color(hex: "#FF6E5DFF"))
+                      .background(Color.colorPrimary)
               }
           }
       }

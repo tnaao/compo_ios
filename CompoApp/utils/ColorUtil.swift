@@ -38,3 +38,7 @@ extension Color {
     }
 }
 
+extension Color {
+    static let colorPrimary = Color(hex: "#FF6E5DFF")
+}
+

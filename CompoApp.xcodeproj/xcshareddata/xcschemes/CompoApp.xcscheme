@@ -75,16 +75,10 @@
             ReferencedContainer = "container:CompoApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <CommandLineArguments>
-         <CommandLineArgument
-            argument = "INJECTION_HOST=192.168.124.167"
-            isEnabled = "YES">
-         </CommandLineArgument>
-      </CommandLineArguments>
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "INJECTION_HOST"
-            value = "192.168.124.167"
+            value = "192.168.124.165"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>

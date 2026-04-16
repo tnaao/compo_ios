@@ -74,7 +74,7 @@ struct GameCard: View {
       // Content
           VStack(alignment: .leading, spacing: 12.verticaldapter) {
         Text(match.title)
-                  .font(.system(size: 16.adapter, weight: .semibold))
+                  .font(.system(size: 16.adapter, weight: .bold))
           .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
           .lineLimit(2)
           .multilineTextAlignment(.leading)

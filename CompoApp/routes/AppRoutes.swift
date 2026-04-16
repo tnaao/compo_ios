@@ -7,7 +7,7 @@
 
 import AppRouter
 import SwiftUI
- import Combine
+import Combine
 
 enum Destination: DestinationType {
   case launch
@@ -106,6 +106,12 @@ class AppRouter : ObservableObject{
   var tabRouter = Router<AppTab, Destination, Sheet>(initialTab: .all)
   var selectedTab: AppTab = .all
   var isLoggedIn: Bool = false
+    
+    func goLogin() -> Void {
+        if !appRouter.path.contains(.login) {
+            appRouter.navigateTo(.login)
+        }
+    }
 
   static let shared = AppRouter()
     

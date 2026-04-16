@@ -19,7 +19,7 @@ final class AuthInterceptor: RequestInterceptor {
         var urlRequest = urlRequest
 
         // Add the Authorization header to all requests
-        urlRequest.setValue("Bearer " + accessToken, forHTTPHeaderField: "Authorization")
+        urlRequest.setValue("Bearer " + accessToken, forHTTPHeaderField: "zswtoken")
         urlRequest.timeoutInterval = APIConfig.timeout
 
         completion(.success(urlRequest))

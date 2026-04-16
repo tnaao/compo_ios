@@ -254,8 +254,9 @@
 				BE8A5F5C2F6651DC002FB3EE /* Sources */,
 				BE8A5F5D2F6651DC002FB3EE /* Frameworks */,
 				BE8A5F5E2F6651DC002FB3EE /* Resources */,
-				E67443D2EA775F545F34DFC2 /* InjectionIII Bundle Copy */,
 				57CBD86D24E19C83C69C4294 /* [CP] Embed Pods Frameworks */,
+				BE0EDC772F8DF64700E92672 /* ShellScript */,
+				E67443D2EA775F545F34DFC2 /* InjectionIII Bundle Copy */,
 			);
 			buildRules = (
 			);
@@ -473,6 +474,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		BE0EDC772F8DF64700E92672 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "defaults write com.johnholdsworth.InjectionIII \"$PROJECT_FILE_PATH\" \"$EXPANDED_CODE_SIGN_IDENTITY\"\n";
+		};
 		CD086FDE6E6ED6E500490208 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -689,7 +707,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CompoApp/Info.plist;
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "App Need Network Access";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "This app requires local network access to support HotReloading during development.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -729,14 +747,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = NBU5GFWU5V;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = VSF3FAGS42;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CompoApp/Info.plist;
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "App Need Network Access";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "This app requires local network access to support HotReloading during development.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -748,9 +768,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.yz.zswing.umpire.dev;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yz.zswing.umpire;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = zswing_pad_umpire_0330;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

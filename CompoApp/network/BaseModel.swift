@@ -14,7 +14,15 @@ struct BaseModel<T: Codable>: Codable {
 }
 
 extension BaseModel {
-    var isValid: Bool {
-        return code == 200
-    }
+  var isValid: Bool {
+    return code == 200 || code == 0
+  }
+}
+
+/// 分页结果包装
+struct PagedWrapper<T: Codable>: Codable {
+  /// 总量
+  let total: Int64
+  /// 数据
+  let list: [T]
 }
