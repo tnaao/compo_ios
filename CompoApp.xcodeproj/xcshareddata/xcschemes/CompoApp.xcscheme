@@ -78,7 +78,7 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "INJECTION_HOST"
-            value = "192.168.124.165"
+            value = "192.168.124.14"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>

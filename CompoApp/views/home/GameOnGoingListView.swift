@@ -10,22 +10,7 @@ import AdapterSwift
 import AppRouter
 
 struct GameOnGoingListView: View {
-  let matches = [
-    MatchModel(
-      title: "2025年VICTOR萧山区第六届青少年羽毛球冠军赛1",
-      dateTime: "2025-12-20 9:00至18:00",
-      location: "杭州市萧山区体育馆",
-      status: .ongoing,
-      imageName: "match_badminton_1"
-    ),
-    MatchModel(
-      title: "2025年VICTOR萧山区第六届青少年羽毛球冠军赛2",
-      dateTime: "2025-12-20 9:00至18:00",
-      location: "杭州市萧山区体育馆",
-      status: .completed,
-      imageName: "match_badminton_2"
-    ),
-  ]
+    let matches:[BadmintonCompetitionRespVO] = []
 
   @Environment(\.appRouter) private var router
   var body: some View {
@@ -53,27 +38,27 @@ struct GameOnGoingListView: View {
 
 // MARK: - Game Card
 struct GameCard: View {
-  let match: MatchModel
+  let match: BadmintonCompetitionRespVO
 
   var body: some View {
       HStack(spacing: 16.adapter) {
       // Image with status badge
       ZStack(alignment: .topLeading) {
-          MyNetImage(url:nil,width: 145.adapter,height: 90.adapter,radius: 7.adapter)
+          MyNetImage(url:match.uiImageName,width: 145.adapter,height: 90.adapter,radius: 7.adapter)
           
         // Status badge
-        Text(match.status.title)
+        Text(match.uiStatusTitle)
               .font(.system(size: 12.adapter, weight: .medium))
           .foregroundColor(.white)
           .padding(.horizontal, 10.adapter)
           .padding(.vertical, 6.verticaldapter)
-          .background(match.status.backgroundColor)
+          .background(match.uiStatusColor)
           .cornerRadius(7.adapter, corners: [.topLeft, .bottomRight])
       }
 
       // Content
           VStack(alignment: .leading, spacing: 12.verticaldapter) {
-        Text(match.title)
+        Text(match.uiTitle)
                   .font(.system(size: 16.adapter, weight: .bold))
           .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
           .lineLimit(2)
@@ -82,22 +67,22 @@ struct GameCard: View {
         // Date & Time
               HStack(spacing: 6.adapter) {
           Image(systemName: "clock")
-                      .font(.system(size: 14.adapter))
+                       .font(.system(size: 14.adapter))
             .foregroundColor(Color.gray)
 
-          Text(match.dateTime)
-                      .font(.system(size: 14.adapter))
+          Text(match.uiDateTime)
+                       .font(.system(size: 14.adapter))
             .foregroundColor(Color.gray)
         }
 
         // Location
               HStack(spacing: 6.adapter) {
           Image(systemName: "mappin.circle")
-                      .font(.system(size: 14.adapter))
+                       .font(.system(size: 14.adapter))
             .foregroundColor(Color.gray)
 
-          Text(match.location)
-                      .font(.system(size: 14.adapter))
+          Text(match.uiLocation)
+                       .font(.system(size: 14.adapter))
             .foregroundColor(Color.gray)
         }
       }

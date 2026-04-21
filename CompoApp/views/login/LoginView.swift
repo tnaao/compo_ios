@@ -11,8 +11,7 @@ import SwiftUI
 struct LoginView: View {
     
     @Environment(\.safeAreaInsets) var safeAreaInsets
-  @State private var phoneNumber: String = ""
-  @State private var verificationCode: String = ""
+    @StateObject private var vm = LoginVm()
 
   var body: some View {
       ZStack(alignment: .center) {
@@ -72,7 +71,7 @@ struct LoginView: View {
             .scaledToFit()
             .frame(width: 10.adapter, height: 10.adapter)
 
-          TextField("请输入手机号", text: $phoneNumber)
+          TextField("请输入手机号", text: $vm.phoneNumber)
             .font(.system(size: 15))
             .keyboardType(.phonePad)
         }
@@ -90,7 +89,7 @@ struct LoginView: View {
             .frame(width: 10.adapter, height: 10.adapter)
             .foregroundColor(Color.gray)
 
-          TextField("请输入验证码", text: $verificationCode)
+          TextField("请输入验证码", text: $vm.verificationCode)
             .font(.system(size: 15))
             .keyboardType(.numberPad)
         }
@@ -104,15 +103,21 @@ struct LoginView: View {
 
         // Login button
         Button(action: {
-          // Login action
+          vm.login()
         }) {
-          Text("立即登录")
-            .font(.system(size: 16, weight: .medium))
-            .foregroundColor(.white)
+          if vm.isLoading {
+              ProgressView()
+                  .progressViewStyle(CircularProgressViewStyle(tint: .white))
+          } else {
+              Text("立即登录")
+                .font(.system(size: 16, weight: .medium))
+                .foregroundColor(.white)
+          }
         }
+        .disabled(vm.isLoading)
         .frame(width: 190.adapter, height: 30.adapter)
         .background(
-          Color(hex: "#FF887BF7")
+          Color(hex: vm.isLoading ? "#FFAAAAAA" : "#FF887BF7")
         )
         .cornerRadius(41.adapter)
         .padding(.bottom, 22.adapter)

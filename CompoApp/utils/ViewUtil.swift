@@ -307,3 +307,108 @@ extension View {
 }
 
 
+
+enum XdLoadingState {
+  case loading
+  case normal
+  case failure
+  case noData
+}
+
+extension View {
+  /**
+   显示加载状态
+   - Parameters:
+   - state: 加载状态
+   - content: 内容
+   - Returns: 一些视图
+   */
+  func xDisplayLoadingState(_ state: XdLoadingState)
+    -> some View
+  {
+    ZStack {
+      self
+      Group {
+        if state == .loading {
+          loadingView
+        }
+
+        if state == .failure {
+          failureView
+        }
+
+        if state == .noData {
+          noDataView
+        }
+      }
+    }
+  }
+}
+
+private var loadingView: some View {
+  VStack {
+    Spacer()
+    ProgressView("加载中...")
+    Spacer()
+  }
+}
+
+private var failureView: some View {
+  VStack(spacing: 16.webPx) {
+    Spacer()
+    Image(systemName: "exclamationmark.triangle")
+      .font(.system(size: 48.webPx))
+      .foregroundColor(.gray)
+    Text("加载失败")
+      .font(.system(size: 28.webPx))
+      .foregroundColor(.gray)
+    Spacer()
+  }
+}
+
+private var noDataView: some View {
+  VStack(spacing: 16.webPx) {
+    Spacer()
+    Image(systemName: "mappin.slash")
+      .font(.system(size: 48.webPx))
+      .foregroundColor(.gray)
+    Text("空空如也~")
+      .font(.system(size: 28.webPx))
+      .foregroundColor(.gray)
+    Spacer()
+  }
+}
+
+// MARK: - Load More Component
+
+extension View {
+  /// 加载更多触发器视图
+  /// - Parameters:
+  ///   - isLoading: 是否正在加载
+  ///   - hasMore: 是否还有更多数据
+  ///   - action: 加载更多回调
+  /// - Returns: 加载更多视图
+  @ViewBuilder
+  func loadMoreTrigger(isLoading: Bool, hasMore: Bool, action: @escaping () -> Void) -> some View {
+    if hasMore {
+      HStack {
+        Spacer()
+        if isLoading {
+          ProgressView()
+            .scaleEffect(1.2)
+        } else {
+          Text("加载更多...")
+            .font(.system(size: 24.webPx))
+            .foregroundColor(Color(red: 132 / 255, green: 138 / 255, blue: 152 / 255))
+        }
+        Spacer()
+      }
+      .padding(.vertical, 24.webPx)
+      .onAppear {
+        if !isLoading {
+          action()
+        }
+      }
+    }
+  }
+}

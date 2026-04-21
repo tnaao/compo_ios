@@ -11,38 +11,9 @@ import AdapterSwift
 
 struct ContentView: View {
     @Environment(\.appRouter) private var router
-    @State private  var selectedTab = AppTab.all
+    @StateObject private var vm = ContentVm()
+    @State private var selectedTab = AppTab.all
     
-    let matches = [
-        MatchModel(
-            title: "2025年VICTOR萧山区第六届青少年羽毛球冠军赛1",
-            dateTime: "2025-12-20 9:00至18:00",
-            location: "杭州市萧山区体育馆",
-            status: .ongoing,
-            imageName: "match_badminton_1"
-        ),
-        MatchModel(
-            title: "2025年VICTOR萧山区第六届青少年羽毛球冠军赛2",
-            dateTime: "2025-12-20 9:00至18:00",
-            location: "杭州市萧山区体育馆",
-            status: .completed,
-            imageName: "match_badminton_2"
-        ),
-        MatchModel(
-            title: "2025年VICTOR萧山区第六届青少年羽毛球冠军赛3",
-            dateTime: "2025-12-20 9:00至18:00",
-            location: "杭州市萧山区体育馆",
-            status: .completed,
-            imageName: "match_badminton_2"
-        ),
-        MatchModel(
-            title: "2025年VICTOR萧山区第六届青少年羽毛球冠军赛4",
-            dateTime: "2025-12-20 9:00至18:00",
-            location: "杭州市萧山区体育馆",
-            status: .completed,
-            imageName: "match_badminton_2"
-        ),
-    ]
     @State var isRefreshing = false
     @Environment(\.safeAreaInsets) var safeAreaInsets
     var body: some View {
@@ -58,7 +29,7 @@ struct ContentView: View {
                 //HomeTopBar
                 HomeTopBar(selectedTab: $selectedTab)
                 // Main content
-                SwipeToRefreshListView(matches, isRefreshing: $isRefreshing,spacing: 6.verticaldapter) { idx, item in
+                SwipeToRefreshListView(vm.matches, isRefreshing: $vm.isRefreshing, spacing: 6.verticaldapter) { idx, item in
                     if idx == 0 {
                         Spacer().fixedSize().frame(height: 3.verticaldapter)
                     }
@@ -68,13 +39,17 @@ struct ContentView: View {
                         GameCard(match: item).padding(.horizontal,12.verticaldapter)
                     }.noClickEffect()
                 }.onRefresh {
-                    DispatchQueue.main.asyncAfter(deadline: .now()+1.5, execute: {
-                        isRefreshing = false
-                    })
+                    vm.refresh(selectedTab: selectedTab)
                 }
             }
             
-        }.loginBg().enableInjection()
+        }.onAppear {
+            vm.refresh(selectedTab: selectedTab)
+        }
+        .onChange(of: selectedTab) { newValue in
+            vm.refresh(selectedTab: newValue)
+        }
+        .loginBg().enableInjection()
     }
     
     @ObserveInjection var inject

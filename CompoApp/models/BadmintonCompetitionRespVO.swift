@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import SwiftUI
 
 /// 管理后台 - 比赛 Response VO
 struct BadmintonCompetitionRespVO: Codable, Identifiable, Sendable {
+  // ... existing properties ...
   /// 比赛ID
   let competitionId: Int64
   /// 比赛编号
@@ -103,4 +105,25 @@ struct BadmintonCompetitionRespVO: Codable, Identifiable, Sendable {
   
   // Identifiable implementation
   var id: Int64 { competitionId }
+}
+
+extension BadmintonCompetitionRespVO {
+  var uiTitle: String { competitionName }
+  var uiDateTime: String { competitionDate ?? "待定" }
+  var uiLocation: String { venue ?? "待定" }
+  var uiStatusTitle: String {
+    switch status {
+    case 3: return "进行中"
+    case 4: return "已完成"
+    default: return "报名中"
+    }
+  }
+  var uiStatusColor: Color {
+    switch status {
+    case 3: return Color(red: 0.2, green: 0.8, blue: 0.4)
+    case 4: return Color(red: 0.6, green: 0.6, blue: 0.6)
+    default: return Color(red: 1.0, green: 0.4, blue: 0.2)
+    }
+  }
+  var uiImageName: String { coverPoster ?? "" }
 }
