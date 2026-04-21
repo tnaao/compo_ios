@@ -14,6 +14,8 @@ struct ContentView: View {
     @StateObject private var vm = ContentVm()
     @State private var selectedTab = AppTab.all
     
+    @StateObject private var scoreStore = MatchScoringStore.shared
+    
     @State var isRefreshing = false
     @Environment(\.safeAreaInsets) var safeAreaInsets
     var body: some View {
@@ -22,6 +24,7 @@ struct ContentView: View {
             VStack() {
                 HomeHeaderView {
                     //退出登录
+                    UserInfo.shared.clear()
                     if !UserInfo.shared.isLogin {
                         AppRouter.shared.appRouter.navigateTo(.login)
                     }
@@ -34,6 +37,7 @@ struct ContentView: View {
                         Spacer().fixedSize().frame(height: 3.verticaldapter)
                     }
                     Button {
+                        scoreStore.currentEvent = item
                         router.navigateTo(.gamedetailHome)
                     } label: {
                         GameCard(match: item).padding(.horizontal,12.verticaldapter)

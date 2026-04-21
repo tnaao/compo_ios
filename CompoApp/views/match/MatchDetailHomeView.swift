@@ -15,7 +15,7 @@ enum GameDetailTab: String, CaseIterable, Identifiable {
 
   var id: String { rawValue }
 
-  func title(count: Int) -> String {
+  func title(count: Int64) -> String {
     return "\(rawValue)（\(count)）"
   }
 }
@@ -31,49 +31,18 @@ struct PlayerInfo {
 struct GameDetailHomeView: View {
   @Environment(\.dismiss) private var dismiss
   @State private var selectedTab: GameDetailTab = .finished
-
-  let title: String = "2025年萧山区第六届乒乓球冠军赛"
-  let ongoingCount: Int = 10
-  let finishedCount: Int = 6
-
-  let matches: [MatchModel1] = [
-    MatchModel1(
-      court: "场地8",
-      matchNumber: "第13场",
-      matchInfo: "小学E组男子双打 8进4 [XEMS218]",
-      team1: [PlayerModel(name: "李泽凡", hasCrown: true), PlayerModel(name: "余飞", hasCrown: true)],
-      team2: [PlayerModel(name: "马言", hasCrown: false), PlayerModel(name: "陈苇航", hasCrown: false)],
-      scoreTeam1: 2,
-      scoreTeam2: 0,
-      courtChange: nil
-    ),
-    MatchModel1(
-      court: "场地2",
-      matchNumber: "第13场",
-      matchInfo: "小学E组男子双打 8进4 [XEMS218]",
-      team1: [PlayerModel(name: "李泽凡", hasCrown: true), PlayerModel(name: "余飞", hasCrown: true)],
-      team2: [PlayerModel(name: "马言", hasCrown: false), PlayerModel(name: "陈苇航", hasCrown: false)],
-      scoreTeam1: 2,
-      scoreTeam2: 0,
-      courtChange: nil
-    ),
-    MatchModel1(
-      court: "场地3",
-      matchNumber: "第13场",
-      matchInfo: "小学E组男子双打 8进4 [XEMS218]",
-      team1: [PlayerModel(name: "李泽凡", hasCrown: true), PlayerModel(name: "余飞", hasCrown: true)],
-      team2: [PlayerModel(name: "马言", hasCrown: false), PlayerModel(name: "陈苇航", hasCrown: false)],
-      scoreTeam1: 2,
-      scoreTeam2: 0,
-      courtChange: nil
-    ),
-  ]
+  @StateObject private var scoreStore:MatchScoringStore = MatchScoringStore.shared
+  @StateObject private var viewModel = GameDetailHomeVm()
+    
+  @State private var isShowInputResult: Bool = false
 
   var body: some View {
       ZStack(alignment: .topLeading) {
       // Background
       Color(hex: "#FFF5F6FA")
         .ignoresSafeArea()
+          
+          Color.clear
 
       VStack(spacing: 0) {
         // Navigation Bar
@@ -86,13 +55,44 @@ struct GameDetailHomeView: View {
         // Match List
         ScrollView {
           LazyVStack(spacing: 12.adapter) {
-            ForEach(matches) { match in
+            ForEach(viewModel.matches) {match in
                 if selectedTab == .ongoing {
-                    MatchCardMultiGoingView(match: match)
-                    MatchCardSingleGoingView(match: .sample)
-                }else{
-                    MatchCardMultiView(match: match)
-                    MatchCardSingleView(match: .sampleWithCourtChange)
+                    if match.isSingle {
+                        MatchCardSingleGoingView(match: match.toMatchModelSingle,scoring: {
+                            scoreStore.currentMatch = match
+                            AppRouter.shared.appRouter.navigateTo(.matchScoring(id: ""))
+                        }) {
+                            scoreStore.currentMatch = match
+                            isShowInputResult = true
+                        }
+                    } else {
+                        MatchCardMultiGoingView(match: match.toMatchModel1,
+                                                scoring: {
+                            scoreStore.currentMatch = match
+                            AppRouter.shared.appRouter.navigateTo(.matchScoring(id: ""))
+                        },inputResult:  {
+                            scoreStore.currentMatch = match
+                            isShowInputResult = true
+                        })
+                    }
+                } else {
+                    if match.isSingle {
+                        MatchCardSingleView(match: match.toMatchModelSingle,resign: {
+                            scoreStore.currentMatch = match
+                            AppRouter.shared.appRouter.navigateTo(.matchSignature)
+                        },inputResult: {
+                            scoreStore.currentMatch = match
+                            isShowInputResult = true
+                        })
+                    } else {
+                        MatchCardMultiView(match: match.toMatchModel1,resign: {
+                            scoreStore.currentMatch = match
+                            AppRouter.shared.appRouter.navigateTo(.matchSignature)
+                        },inputResult: {
+                            scoreStore.currentMatch = match
+                            isShowInputResult = true
+                        })
+                    }
                 }
             }
           }
@@ -101,8 +101,35 @@ struct GameDetailHomeView: View {
           .padding(.bottom, 20.adapter)
         }
       }
+        
+      if isShowInputResult, let currentMatch = scoreStore.currentMatch {
+          DoubleMatchResultEntryView(
+              onCancel: {
+                  isShowInputResult = false
+              },
+              onConfirm: {
+                  isShowInputResult = false
+                  // TODO: Call API to submit double match result
+              },
+              team1Player1Name: currentMatch.pair1List?.first?.playerName ?? "",
+              team1Player1Avatar: currentMatch.pair1List?.first?.avatar ?? "",
+              team1Player2Name: currentMatch.pair1List?.dropFirst().first?.playerName ?? "",
+              team1Player2Avatar: currentMatch.pair1List?.dropFirst().first?.avatar ?? "",
+              team2Player1Name: currentMatch.pair2List?.first?.playerName ?? "",
+              team2Player1Avatar: currentMatch.pair2List?.first?.avatar ?? "",
+              team2Player2Name: currentMatch.pair2List?.dropFirst().first?.playerName ?? "",
+              team2Player2Avatar: currentMatch.pair2List?.dropFirst().first?.avatar ?? ""
+          )
+      }
     }
       .enableInjection()
+      .onAppear {
+          viewModel.competitionNo = scoreStore.currentEvent?.competitionNo ?? ""
+          viewModel.refresh(selectedTab: selectedTab)
+      }
+      .onChange(of: selectedTab) { newValue in
+          viewModel.refresh(selectedTab: newValue)
+      }
   }
 
   #if DEBUG
@@ -116,7 +143,7 @@ struct GameDetailHomeView: View {
             dismiss()
         }
 
-      Text(title)
+        Text(scoreStore.currentEvent?.competitionName ?? "")
         .font(.system(size: 10.adapter, weight: .medium))
         .foregroundColor(Color(hex: "#FF222429"))
 
@@ -134,7 +161,7 @@ struct GameDetailHomeView: View {
         ForEach(GameDetailTab.allCases) { tab in
           GameDetailTabItem(
             tab: tab,
-            count: tab == .ongoing ? ongoingCount : finishedCount,
+            count: tab == .ongoing ? viewModel.ongoingCount : viewModel.finishedCount,
             tabW: geometry.size.width / 2,
             isSelected: selectedTab == tab
           ) {
@@ -152,7 +179,7 @@ struct GameDetailHomeView: View {
 // MARK: - Game Detail Tab Item
 struct GameDetailTabItem: View {
   let tab: GameDetailTab
-  let count: Int
+  let count: Int64
   let tabW: Double
   let isSelected: Bool
   let action: () -> Void

@@ -59,7 +59,7 @@ struct DoubleMatchResultEntryView: View {
                     .frame(width: 35.adapter, height: 35.adapter)
                     .shadow(color: Color.black.opacity(0.1), radius: 4.adapter, x: 0, y: 2.adapter)
 
-                  MyNetImage(width: 27.adapter, height: 27.adapter)
+                  MyNetImage(url: team1Player1Avatar, width: 27.adapter, height: 27.adapter)
                     .clipShape(Circle())
                 }
 
@@ -68,21 +68,23 @@ struct DoubleMatchResultEntryView: View {
                   .foregroundColor(Color(red: 80 / 255, green: 80 / 255, blue: 80 / 255))
               }
 
-              // Player 2
-              VStack(spacing: 8.adapter) {
-                ZStack {
-                  Circle()
-                    .fill(Color.white)
-                    .frame(width: 35.adapter, height: 35.adapter)
-                    .shadow(color: Color.black.opacity(0.1), radius: 4.adapter, x: 0, y: 2.adapter)
+              // Player 2 (only for doubles)
+              if !team1Player2Name.isEmpty {
+                  VStack(spacing: 8.adapter) {
+                    ZStack {
+                      Circle()
+                        .fill(Color.white)
+                        .frame(width: 35.adapter, height: 35.adapter)
+                        .shadow(color: Color.black.opacity(0.1), radius: 4.adapter, x: 0, y: 2.adapter)
 
-                  MyNetImage(width: 27.adapter, height: 27.adapter)
-                    .clipShape(Circle())
-                }
+                      MyNetImage(url: team1Player2Avatar, width: 27.adapter, height: 27.adapter)
+                        .clipShape(Circle())
+                    }
 
-                Text(team1Player2Name)
-                  .font(.system(size: 12.adapter))
-                  .foregroundColor(Color(red: 80 / 255, green: 80 / 255, blue: 80 / 255))
+                    Text(team1Player2Name)
+                      .font(.system(size: 12.adapter))
+                      .foregroundColor(Color(red: 80 / 255, green: 80 / 255, blue: 80 / 255))
+                  }
               }
             }
 
@@ -119,7 +121,7 @@ struct DoubleMatchResultEntryView: View {
                     .frame(width: 35.adapter, height: 35.adapter)
                     .shadow(color: Color.black.opacity(0.1), radius: 4.adapter, x: 0, y: 2.adapter)
 
-                  MyNetImage(width: 27.adapter, height: 27.adapter)
+                  MyNetImage(url: team2Player1Avatar, width: 27.adapter, height: 27.adapter)
                     .clipShape(Circle())
                 }
 
@@ -128,21 +130,23 @@ struct DoubleMatchResultEntryView: View {
                   .foregroundColor(Color(red: 80 / 255, green: 80 / 255, blue: 80 / 255))
               }
 
-              // Player 2
-              VStack(spacing: 8.adapter) {
-                ZStack {
-                  Circle()
-                    .fill(Color.white)
-                    .frame(width: 35.adapter, height: 35.adapter)
-                    .shadow(color: Color.black.opacity(0.1), radius: 4.adapter, x: 0, y: 2.adapter)
+              // Player 2 (only for doubles)
+              if !team2Player2Name.isEmpty {
+                  VStack(spacing: 8.adapter) {
+                    ZStack {
+                      Circle()
+                        .fill(Color.white)
+                        .frame(width: 35.adapter, height: 35.adapter)
+                        .shadow(color: Color.black.opacity(0.1), radius: 4.adapter, x: 0, y: 2.adapter)
 
-                  MyNetImage(width: 27.adapter, height: 27.adapter)
-                    .clipShape(Circle())
-                }
+                      MyNetImage(url: team2Player2Avatar, width: 27.adapter, height: 27.adapter)
+                        .clipShape(Circle())
+                    }
 
-                Text(team2Player2Name)
-                  .font(.system(size: 12.adapter))
-                  .foregroundColor(Color(red: 80 / 255, green: 80 / 255, blue: 80 / 255))
+                    Text(team2Player2Name)
+                      .font(.system(size: 12.adapter))
+                      .foregroundColor(Color(red: 80 / 255, green: 80 / 255, blue: 80 / 255))
+                  }
               }
             }
           }

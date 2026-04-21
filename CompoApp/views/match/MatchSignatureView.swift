@@ -49,8 +49,8 @@ struct SlantedButtonShape: Shape {
 
 // Simple Drawing Canvas
 struct SignaturePadView: View {
+    @Binding var lines: [[CGPoint]]
     @State private var currentLine = [CGPoint]()
-    @State private var lines = [[CGPoint]]()
 
     var body: some View {
         GeometryReader { geometry in
@@ -92,18 +92,17 @@ struct SignaturePadView: View {
     @ObserveInjection var forceRedraw
     #endif
     
-    mutating func clear() {
-        lines.removeAll()
-        currentLine.removeAll()
-    }
+    // clear is handled by parent clearing the binding
 }
 
 struct MatchSignatureView: View {
-    var title: String = "小学E组男子单打"
-    var placeholderName: String = "余苇航"
+    var placeholderName: String = ""
+    @Environment(\.presentationMode) var presentationMode
     
-    @State private var clearSignatureToggle = false
-    
+    @State private var lines = [[CGPoint]]()
+    @StateObject private var scoreStore: MatchScoringStore = MatchScoringStore.shared
+    @StateObject private var viewModel = MatchSignatureVm()
+
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
@@ -112,7 +111,7 @@ struct MatchSignatureView: View {
                     // Back Button
                     LeadingBtn()
                     
-                    Text(title)
+                    Text(scoreStore.currentMatch?.eventName ?? "")
                         .font(.system(size: 16.adapter, weight: .regular))
                         .foregroundColor(Color(red: 51 / 255, green: 51 / 255, blue: 51 / 255))
                     
@@ -122,21 +121,24 @@ struct MatchSignatureView: View {
                     HStack(spacing: 16.adapter) {
                         // Badminton button
                         MyActionBtn(icon: "ball_01") {
-
+                            scoreStore.actionPlay()
                         }
 
                         // Pause button
                           MyActionBtn(icon: "action_pause") {
+                              scoreStore.actionPause()
 
                           }
 
                         // Undo button
                           MyActionBtn(icon: "action_cancel") {
+                              scoreStore.actionEnd()
 
                           }
                         
                         // Swap button
                           MyActionBtn(icon: "action_change") {
+                              scoreStore.actionChangeSwitch()
 
                           }
                     }
@@ -164,8 +166,7 @@ struct MatchSignatureView: View {
                         .font(.system(size: 20.adapter, weight: .regular))
                         .foregroundColor(Color(red: 220 / 255, green: 220 / 255, blue: 220 / 255)) // Very faint gray
                     
-                    SignaturePadView()
-                        .id(clearSignatureToggle) // simple way to clear state
+                    SignaturePadView(lines: $lines)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 
@@ -173,7 +174,7 @@ struct MatchSignatureView: View {
                 HStack(spacing: 8.adapter) {
                     // Clear Button
                     Button(action: {
-                        clearSignatureToggle.toggle()
+                        lines.removeAll()
                     }) {
                         Text("清除")
                             .font(.system(size: 14.adapter, weight: .medium))
@@ -187,7 +188,10 @@ struct MatchSignatureView: View {
                     
                     // Save Button
                     Button(action: {
-                        // actions
+                        guard let matchNo = scoreStore.currentMatch?.matchNo else { return }
+                        let signatureView = SignaturePadView(lines: .constant(lines))
+                            .frame(width: 400.adapter, height: 200.adapter)
+                        viewModel.saveSignature(signatureView: signatureView, matchNo: matchNo)
                     }) {
                         Text("保存")
                             .font(.system(size: 14.adapter, weight: .medium))
@@ -198,10 +202,11 @@ struct MatchSignatureView: View {
                                     .fill(Color(red: 250 / 255, green: 139 / 255, blue: 44 / 255))
                             )
                     }.noClickEffect()
+                    .disabled(viewModel.isLoading)
                     
                     // Return Button
                     Button(action: {
-                        // actions
+                        presentationMode.wrappedValue.dismiss()
                     }) {
                         Text("返回")
                             .font(.system(size: 14.adapter, weight: .medium))
@@ -219,6 +224,33 @@ struct MatchSignatureView: View {
             }
             .frame(maxHeight: .infinity)
         }.loginBg()
+        .overlay(
+            Group {
+                if viewModel.isLoading {
+                    Color.black.opacity(0.3)
+                        .edgesIgnoringSafeArea(.all)
+                    ProgressView()
+                        .scaleEffect(1.5)
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                }
+            }
+        )
+        .alert(isPresented: .constant(viewModel.errorMessage != nil)) {
+            Alert(
+                title: Text("提示"),
+                message: Text(viewModel.errorMessage ?? ""),
+                dismissButton: .default(Text("确定")) {
+                    viewModel.errorMessage = nil
+                }
+            )
+        }
+        .onChange(of: viewModel.isSubmitSuccess) { success in
+            if success {
+                ScreenInfo.showSuccess("保存成功")
+                // Return to home or pop view after successful submission
+                AppRouter.shared.appRouter.popNavigation()
+            }
+        }
         .enableInjection()
     }
 

@@ -10,9 +10,14 @@ import AdapterSwift
 
 struct MatchCardActionsView: View {
     var isGoing:Bool = false
+    var resign:()->Void = {}
+    var scoring:()->Void = {}
+    var inputResult:()->Void = {}
     var body: some View {
         VStack(spacing: 0) {
-          Button(action: {}) {
+          Button(action: {
+              resign()
+          }) {
             Text("重新签名")
                   .font(.system(size: 12.adapter, weight: .medium))
               .foregroundColor(.white)
@@ -20,7 +25,9 @@ struct MatchCardActionsView: View {
               .background(Color(red: 102 / 255, green: 72 / 255, blue: 255 / 255))
               .clipShape(Capsule())
           }.noClickEffect().xVisible(!isGoing)
-          Button(action: {}) {
+          Button(action: {
+              scoring()
+          }) {
             Text("计分")
                   .font(.system(size: 12.adapter, weight: .medium))
               .foregroundColor(.white)
@@ -31,7 +38,9 @@ struct MatchCardActionsView: View {
             
             Spacer().fixedSize().frame(height: 15.verticaldapter)
 
-          Button(action: {}) {
+          Button(action: {
+              inputResult()
+          }) {
             Text("录入结果")
                   .font(.system(size: 12.adapter, weight: .medium))
               .foregroundColor(Color(red: 102 / 255, green: 72 / 255, blue: 255 / 255))

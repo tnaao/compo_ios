@@ -40,6 +40,7 @@ struct ConfirmEndMatchPopUpView: View {
         .font(.system(size: 14.adapter))
         .foregroundColor(Color(red: 255 / 255, green: 140 / 255, blue: 0 / 255))
         .multilineTextAlignment(.center)
+        .xVisible(false)
 
       Spacer()
     }

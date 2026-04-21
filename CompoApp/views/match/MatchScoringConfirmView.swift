@@ -4,6 +4,8 @@ import SwiftUI
 struct MatchScoringConfirmView: View {
     var title: String = "小学E组男子单打"
     
+    @StateObject private var scoreStore:MatchScoringStore = MatchScoringStore.shared
+
     var body: some View {
         VStack(spacing: 0) {
             // Top Navigation Bar
@@ -21,22 +23,22 @@ struct MatchScoringConfirmView: View {
                 HStack(spacing: 16.adapter) {
                     // Badminton button
                     MyActionBtn(icon: "ball_01") {
-
+                        scoreStore.actionPlay()
                     }
 
                     // Pause button
                       MyActionBtn(icon: "action_pause") {
-
+                          scoreStore.actionPause()
                       }
 
                     // Undo button
                       MyActionBtn(icon: "action_cancel") {
-
+                          scoreStore.actionEnd()
                       }
                     
                     // Swap button
                       MyActionBtn(icon: "action_change") {
-
+                          scoreStore.actionChangeSwitch()
                       }
                 }
             }

@@ -43,7 +43,7 @@ struct PlayerCourtInfoView: View {
                         ).background(Color(hex: "#33000000"))
                 }.frame(width: 48.adapter)
                 
-                MyNetImage(width: 25.adapter,height: 25.adapter,isOval: true)
+                MyNetImage(url: iconUrl, width: 25.adapter,height: 25.adapter,isOval: true)
                     .innerBorderCircle(color: Color.white, lineWidth: 3.adapter)
                     .playerIconShadow(size: 25.adapter)
                     

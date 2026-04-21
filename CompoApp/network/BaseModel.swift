@@ -14,6 +14,12 @@ struct BaseModel<T: Codable>: Codable {
 }
 
 extension BaseModel {
+    var message:String? {
+        self.msg
+    }
+}
+
+extension BaseModel {
   var isValid: Bool {
     return code == 200 || code == 0
   }

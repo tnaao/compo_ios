@@ -10,6 +10,7 @@ import AdapterSwift
 import SwiftUI
 
 struct ConfirmBeginMatchPopUpView: View {
+  var setNumber:Int = 1
   var onConfirm: (() -> Void)?
   var onSkip: (() -> Void)?
 
@@ -32,7 +33,7 @@ struct ConfirmBeginMatchPopUpView: View {
       Spacer()
 
       // Title
-      Text("确认开始第1局比赛吗？")
+      Text("确认开始第\(setNumber)局比赛吗？")
         .font(.system(size: 18.adapter, weight: .semibold))
         .foregroundColor(Color(red: 51 / 255, green: 51 / 255, blue: 51 / 255))
 
