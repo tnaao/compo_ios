@@ -432,7 +432,15 @@ struct MatchScoringView: View {
             .clipped()
 
       // Center end game button
-      Button(action: {}) {
+      Button(action: {
+          if scoreStore.runningState == .playing {
+              scoreStore.actionEnd()
+          }
+          
+          if scoreStore.runningState == .notStarted {
+              scoreStore.actionPlay()
+          }
+      }) {
           ZStack(alignment: .center) {
               VStack(spacing: 0) {
                   Text(scoreStore.runningState.rawValue)
@@ -460,20 +468,20 @@ struct MatchScoringView: View {
 
       // Left Court
       if let p1 = leftList?.first {
-          playerCard(name: p1.playerName, avatar: p1.avatar ?? "", position: .bottomLeft, team: leftTeamId)
+          playerCard(name: p1.playerName, avatar: p1.avatar ?? "", playerId: p1.playerId, position: .bottomLeft, team: leftTeamId)
       }
       if let list = leftList, list.count > 1 {
           let p2 = list[1]
-          playerCard(name: p2.playerName, avatar: p2.avatar ?? "", position: .topLeft, team: leftTeamId)
+          playerCard(name: p2.playerName, avatar: p2.avatar ?? "", playerId: p2.playerId, position: .topLeft, team: leftTeamId)
       }
 
       // Right Court
       if let p3 = rightList?.first {
-          playerCard(name: p3.playerName, avatar: p3.avatar ?? "", position: .bottomRight, team: rightTeamId)
+          playerCard(name: p3.playerName, avatar: p3.avatar ?? "", playerId: p3.playerId, position: .bottomRight, team: rightTeamId)
       }
       if let list = rightList, list.count > 1 {
           let p4 = list[1]
-          playerCard(name: p4.playerName, avatar: p4.avatar ?? "", position: .topRight, team: rightTeamId)
+          playerCard(name: p4.playerName, avatar: p4.avatar ?? "", playerId: p4.playerId, position: .topRight, team: rightTeamId)
       }
     }
   }
@@ -521,7 +529,7 @@ struct MatchScoringView: View {
   }
 
   // MARK: - Player Card
-  private func playerCard(name: String, avatar: String, position: PlayerPosition, team: Int32) -> some View {
+  private func playerCard(name: String, avatar: String, playerId: Int64, position: PlayerPosition, team: Int32) -> some View {
       var isTop: Bool = false
       if(position == .topLeft || position == .topRight){
           isTop = true
@@ -532,8 +540,8 @@ struct MatchScoringView: View {
           isLeft = true
       }
       
-      var offsetX: CGFloat = isLeft ? -104 : 104
-      var offsetY: CGFloat = isTop ? -48 : 48
+      let offsetX: CGFloat = isLeft ? -104 : 104
+      let offsetY: CGFloat = isTop ? -48 : 48
        
       
       let ox = isLeft ? 36.adapter : -36.adapter
@@ -541,13 +549,13 @@ struct MatchScoringView: View {
           MyAssetImage(name: "ball_01",width: 18.adapter,height: 18.adapter).offset(
             x: ox,
           )
-          .opacity(scoreStore.firstServer == team ? 1 : 0)
+          .opacity(scoreStore.firstServerId == playerId ? 1 : 0)
           
           PlayerCourtInfoView(name: name, iconUrl: avatar)
       })
       .offset(x: offsetX.adapter, y: offsetY.adapter)
       .onTapGesture {
-          scoreStore.actionStartServe(team: team)
+          scoreStore.actionStartServe(playerId: playerId, team: team)
       }
   }
 

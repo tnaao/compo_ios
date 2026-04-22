@@ -37,7 +37,7 @@ class MatchScoringStore: ObservableObject {
         }
     }
     
-    @Published var isWarmedUp: Bool = true {
+    @Published var isWarmedUp: Bool = false {
         didSet { syncRunningState() }
     }
     
@@ -58,6 +58,7 @@ class MatchScoringStore: ObservableObject {
     @Published var runningState: MatchRunningState = .notStarted
     
     @Published var firstServer: Int32? = nil
+    @Published var firstServerId: Int64? = nil
     @Published var courtSwapped: Int32? = 0
     
     @Published var showWarmupPopup: Bool = false
@@ -155,6 +156,7 @@ class MatchScoringStore: ObservableObject {
         self.currentSetNumber = 1
         self.runningState = .notStarted
         self.firstServer = nil
+        self.firstServerId = nil
         self.courtSwapped = 0
         
         // 清除热身倒计时
@@ -262,15 +264,16 @@ class MatchScoringStore: ObservableObject {
     }
     
     func actionPlay() -> Void {
-        if self.currentSetNumber == 0 && !self.isWarmedUp {
+        if self.currentSetNumber == 1 && !self.isWarmedUp {
             self.showWarmupPopup = true
         }else {
             self.showConfirmBegin = true
         }
     }
     
-    func actionStartServe(team: Int32) {
+    func actionStartServe(playerId: Int64, team: Int32) {
         self.firstServer = team
+        self.firstServerId = playerId
         guard runningState == .notStarted || runningState == .warmingUp else { return }
         self.pendingServeTeam = team
     }
