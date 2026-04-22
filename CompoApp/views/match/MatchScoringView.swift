@@ -468,11 +468,11 @@ struct MatchScoringView: View {
 
       // Left Court
       if let p1 = leftList?.first {
-          playerCard(name: p1.playerName, avatar: p1.avatar ?? "", playerId: p1.playerId, position: .bottomLeft, team: leftTeamId)
+          playerCard(name: p1.playerName, avatar: p1.avatar ?? "", playerId: p1.playerId, position: .topLeft, team: leftTeamId)
       }
       if let list = leftList, list.count > 1 {
           let p2 = list[1]
-          playerCard(name: p2.playerName, avatar: p2.avatar ?? "", playerId: p2.playerId, position: .topLeft, team: leftTeamId)
+          playerCard(name: p2.playerName, avatar: p2.avatar ?? "", playerId: p2.playerId, position: .bottomLeft, team: leftTeamId)
       }
 
       // Right Court

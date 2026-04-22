@@ -771,7 +771,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.yz.zswing.umpire;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = zswing_pad_umpire_0330;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = zswing_umpire_pad_0415;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

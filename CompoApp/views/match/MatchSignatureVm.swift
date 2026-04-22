@@ -12,7 +12,7 @@ import Combine
 
 @MainActor
 class MatchSignatureVm: ObservableObject {
-    
+    @Published var role: SignatureRole = .winner
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
     @Published var isSubmitSuccess: Bool = false
@@ -39,8 +39,8 @@ class MatchSignatureVm: ObservableObject {
             .subscribe(onNext: { [weak self] response in
                 guard let self = self else { return }
                 if response.isValid, let imageUrl = response.data {
-                    // 3. 上传成功，调用胜方签名接口
-                    self.submitWinnerSign(matchNo: matchNo, signatureImageUrl: imageUrl)
+                    // 3. 上传成功，按角色递交签名接口
+                    self.submitSign(matchNo: matchNo, signatureImageUrl: imageUrl)
                 } else {
                     self.isLoading = false
                     self.errorMessage = response.msg ?? "上传签名图片失败"
@@ -53,10 +53,15 @@ class MatchSignatureVm: ObservableObject {
             .disposed(by: disposeBag)
     }
     
-    /// 提交胜方签名
-    private func submitWinnerSign(matchNo: String, signatureImageUrl: String) {
+    /// 根据角色提交签名
+    private func submitSign(matchNo: String, signatureImageUrl: String) {
         let request = WyRefereeSignatureRequest(matchNo: matchNo, signatureImage: signatureImageUrl)
-        WyBadmintonRefereeAPI.winnerSign(request: request)
+        
+        let apiCall = (role == .winner) ?
+            WyBadmintonRefereeAPI.winnerSign(request: request) :
+            WyBadmintonRefereeAPI.refereeSign(request: request)
+            
+        apiCall
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] response in
                 guard let self = self else { return }

@@ -82,7 +82,7 @@ struct GameDetailHomeView: View {
                     if match.isSingle {
                         MatchCardSingleView(match: match.toMatchModelSingle,resign: {
                             scoreStore.currentMatch = match
-                            AppRouter.shared.appRouter.navigateTo(.matchSignature)
+                            AppRouter.shared.appRouter.navigateTo(.matchSignatureConfirm)
                         },inputResult: {
                             scoreStore.currentMatch = match
                             isShowInputResult = true
@@ -90,7 +90,7 @@ struct GameDetailHomeView: View {
                     } else {
                         MatchCardMultiView(match: match.toMatchModel1,resign: {
                             scoreStore.currentMatch = match
-                            AppRouter.shared.appRouter.navigateTo(.matchSignature)
+                            AppRouter.shared.appRouter.navigateTo(.matchSignatureConfirm)
                         },inputResult: {
                             scoreStore.currentMatch = match
                             isShowInputResult = true

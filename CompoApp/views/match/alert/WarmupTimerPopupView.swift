@@ -67,7 +67,7 @@ struct WarmupTimerPopupView<Content: View>: View {
             Text(team1PlayerNames)
               .font(.system(size: 11.adapter))
               .foregroundColor(.white)
-              .frame(width: 60.adapter, height: 26.adapter)
+              .frame(width: CGFloat((team1PlayerNames.count*13).adapter),height: 26.adapter)
               .background(Color(red: 126 / 255, green: 96 / 255, blue: 254 / 255))
               .cornerRadius(4.adapter)
 
@@ -106,7 +106,7 @@ struct WarmupTimerPopupView<Content: View>: View {
             Text(team2PlayerNames)
               .font(.system(size: 11.adapter))
               .foregroundColor(.white)
-              .frame(width: 60.adapter, height: 26.adapter)
+              .frame(width: CGFloat((team1PlayerNames.count*13).adapter),height: 26.adapter)
               .background(Color(red: 126 / 255, green: 96 / 255, blue: 254 / 255))
               .cornerRadius(4.adapter)
 

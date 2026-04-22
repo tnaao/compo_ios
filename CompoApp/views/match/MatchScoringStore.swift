@@ -281,7 +281,10 @@ class MatchScoringStore: ObservableObject {
     func confirmStartMatch() {
         guard let team = pendingServeTeam,
               let matchNo = currentMatch?.matchNo,
-              let detailNo = scoreDetail?.getSetScore(by: currentSetNumber)?.detailNo else { return }
+              let detailNo = scoreDetail?.getSetScore(by: currentSetNumber)?.detailNo else {
+            ScreenInfo.showInfo("请点击选择发球选手")
+            return
+        }
         self.showConfirmBegin = false
         startMatch(matchNo: matchNo, detailNo: detailNo, firstServer: team, courtSwapped: courtSwapped)
     }

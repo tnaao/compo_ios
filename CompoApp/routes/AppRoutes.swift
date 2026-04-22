@@ -16,11 +16,13 @@ enum Destination: DestinationType {
   case gamedetailItem(id: String)
   case matchScoring(id: String)
   case gamedetailHome
-  case matchSignature
+  case matchSignature(role: String)
   case settings
   case login
   case HeaderPreviewView
   case profile(userId: String)
+  case matchSignatureConfirm
+
 
   static func from(path: String, fullPath: [String], parameters: [String: String]) -> Destination? {
     switch path {
@@ -29,6 +31,9 @@ enum Destination: DestinationType {
       return .detail(id: id)
     case "settings":
       return .settings
+    case "matchSignature":
+      let role = parameters["role"] ?? "winner"
+      return .matchSignature(role: role)
     case "profile":
       let userId = parameters["userId"] ?? "unknown"
       return .profile(userId: userId)
@@ -138,10 +143,13 @@ class AppRouter : ObservableObject{
           HeaderPreviewView().hideNavigationBar()
       case .launch,.home:
           ContentView().hideNavigationBar()
-      case .matchSignature:
-          MatchSignatureView().hideNavigationBar()
-          case .login:
+      case .matchSignature(role: let role):
+          MatchSignatureView(role: role == "referee" ? .referee : .winner).hideNavigationBar()
+      case .login:
           LoginView().hideNavigationBar()
+      case .matchSignatureConfirm:
+          MatchSignatureScoringConfirmView().hideNavigationBar()
+
           default:
           BlankView()
           }

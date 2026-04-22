@@ -95,64 +95,49 @@ struct SignaturePadView: View {
     // clear is handled by parent clearing the binding
 }
 
+enum SignatureRole: String {
+    case winner = "胜方签名"
+    case referee = "裁判签名"
+}
+
 struct MatchSignatureView: View {
     var placeholderName: String = ""
+    var role: SignatureRole = .winner
     @Environment(\.presentationMode) var presentationMode
-    
+    @Environment(\.safeAreaInsets) var safeAreaInsets
     @State private var lines = [[CGPoint]]()
     @StateObject private var scoreStore: MatchScoringStore = MatchScoringStore.shared
     @StateObject private var viewModel = MatchSignatureVm()
+    
+    var signatureNameText: String {
+        if role == .referee {
+            return UserInfo.shared.user?.nickname ?? "裁判"
+        } else {
+            guard let p1s = scoreStore.currentMatch?.pair1Score,
+                  let p2s = scoreStore.currentMatch?.pair2Score else { return "胜方" }
+            if p1s > p2s {
+                return scoreStore.currentMatch?.pair1List?.map { $0.playerName }.joined(separator: "/") ?? "胜方"
+            } else if p2s > p1s {
+                return scoreStore.currentMatch?.pair2List?.map { $0.playerName }.joined(separator: "/") ?? "胜方"
+            } else {
+                return "胜方"
+            }
+        }
+    }
 
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
-                // Top Navigation Bar
-                HStack(spacing: 0.adapter) {
-                    // Back Button
-                    LeadingBtn()
-                    
-                    Text(scoreStore.currentMatch?.eventName ?? "")
-                        .font(.system(size: 16.adapter, weight: .regular))
-                        .foregroundColor(Color(red: 51 / 255, green: 51 / 255, blue: 51 / 255))
-                    
-                    Spacer()
-                    
-                    // Right Action Icons
-                    HStack(spacing: 16.adapter) {
-                        // Badminton button
-                        MyActionBtn(icon: "ball_01") {
-                            scoreStore.actionPlay()
-                        }
-
-                        // Pause button
-                          MyActionBtn(icon: "action_pause") {
-                              scoreStore.actionPause()
-
-                          }
-
-                        // Undo button
-                          MyActionBtn(icon: "action_cancel") {
-                              scoreStore.actionEnd()
-
-                          }
-                        
-                        // Swap button
-                          MyActionBtn(icon: "action_change") {
-                              scoreStore.actionChangeSwitch()
-
-                          }
-                    }
-                }
-                .frame(height: 40.adapter)
-                .padding(.trailing, 20.adapter)
-                
+                // Navigation Bar
+                navigationBar.padding(.top, safeAreaInsets.top)
+                Spacer().fixedSize().frame(height: 10.adapter)
                 // Signature Area
                 ZStack {
                     Color.white
                     
                     VStack {
                         HStack {
-                            Text("胜方签名")
+                            Text(role.rawValue)
                                 .font(.system(size: 14.adapter, weight: .regular))
                                 .foregroundColor(Color(red: 102 / 255, green: 102 / 255, blue: 102 / 255))
                                 .padding(.leading, 20.adapter)
@@ -162,7 +147,7 @@ struct MatchSignatureView: View {
                         Spacer()
                     }
                     
-                    Text(placeholderName)
+                    Text(signatureNameText)
                         .font(.system(size: 20.adapter, weight: .regular))
                         .foregroundColor(Color(red: 220 / 255, green: 220 / 255, blue: 220 / 255)) // Very faint gray
                     
@@ -206,7 +191,7 @@ struct MatchSignatureView: View {
                     
                     // Return Button
                     Button(action: {
-                        presentationMode.wrappedValue.dismiss()
+                        AppRouter.shared.appRouter.popNavigation()
                     }) {
                         Text("返回")
                             .font(.system(size: 14.adapter, weight: .medium))
@@ -224,6 +209,9 @@ struct MatchSignatureView: View {
             }
             .frame(maxHeight: .infinity)
         }.loginBg()
+            .onAppear {
+                viewModel.role = self.role
+            }
         .overlay(
             Group {
                 if viewModel.isLoading {
@@ -253,6 +241,43 @@ struct MatchSignatureView: View {
         }
         .enableInjection()
     }
+
+    // MARK: - Navigation Bar
+    private var navigationBar: some View {
+      HStack(spacing: 0) {
+        LeadingBtn()
+
+          Text(scoreStore.currentMatch?.eventName ?? "")
+          .font(.system(size: 16.adapter, weight: .medium))
+          .foregroundColor(Color(hex: "#FF222429"))
+
+        Spacer()
+        // Action buttons
+        HStack(spacing: 12.adapter) {
+          // Badminton button
+          MyActionBtn(icon: "ball_01") {
+              scoreStore.actionPlay()
+          }
+
+          // Pause button
+            MyActionBtn(icon: "action_pause") {
+                scoreStore.actionPause()
+            }
+
+          // Undo button
+            MyActionBtn(icon: "action_cancel") {
+                scoreStore.actionEnd()
+            }
+
+          // QR code button
+            MyActionBtn(icon: "action_change") {
+                scoreStore.actionChangeSwitch()
+            }
+        }
+      }
+      .padding(.trailing, 16.adapter)
+    }
+
 
     #if DEBUG
     @ObserveInjection var forceRedraw
@@ -285,6 +310,6 @@ struct CircleActionIcon: View {
 
 struct MatchSignatureView_Previews: PreviewProvider {
     static var previews: some View {
-        RootView(rootDestination: .matchSignature)
+        RootView(rootDestination: .matchSignature(role: "winner"))
     }
 }
