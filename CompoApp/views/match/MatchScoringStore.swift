@@ -29,7 +29,13 @@ class MatchScoringStore: ObservableObject {
     @Published var isActionSuccess: Bool = false
     
     @Published var currentEvent:BadmintonCompetitionRespVO? = nil
-    @Published var currentMatch:WyBadmintonScheduleProgramModel? = nil
+    @Published var currentMatch:WyBadmintonScheduleProgramModel? = nil {
+        didSet {
+            if oldValue?.matchNo != currentMatch?.matchNo {
+                resetMatchState()
+            }
+        }
+    }
     
     @Published var isWarmedUp: Bool = true {
         didSet { syncRunningState() }
@@ -96,10 +102,14 @@ class MatchScoringStore: ObservableObject {
     }
     
     func syncRunningState() {
-        if let lastRound = scoreDetail?.scoreDetailList?.last {
-            let setNumber = Int(lastRound.roundNumber ?? 1)
-            self.currentSetNumber = setNumber
-            
+        var matchStatus = 0
+        if let lastRound = scoreDetail?.scoreDetailList?.first(where: { item in
+            guard let s1 = item.player1Score, let s2 = item.player2Score else { return true }
+            let notEnd = item.roundStatus != 2
+            return s1 + s2 < 1 || notEnd
+        }) {
+            let setNumber = lastRound.roundNumber ?? 1
+            self.currentSetNumber = Int(setNumber)
             // Automatically detect court swap based on badminton rules
             var shouldBeSwapped = (setNumber % 2 == 0)
             if setNumber >= 3 {
@@ -110,11 +120,15 @@ class MatchScoringStore: ObservableObject {
                 }
             }
             self.courtSwapped = shouldBeSwapped ? 1 : 0
+            matchStatus = Int(lastRound.roundStatus ?? 0)
+        }else {
+            matchStatus = 2
         }
         
-        let mStatus = currentMatch?.matchStatus ?? 0
+        let mStatus = matchStatus
         if mStatus == 2 || mStatus == 3 {
             self.runningState = .finished
+            nextSetNumber()
         } else if mStatus == 1 {
             self.runningState = .playing
         } else {
@@ -124,6 +138,35 @@ class MatchScoringStore: ObservableObject {
                 self.runningState = .notStarted
             }
         }
+    }
+    
+    /// 清除比分和计时器状态
+    func resetMatchState() {
+        self.scoreDetail = nil
+        self.isWarmedUp = true
+        self.isWarmingUpNow = false
+        self.showWarmupPopup = false
+        self.showMatchResult = false
+        self.showConfirmBegin = false
+        self.showConfirmEnd = false
+        self.pendingServeTeam = nil
+        
+        self.timerString = "00:00:00"
+        self.currentSetNumber = 1
+        self.runningState = .notStarted
+        self.firstServer = nil
+        self.courtSwapped = 0
+        
+        // 清除热身倒计时
+        self.countdownTimer?.cancel()
+        self.countdownTimer = nil
+        self.remainingWarmupSeconds = 0
+        
+        // 清除比赛正计时
+        self.matchTimer?.cancel()
+        self.matchTimer = nil
+        self.matchElapsedSeconds = 0
+        self.isPaused = false
     }
     
     /// 开始比赛
@@ -142,6 +185,7 @@ class MatchScoringStore: ObservableObject {
                 self.isLoading = false
                 if response.isValid {
                     self.isActionSuccess = true
+                    self.runningState = .playing
                     self.startMatchTimer()
                     // Refresh data after starting
                     self.fetchMatchScoreDetail(matchNo: matchNo)
@@ -218,20 +262,23 @@ class MatchScoringStore: ObservableObject {
     }
     
     func actionPlay() -> Void {
-        self.showWarmupPopup = true
+        if self.currentSetNumber == 0 && !self.isWarmedUp {
+            self.showWarmupPopup = true
+        }else {
+            self.showConfirmBegin = true
+        }
     }
     
     func actionStartServe(team: Int32) {
         self.firstServer = team
         guard runningState == .notStarted || runningState == .warmingUp else { return }
         self.pendingServeTeam = team
-        self.showConfirmBegin = true
     }
     
     func confirmStartMatch() {
         guard let team = pendingServeTeam,
               let matchNo = currentMatch?.matchNo,
-              let detailNo = scoreDetail?.scoreDetailList?.last?.detailNo else { return }
+              let detailNo = scoreDetail?.getSetScore(by: currentSetNumber)?.detailNo else { return }
         self.showConfirmBegin = false
         startMatch(matchNo: matchNo, detailNo: detailNo, firstServer: team, courtSwapped: courtSwapped)
     }
@@ -262,7 +309,7 @@ class MatchScoringStore: ObservableObject {
         stopMatchTimer()
         isPaused = false
         guard let matchNo = currentMatch?.matchNo,
-              let detailNo = scoreDetail?.scoreDetailList?.last?.detailNo else { return }
+              let detailNo = scoreDetail?.getSetScore(by: self.currentSetNumber)?.detailNo else { return }
         endMatch(matchNo: matchNo, detailNo: detailNo, firstServer: firstServer, courtSwapped: courtSwapped)
     }
     
@@ -292,7 +339,9 @@ class MatchScoringStore: ObservableObject {
                     if let matchNo = self.currentMatch?.matchNo {
                         self.fetchMatchScoreDetail(matchNo: matchNo)
                         //返回上一页
-                        AppRouter.shared.appRouter.popNavigation()
+                        if self.currentSetNumber == 3 {
+//                            AppRouter.shared.apprRouter.popNavigation()
+                        }
                     }
                 } else {
                     self.errorMessage = response.message ?? "提交比赛结果失败"
@@ -305,6 +354,12 @@ class MatchScoringStore: ObservableObject {
             .disposed(by: disposeBag)
     }
     
+    func nextSetNumber(){
+        if self.currentSetNumber >= 3 { return }
+        self.currentSetNumber += 1
+        self.runningState = .notStarted
+    }
+    
     func actionChangeSwitch() -> Void {
         let current = courtSwapped ?? 0
         courtSwapped = (current == 0) ? 1 : 0
@@ -314,7 +369,7 @@ class MatchScoringStore: ObservableObject {
         let isSwapped = (courtSwapped == 1)
         let pairList = isSwapped ? currentMatch?.pair2List : currentMatch?.pair1List
         guard let matchNo = currentMatch?.matchNo,
-              let detailNo = scoreDetail?.scoreDetailList?.last?.detailNo,
+              let detailNo = scoreDetail?.getSetScore(by: self.currentSetNumber)?.detailNo,
               let pairNo = pairList?.first?.pairNo else { return }
         adjustScore(matchNo: matchNo, detailNo: detailNo, pairNo: pairNo, changeType: 2)
     }
@@ -323,7 +378,7 @@ class MatchScoringStore: ObservableObject {
         let isSwapped = (courtSwapped == 1)
         let pairList = isSwapped ? currentMatch?.pair2List : currentMatch?.pair1List
         guard let matchNo = currentMatch?.matchNo,
-              let detailNo = scoreDetail?.scoreDetailList?.last?.detailNo,
+              let detailNo = scoreDetail?.getSetScore(by: self.currentSetNumber)?.detailNo,
               let pairNo = pairList?.first?.pairNo else { return }
         adjustScore(matchNo: matchNo, detailNo: detailNo, pairNo: pairNo, changeType: 1)
     }
@@ -332,7 +387,7 @@ class MatchScoringStore: ObservableObject {
         let isSwapped = (courtSwapped == 1)
         let pairList = isSwapped ? currentMatch?.pair1List : currentMatch?.pair2List
         guard let matchNo = currentMatch?.matchNo,
-              let detailNo = scoreDetail?.scoreDetailList?.last?.detailNo,
+              let detailNo = scoreDetail?.getSetScore(by: self.currentSetNumber)?.detailNo,
               let pairNo = pairList?.first?.pairNo else { return }
         adjustScore(matchNo: matchNo, detailNo: detailNo, pairNo: pairNo, changeType: 2)
     }
@@ -341,7 +396,7 @@ class MatchScoringStore: ObservableObject {
         let isSwapped = (courtSwapped == 1)
         let pairList = isSwapped ? currentMatch?.pair1List : currentMatch?.pair2List
         guard let matchNo = currentMatch?.matchNo,
-              let detailNo = scoreDetail?.scoreDetailList?.last?.detailNo,
+              let detailNo = scoreDetail?.getSetScore(by: self.currentSetNumber)?.detailNo,
               let pairNo = pairList?.first?.pairNo else { return }
         adjustScore(matchNo: matchNo, detailNo: detailNo, pairNo: pairNo, changeType: 1)
     }
@@ -366,15 +421,15 @@ class MatchScoringStore: ObservableObject {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] response in
                 if response.isValid {
-                    self?.startWarmupCountdown(minutes: Int(duration))
+                    self?.startWarmupCountdown(minutes: duration)
                 }
             })
             .disposed(by: disposeBag)
     }
     
-    func startWarmupCountdown(minutes: Int) {
+    func startWarmupCountdown(minutes: Int32) {
         self.isWarmingUpNow = true
-        self.remainingWarmupSeconds = minutes * 60
+        self.remainingWarmupSeconds = Int(minutes) * 60
         self.updateTimerString()
         
         self.countdownTimer?.cancel()

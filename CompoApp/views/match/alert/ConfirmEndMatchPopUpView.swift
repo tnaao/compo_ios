@@ -12,12 +12,35 @@ struct ConfirmEndMatchPopUpView: View {
   var onConfirm: (() -> Void)?
   var onSkip: (() -> Void)?
 
+  // Match data
+  var courtName: String = ""
+  var matchNumber: String = ""
+  
+  var team1ClubName: String = ""
+  var team1SetPoints: Int = 0
+  var team1PlayerNames: String = ""
+  var team1Points: Int = 0
+  
+  var team2ClubName: String = ""
+  var team2SetPoints: Int = 0
+  var team2PlayerNames: String = ""
+  var team2Points: Int = 0
   var body: some View {
     WarmupTimerPopupView(
       contentView: confirmContent,
       onConfirm: { _ in onConfirm?() },
       onSkip: onSkip,
       isCustomContent: true,
+      courtName: courtName,
+      matchNumber: matchNumber,
+      team1ClubName: team1ClubName,
+      team1SetPoints: team1SetPoints,
+      team1PlayerNames: team1PlayerNames,
+      team1Points: team1Points,
+      team2ClubName: team2ClubName,
+      team2SetPoints: team2SetPoints,
+      team2PlayerNames: team2PlayerNames,
+      team2Points: team2Points
     )
       .enableInjection()
   }

@@ -38,12 +38,12 @@ struct MatchScoringView: View {
   }
 
   var team1CurrentScore: Int {
-      guard let list = scoreStore.scoreDetail?.scoreDetailList, let last = list.last else { return 0 }
+      guard let detail = scoreStore.scoreDetail, let last = detail.getSetScore(by: scoreStore.currentSetNumber) else { return 0 }
       return Int(last.player1Score ?? 0)
   }
 
   var team2CurrentScore: Int {
-      guard let list = scoreStore.scoreDetail?.scoreDetailList, let last = list.last else { return 0 }
+      guard let detail = scoreStore.scoreDetail, let last = detail.getSetScore(by: scoreStore.currentSetNumber) else { return 0 }
       return Int(last.player2Score ?? 0)
   }
 
@@ -56,7 +56,7 @@ struct MatchScoringView: View {
   }
 
   var currentDetailNo: String? {
-      scoreStore.scoreDetail?.scoreDetailList?.last?.detailNo
+      scoreStore.scoreDetail?.getSetScore(by: scoreStore.currentSetNumber)?.detailNo
   }
   
   var currentMatchNo: String? {
@@ -91,127 +91,195 @@ struct MatchScoringView: View {
       isSwapped ? team1SetScore : team2SetScore
   }
 
-  var body: some View {
-    ZStack {
-      VStack(spacing: 0) {
-        // Navigation Bar
-        navigationBar.padding(.top,safeAreaInsets.top)
-
-        // Score Board
-          scoreBoard
-              .padding(.top, 20.adapter)
-              .padding(.bottom,10.adapter)
-
-        ZStack(alignment: .bottom) {
-          // Court Area
-          HStack(alignment: .bottom, spacing: 0) {
-              VStack {
-                  MyScoreMinusBtn {
-                      scoreStore.scoreMinusLeft()
-                  }
-                  Spacer()
-                  MyScorePlusBtn {
-                      scoreStore.scorePlusLeft()
-                  }
-              }.padding(.top,0.adapter)
-            courtArea
-              .padding(.horizontal, 1.adapter)
-              .padding(.top, 0.adapter)
-              VStack {
-                  MyScoreMinusBtn {
-                      scoreStore.scoreMinusRight()
-                  }
-                  Spacer()
-                  MyScorePlusBtn {
-                      scoreStore.scorePlusRight()
-                  }
-              }.padding(.top,0.adapter)
-          }
-
-          // Timer
-          timerView
-        }.padding(.horizontal, 30.adapter)
-          .padding(.bottom, 40.adapter)
-      }
-    }
-    .overlay(
-        Group {
-            if scoreStore.showWarmupPopup {
-                WarmupTimerPopupView(
-                    contentView: EmptyView(),
-                    onConfirm: { minutes in
-                        if let matchNo = scoreStore.currentMatch?.matchNo {
-                            scoreStore.updateWarmupTime(matchNo: matchNo, duration: Int32(minutes))
-                        } else {
-                            scoreStore.startWarmupCountdown(minutes: minutes)
-                        }
-                        scoreStore.showWarmupPopup = false
-                    },
-                    onSkip: {
-                        scoreStore.isWarmedUp = true
-                        scoreStore.showWarmupPopup = false
-                    }
-                )
-                .zIndex(2)
-            }
-        }
-    )
-    .overlay(
-        Group {
-            if scoreStore.showMatchResult {
-                matchResultPopup
-                    .zIndex(3)
-            }
-        }
-    )
-    .overlay(
-        Group {
-            if scoreStore.showConfirmBegin {
-                ConfirmBeginMatchPopUpView(
-                    setNumber: scoreStore.currentSetNumber,
-                    onConfirm: {
-                        scoreStore.confirmStartMatch()
-                    },
-                    onSkip: {
-                        scoreStore.cancelStartMatch()
-                    }
-                )
-                .zIndex(4)
-            }
-        }
-    )
-    .overlay(
-        Group {
-            if scoreStore.showConfirmEnd {
-                ConfirmEndMatchPopUpView(
-                    onConfirm: {
-                        scoreStore.confirmEndMatch()
-                    },
-                    onSkip: {
-                        scoreStore.cancelEndMatch()
-                    }
-                )
-                .zIndex(4)
-            }
-        }
-    )
-    .loginBg()
-    .ignoresSafeArea(.all, edges: .bottom)
-      .enableInjection()
-      .onAppear {
-          if let match = scoreStore.currentMatch, let matchNo = match.matchNo {
-              scoreStore.fetchMatchScoreDetail(matchNo: matchNo)
-              // 如果比赛未开始 (matchStatus == 0)，再查询热身状态
-              if match.matchStatus == 0 {
-                  scoreStore.checkWarmupStatus(matchNo: matchNo)
-              }
-          }
-      }
+  var team1ClubName: String {
+      scoreStore.currentMatch?.pair1List?.first?.clubName ?? "队伍1"
+  }
+  
+  var team2ClubName: String {
+      scoreStore.currentMatch?.pair2List?.first?.clubName ?? "队伍2"
   }
 
-  #if DEBUG
-  @ObserveInjection var forceRedraw
-  #endif
+  var courtNameText: String {
+      scoreStore.currentMatch?.courtInfo?.courtName ?? "未分配"
+  }
+  
+  var matchNumberText: String {
+      if let order = scoreStore.currentMatch?.matchSession?.sessionOrder {
+          return "第\(order)场"
+      }
+      return "第--场"
+  }
+
+
+  var body: some View {
+    ZStack {
+      mainContent
+    }
+    .overlay(warmupOverlay)
+    .overlay(resultOverlay)
+    .overlay(confirmBeginOverlay)
+    .overlay(confirmEndOverlay)
+    .loginBg()
+    .ignoresSafeArea(.all, edges: .bottom)
+    .onAppear {
+        if let match = scoreStore.currentMatch, let matchNo = match.matchNo {
+            scoreStore.fetchMatchScoreDetail(matchNo: matchNo)
+            // 如果比赛未开始 (matchStatus == 0)，再查询热身状态
+            if match.matchStatus == 0 {
+                scoreStore.checkWarmupStatus(matchNo: matchNo)
+            }
+        }
+    }
+    .onChange(of: scoreStore.currentMatch) { match in
+        if let match = match, let matchNo = match.matchNo {
+            scoreStore.fetchMatchScoreDetail(matchNo: matchNo)
+            if match.matchStatus == 0 {
+                scoreStore.checkWarmupStatus(matchNo: matchNo)
+            }
+        }
+    }
+  }
+
+  private var mainContent: some View {
+    VStack(spacing: 0) {
+      // Navigation Bar
+      navigationBar.padding(.top, safeAreaInsets.top)
+
+      // Score Board
+      scoreBoard
+        .padding(.top, 20.adapter)
+        .padding(.bottom, 10.adapter)
+
+      ZStack(alignment: .bottom) {
+        // Court Area
+        HStack(alignment: .bottom, spacing: 0) {
+          VStack {
+            MyScoreMinusBtn {
+              scoreStore.scoreMinusLeft()
+            }
+            Spacer()
+            MyScorePlusBtn {
+              scoreStore.scorePlusLeft()
+            }
+          }.padding(.top, 0.adapter)
+          
+          courtArea
+            .padding(.horizontal, 1.adapter)
+            .padding(.top, 0.adapter)
+          
+          VStack {
+            MyScoreMinusBtn {
+              scoreStore.scoreMinusRight()
+            }
+            Spacer()
+            MyScorePlusBtn {
+              scoreStore.scorePlusRight()
+            }
+          }.padding(.top, 0.adapter)
+        }
+
+        // Timer
+        timerView
+      }
+      .padding(.horizontal, 30.adapter)
+      .padding(.bottom, 40.adapter)
+    }
+  }
+
+  private var warmupOverlay: some View {
+    Group {
+      if scoreStore.showWarmupPopup {
+        WarmupTimerPopupView(
+          contentView: EmptyView(),
+          onConfirm: { minutes in
+            scoreStore.showWarmupPopup = false
+            if let matchNo = scoreStore.currentMatch?.matchNo {
+              scoreStore.updateWarmupTime(matchNo: matchNo, duration: minutes)
+            } else {
+              scoreStore.startWarmupCountdown(minutes: minutes)
+            }
+          },
+          onSkip: {
+            scoreStore.isWarmedUp = true
+            scoreStore.showWarmupPopup = false
+          },
+          courtName: courtNameText,
+          matchNumber: matchNumberText,
+          team1ClubName: team1ClubName,
+          team1SetPoints: team1SetScore,
+          team1PlayerNames: team1Name,
+          team1Points: team1CurrentScore,
+          team2ClubName: team2ClubName,
+          team2SetPoints: team2SetScore,
+          team2PlayerNames: team2Name,
+          team2Points: team2CurrentScore
+        )
+        .zIndex(2)
+      }
+    }
+  }
+
+  private var resultOverlay: some View {
+    Group {
+      if scoreStore.showMatchResult {
+        matchResultPopup
+          .zIndex(3)
+      }
+    }
+  }
+
+  private var confirmBeginOverlay: some View {
+    Group {
+      if scoreStore.showConfirmBegin {
+        ConfirmBeginMatchPopUpView(
+          setNumber: scoreStore.currentSetNumber,
+          onConfirm: {
+            scoreStore.confirmStartMatch()
+          },
+          onSkip: {
+            scoreStore.cancelStartMatch()
+          },
+          courtName: courtNameText,
+          matchNumber: matchNumberText,
+          team1ClubName: team1ClubName,
+          team1SetPoints: team1SetScore,
+          team1PlayerNames: team1Name,
+          team1Points: team1CurrentScore,
+          team2ClubName: team2ClubName,
+          team2SetPoints: team2SetScore,
+          team2PlayerNames: team2Name,
+          team2Points: team2CurrentScore
+        )
+        .zIndex(4)
+      }
+    }
+  }
+
+  private var confirmEndOverlay: some View {
+    Group {
+      if scoreStore.showConfirmEnd {
+        ConfirmEndMatchPopUpView(
+          onConfirm: {
+            scoreStore.confirmEndMatch()
+          },
+          onSkip: {
+            scoreStore.cancelEndMatch()
+          },
+          courtName: courtNameText,
+          matchNumber: matchNumberText,
+          team1ClubName: team1ClubName,
+          team1SetPoints: team1SetScore,
+          team1PlayerNames: team1Name,
+          team1Points: team1CurrentScore,
+          team2ClubName: team2ClubName,
+          team2SetPoints: team2SetScore,
+          team2PlayerNames: team2Name,
+          team2Points: team2CurrentScore
+        )
+        .zIndex(4)
+      }
+    }
+  }
 
   // MARK: - Match Result Popup
   private var matchResultPopup: some View {

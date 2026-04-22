@@ -4,27 +4,26 @@ import SwiftUI
 struct WarmupTimerPopupView<Content: View>: View {
   var contentView: Content = EmptyView() as! Content
   // Callbacks to handle actions from the popup
-  var onConfirm: ((Int) -> Void)?
+  var onConfirm: ((Int32) -> Void)?
   var onSkip: (() -> Void)?
   var isCustomContent: Bool = false
   var padddingBottomNum: CGFloat = 20
   // Timer selection state
-  @State private var selectedMinutes: Int = 1
+  @State private var selectedMinutes: Int32 = 1
 
-  // Match data (can be injected via a model)
-  let courtName = "场地8"
-  let team1Name = "原创体育"
-  let team1SetPoints = 0
-  let team1Player = "余苇航"
-  let team1Points = 0
-  let team1IsServing = true
-
-  let matchNumber = "第13场"
-  let team2Name = "萧山羽飞"
-  let team2SetPoints = 0
-  let team2Player = "郑泽言"
-  let team2Points = 0
-  let team2IsServing = false
+  // Match data
+  var courtName: String = ""
+  var matchNumber: String = ""
+  
+  var team1ClubName: String = ""
+  var team1SetPoints: Int = 0
+  var team1PlayerNames: String = ""
+  var team1Points: Int = 0
+  
+  var team2ClubName: String = ""
+  var team2SetPoints: Int = 0
+  var team2PlayerNames: String = ""
+  var team2Points: Int = 0
 
   var body: some View {
     ZStack {
@@ -49,7 +48,7 @@ struct WarmupTimerPopupView<Content: View>: View {
                 .foregroundColor(.white)
                 .opacity(0.9)
               Spacer(minLength: 4.adapter)
-              Text(team1Name)
+              Text(team1ClubName)
                 .font(.system(size: 11.adapter))
                 .foregroundColor(.white)
             }
@@ -57,7 +56,7 @@ struct WarmupTimerPopupView<Content: View>: View {
             .frame(width: 110.adapter, height: 26.adapter)
             .background(Color(red: 126 / 255, green: 96 / 255, blue: 254 / 255))
             .cornerRadius(4.adapter)
-
+            
             // Sets
             Text("\(team1SetPoints)")
               .font(.system(size: 14.adapter, weight: .bold))
@@ -65,7 +64,7 @@ struct WarmupTimerPopupView<Content: View>: View {
               .frame(width: 14.adapter)
 
             // Player 1
-            Text(team1Player)
+            Text(team1PlayerNames)
               .font(.system(size: 11.adapter))
               .foregroundColor(.white)
               .frame(width: 60.adapter, height: 26.adapter)
@@ -88,7 +87,7 @@ struct WarmupTimerPopupView<Content: View>: View {
                 .foregroundColor(.white)
                 .opacity(0.9)
               Spacer(minLength: 4.adapter)
-              Text(team2Name)
+              Text(team2ClubName)
                 .font(.system(size: 11.adapter))
                 .foregroundColor(.white)
             }
@@ -96,7 +95,7 @@ struct WarmupTimerPopupView<Content: View>: View {
             .frame(width: 110.adapter, height: 26.adapter)
             .background(Color(red: 126 / 255, green: 96 / 255, blue: 254 / 255))
             .cornerRadius(4.adapter)
-
+            
             // Sets
             Text("\(team2SetPoints)")
               .font(.system(size: 14.adapter, weight: .bold))
@@ -104,7 +103,7 @@ struct WarmupTimerPopupView<Content: View>: View {
               .frame(width: 14.adapter)
 
             // Player 2
-            Text(team2Player)
+            Text(team2PlayerNames)
               .font(.system(size: 11.adapter))
               .foregroundColor(.white)
               .frame(width: 60.adapter, height: 26.adapter)
@@ -278,13 +277,13 @@ struct TimerOption: Identifiable {
   let id = UUID()
   let title: String
   let color: Color
-  let value: Int
+  let value: Int32
 }
 
 // MARK: - Timer Selector View
 struct TimerSelectorView: View {
   let options: [TimerOption]
-  @Binding var selectedValue: Int
+  @Binding var selectedValue: Int32
 
   var body: some View {
     HStack(spacing: 12.adapter) {

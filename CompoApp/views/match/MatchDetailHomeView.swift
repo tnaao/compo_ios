@@ -30,7 +30,7 @@ struct PlayerInfo {
 // MARK: - Game Detail Home View
 struct GameDetailHomeView: View {
   @Environment(\.dismiss) private var dismiss
-  @State private var selectedTab: GameDetailTab = .finished
+  @State private var selectedTab: GameDetailTab = .ongoing
   @StateObject private var scoreStore:MatchScoringStore = MatchScoringStore.shared
   @StateObject private var viewModel = GameDetailHomeVm()
     
@@ -53,9 +53,12 @@ struct GameDetailHomeView: View {
           .frame(height: 27.adapter)
 
         // Match List
-        ScrollView {
-          LazyVStack(spacing: 12.adapter) {
-            ForEach(viewModel.matches) {match in
+        SwipeToRefreshListView(viewModel.matches, isRefreshing: $viewModel.isRefreshing, spacing: 12.adapter) { idx, match in
+            if idx == 0 {
+                Spacer().fixedSize().frame(height: 12.adapter)
+            }
+            
+            Group {
                 if selectedTab == .ongoing {
                     if match.isSingle {
                         MatchCardSingleGoingView(match: match.toMatchModelSingle,scoring: {
@@ -95,10 +98,14 @@ struct GameDetailHomeView: View {
                     }
                 }
             }
-          }
-          .padding(.horizontal, 12.adapter)
-          .padding(.top, 12.adapter)
-          .padding(.bottom, 20.adapter)
+            .padding(.horizontal, 12.adapter)
+            
+            if idx == viewModel.matches.count - 1 {
+                Spacer().fixedSize().frame(height: 20.adapter)
+            }
+        }
+        .onRefresh {
+            viewModel.refresh(selectedTab: selectedTab)
         }
       }
         

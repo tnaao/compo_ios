@@ -2,7 +2,7 @@ import SwiftUI
 
 struct WarmupTimerExampleView: View {
     @State private var showWarmupTimer = false
-    @State private var selectedTime: Int? = nil
+    @State private var selectedTime: Int32? = nil
     
     var body: some View {
         ZStack {

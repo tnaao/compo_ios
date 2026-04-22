@@ -175,8 +175,8 @@ struct DoubleMatchResultEntryView: View {
             label: "第一局比分",
             score1: $set1Score1,
             score2: $set1Score2,
-            placeholder1: "7",
-            placeholder2: "15"
+            placeholder1: "比分",
+            placeholder2: "比分"
           )
 
           // Set 2

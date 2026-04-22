@@ -8,7 +8,7 @@
 import Foundation
 
 /// 裁判端查询赛事列表数据模型
-struct WyBadmintonScheduleProgramModel: Codable, Sendable, Identifiable {
+struct WyBadmintonScheduleProgramModel: Codable, Sendable, Identifiable, Equatable {
   /// 比赛编号
   let competitionNo: String?
   /// 比赛名称
@@ -64,7 +64,7 @@ struct WyBadmintonScheduleProgramModel: Codable, Sendable, Identifiable {
 }
 
 /// App - 参赛选手项
-struct PlayerItemModel: Codable, Sendable, Identifiable {
+struct PlayerItemModel: Codable, Sendable, Identifiable, Equatable {
   /// 选手ID
   let playerId: Int64
   /// 选手编号
@@ -83,7 +83,7 @@ struct PlayerItemModel: Codable, Sendable, Identifiable {
 }
 
 /// 场地信息
-struct CourtInfo: Codable, Sendable {
+struct CourtInfo: Codable, Sendable, Equatable {
   /// 场地编号
   let courtNo: String?
   /// 场地名称
@@ -93,7 +93,7 @@ struct CourtInfo: Codable, Sendable {
 }
 
 /// 场次信息
-struct MatchSession: Codable, Sendable {
+struct MatchSession: Codable, Sendable, Equatable {
   /// 场次编号
   let sessionNo: String?
   /// 场次序号

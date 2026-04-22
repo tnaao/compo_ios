@@ -25,7 +25,7 @@ class GameDetailHomeVm: BaseListVm<WyBadmintonScheduleProgramModel> {
     var competitionNo: String = ""
     
     private var pageNo = 1
-    private let pageSize = 20
+    private let pageSize = 200
     private var hasMoreData = true
     private let disposeBag = DisposeBag()
     

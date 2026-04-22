@@ -103,8 +103,9 @@ struct MatchResultPopupWrapper: View {
             ))
         }
         
-        if !scores.isEmpty {
-            scoreStore.submitFinalResult(scores: scores)
+        let scoresFiltered = scores.filter { $0.p1Score + $0.p2Score > 0 }
+        if !scoresFiltered.isEmpty {
+            scoreStore.submitFinalResult(scores: scoresFiltered)
         }
     }
 }

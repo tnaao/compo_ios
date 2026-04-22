@@ -27,6 +27,13 @@ struct WyRefereeMatchScoreDetailModel: Codable, Sendable {
   let scoreDetailList: [ScoreDetailItemModel]?
 }
 
+extension WyRefereeMatchScoreDetailModel {
+    func getSetScore(by index: Int) -> ScoreDetailItemModel? {
+        guard let list = scoreDetailList else { return nil }
+        return list[(index-1).defMaxValue(list.count-1)]
+    }
+}
+
 /// 每局详细比分列表项
 struct ScoreDetailItemModel: Codable, Sendable, Identifiable {
   /// 详细比分ID detail_id
