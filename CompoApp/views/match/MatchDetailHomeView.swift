@@ -186,18 +186,21 @@ struct GameDetailHomeView: View {
 
   // MARK: - Navigation Bar
   private var navigationBar: some View {
-    HStack(spacing: 0.adapter) {
-        LeadingBtn{
-            dismiss()
-        }
+      ZStack(content: {
+          HStack(spacing: 0.adapter) {
+              LeadingBtn{
+                  dismiss()
+              }
 
-        Text(scoreStore.currentEvent?.competitionName ?? "")
-        .font(.system(size: 10.adapter, weight: .medium))
-        .foregroundColor(Color(hex: "#FF222429"))
+             
 
-      Spacer()
-    }
-    .padding(.trailing, 16.adapter)
+            Spacer()
+          }.padding(.trailing, 16.adapter)
+          
+          Text(scoreStore.currentEvent?.competitionName ?? "")
+          .font(.system(size: 10.adapter, weight: .medium))
+          .foregroundColor(Color(hex: "#FF222429"))
+      })
     .frame(height: 25.verticaldapter)
     .background(Color.white)
   }

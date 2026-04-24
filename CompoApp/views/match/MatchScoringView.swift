@@ -322,7 +322,7 @@ struct MatchScoringView: View {
       LeadingBtn()
 
         Text(scoreStore.currentMatch?.eventName ?? "")
-        .font(.system(size: 16.adapter, weight: .medium))
+        .font(.system(size: 10.adapter, weight: .medium))
         .foregroundColor(Color(hex: "#FF222429"))
 
       Spacer()

@@ -37,6 +37,27 @@ class GameDetailHomeVm: BaseListVm<WyBadmintonScheduleProgramModel> {
         pageNo = 1
         hasMoreData = true
         fetchData(isRefresh: true, selectedTab: selectedTab)
+        fetchCounts()
+    }
+    
+    func fetchCounts() {
+        guard !competitionNo.isEmpty else { return }
+        
+        // Fetch ongoing total
+        WyBadmintonRefereeAPI.getMatchScheduleList(competitionNo: competitionNo, listStatus: "1", pageNo: 1, pageSize: 1)
+            .subscribe(onNext: { [weak self] response in
+                if let total = response.data?.total {
+                    self?.ongoingCount = total
+                }
+            }).disposed(by: disposeBag)
+            
+        // Fetch finished total
+        WyBadmintonRefereeAPI.getMatchScheduleList(competitionNo: competitionNo, listStatus: "2", pageNo: 1, pageSize: 1)
+            .subscribe(onNext: { [weak self] response in
+                if let total = response.data?.total {
+                    self?.finishedCount = total
+                }
+            }).disposed(by: disposeBag)
     }
     
     func loadMore(selectedTab: GameDetailTab) {

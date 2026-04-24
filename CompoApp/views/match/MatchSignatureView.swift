@@ -106,8 +106,18 @@ struct MatchSignatureView: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.safeAreaInsets) var safeAreaInsets
     @State private var lines = [[CGPoint]]()
+    @State private var hideExistingSignature: Bool = false
     @StateObject private var scoreStore: MatchScoringStore = MatchScoringStore.shared
     @StateObject private var viewModel = MatchSignatureVm()
+    
+    var existingSignatureUrl: String? {
+        if hideExistingSignature { return nil }
+        if role == .referee {
+            return scoreStore.scoreDetail?.refereeSignature
+        } else {
+            return scoreStore.scoreDetail?.winnerSignature
+        }
+    }
     
     var signatureNameText: String {
         if role == .referee {
@@ -151,6 +161,10 @@ struct MatchSignatureView: View {
                         .font(.system(size: 20.adapter, weight: .regular))
                         .foregroundColor(Color(red: 220 / 255, green: 220 / 255, blue: 220 / 255)) // Very faint gray
                     
+                    if let url = existingSignatureUrl, !url.isEmpty {
+                        MyNetImage(url: url, width: 400.adapter, height: 200.adapter, contentMode: .fit)
+                    }
+                    
                     SignaturePadView(lines: $lines)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -160,6 +174,7 @@ struct MatchSignatureView: View {
                     // Clear Button
                     Button(action: {
                         lines.removeAll()
+                        hideExistingSignature = true
                     }) {
                         Text("清除")
                             .font(.system(size: 14.adapter, weight: .medium))
@@ -248,7 +263,7 @@ struct MatchSignatureView: View {
         LeadingBtn()
 
           Text(scoreStore.currentMatch?.eventName ?? "")
-          .font(.system(size: 16.adapter, weight: .medium))
+          .font(.system(size: 10.adapter, weight: .medium))
           .foregroundColor(Color(hex: "#FF222429"))
 
         Spacer()

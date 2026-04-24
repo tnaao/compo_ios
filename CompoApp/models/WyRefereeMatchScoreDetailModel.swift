@@ -36,6 +36,11 @@ struct WyRefereeMatchScoreDetailModel: Codable, Sendable,Equatable {
   /// 配对组2大比分（局分）
   let pair2Score: Int32?
   
+  /// 裁判签名地址
+  let refereeSignature: String?
+  /// 胜方签名地址
+  let winnerSignature: String?
+  
   /// 每局详细比分列表
   let scoreDetailList: [ScoreDetailItemModel]?
 }

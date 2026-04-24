@@ -445,7 +445,7 @@ struct MatchCardSingleGoingView: View {
       }
       .padding(.bottom, 24)
     }
-    .frame(height: 108.adapter)
+    .frame(height: 151.adapter)
     .background(Color.white)
     .cornerRadius(12.adapter)
       .enableInjection()
@@ -553,7 +553,7 @@ struct MatchCardMultiGoingView: View {
       }
       .padding(.bottom, 24)
     }
-    .frame(height: 108.adapter)
+    .frame(height: 151.adapter)
     .background(Color.white)
     .cornerRadius(12.adapter)
       .enableInjection()

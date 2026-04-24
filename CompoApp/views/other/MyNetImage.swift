@@ -12,6 +12,7 @@ struct MyNetImage: View {
     var width:CGFloat = CGFloat.infinity
     var height:CGFloat = CGFloat.infinity
     var radius:CGFloat = 0
+    var contentMode:ContentMode = .fill
     var isOval:Bool = false
     
     var body: some View {
@@ -26,7 +27,7 @@ struct MyNetImage: View {
                     // Success: Display the loaded image with styling
                     image
                         .resizable()
-                        .aspectRatio(contentMode: .fill, )
+                        .aspectRatio(contentMode: contentMode)
                         .frame(width: width, height: height)
                         .clipShape(RoundedRectangle(cornerRadius: rc))
                 } else if phase.error != nil {

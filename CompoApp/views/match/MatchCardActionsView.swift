@@ -15,7 +15,7 @@ struct MatchCardActionsView: View {
     var inputResult:()->Void = {}
     var notifyFn:()->Void = {}
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 15.verticaldapter) {
           Button(action: {
               resign()
           }) {
@@ -36,20 +36,7 @@ struct MatchCardActionsView: View {
               .background(Color(red: 102 / 255, green: 72 / 255, blue: 255 / 255))
               .clipShape(Capsule())
           }.noClickEffect().xVisible(isGoing)
-
-          Button(action: {
-              notifyFn()
-          }) {
-            Text("消息通知")
-                  .font(.system(size: 12.adapter, weight: .medium))
-              .foregroundColor(.white)
-              .frame(width: 100.adapter, height: 27.adapter)
-              .background(Color(red: 102 / 255, green: 72 / 255, blue: 255 / 255))
-              .clipShape(Capsule())
-          }.noClickEffect().xVisible(isGoing)
             
-            Spacer().fixedSize().frame(height: 15.verticaldapter)
-
           Button(action: {
               inputResult()
           }) {
@@ -64,6 +51,22 @@ struct MatchCardActionsView: View {
                   .stroke(Color(red: 102 / 255, green: 72 / 255, blue: 255 / 255), lineWidth: 1)
               )
           }.noClickEffect()
+            
+            
+            Button(action: {
+                notifyFn()
+            }) {
+                Text("消息通知")
+                      .font(.system(size: 12.adapter, weight: .medium))
+                  .foregroundColor(Color(red: 102 / 255, green: 72 / 255, blue: 255 / 255))
+                  .frame(width: 100.adapter, height: 27.adapter)
+                  .background(Color.white)
+                  .clipShape(Capsule())
+                  .overlay(
+                    Capsule()
+                      .stroke(Color(red: 102 / 255, green: 72 / 255, blue: 255 / 255), lineWidth: 1)
+                  )
+            }.noClickEffect().xVisible(isGoing)
         }
         .padding(.trailing, 24)
         .enableInjection()
