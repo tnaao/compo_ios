@@ -81,6 +81,8 @@ class MatchScoringStore: ObservableObject {
     @Published var showConfirmBegin: Bool = false
     @Published var showConfirmEnd: Bool = false
     @Published var isEndingFlow: Bool = false
+    @Published var showEarlyEndConfirm: Bool = false
+    @Published var earlyEndWinnerName: String = ""
     
     private var pendingServeTeam: Int32? = nil
     
@@ -92,6 +94,16 @@ class MatchScoringStore: ObservableObject {
         case .warmingUp: return ""
         default: return "第\(currentSetNumber)局"
         }
+    }
+    
+    var team1Name: String {
+        guard let p1List = currentMatch?.pair1List, !p1List.isEmpty else { return "队伍1" }
+        return p1List.map { $0.playerName }.joined(separator: "/")
+    }
+    
+    var team2Name: String {
+        guard let p2List = currentMatch?.pair2List, !p2List.isEmpty else { return "队伍2" }
+        return p2List.map { $0.playerName }.joined(separator: "/")
     }
 
     private let disposeBag = DisposeBag()
@@ -276,15 +288,36 @@ class MatchScoringStore: ObservableObject {
             courtSwapped: courtSwapped
         )
         WyBadmintonRefereeAPI.endMatch(request: request)
+            .flatMap { [weak self] response -> Observable<BaseModel<WyRefereeMatchScoreDetailModel>> in
+                guard let self = self else { return .empty() }
+                if response.isValid {
+                    return Observable.just(())
+                        .delay(.seconds(2), scheduler: MainScheduler.instance)
+                        .flatMap { _ in WyBadmintonRefereeAPI.getMatchScoreDetail(matchNo: matchNo) }
+                } else {
+                    return .error(NSError(domain: "MatchError", code: -1, userInfo: [NSLocalizedDescriptionKey: response.message ?? "结束比赛失败"]))
+                }
+            }
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] response in
                 guard let self = self else { return }
                 self.isLoading = false
-                if response.isValid {
+                if response.isValid, let detail = response.data {
                     self.isActionSuccess = true
-                    self.fetchMatchScoreDetail(matchNo: matchNo)
-                } else {
-                    self.errorMessage = response.message ?? "结束比赛失败"
+                    let oldSetNumber = self.currentSetNumber
+                    self.scoreDetail = detail
+                    self.syncRunningState()
+                    
+                    // Check for 2-0 early end after finishing set 2
+                    if oldSetNumber == 2 {
+                        let s1 = detail.pair1Score ?? 0
+                        let s2 = detail.pair2Score ?? 0
+                        if s1 == 2 || s2 == 2 {
+                            self.earlyEndWinnerName = (s1 == 2) ? self.team1Name : self.team2Name
+                            self.showEarlyEndConfirm = true
+                            return
+                        }
+                    }
                 }
             }, onError: { [weak self] error in
                 guard let self = self else { return }
@@ -292,6 +325,63 @@ class MatchScoringStore: ObservableObject {
                 self.errorMessage = error.localizedDescription
             })
             .disposed(by: disposeBag)
+    }
+    
+    func confirmEarlyEnd() {
+        self.showEarlyEndConfirm = false
+        guard let matchNo = currentMatch?.matchNo,
+              let detailNo = scoreDetail?.getSetScore(by: 3)?.detailNo else { return }
+        
+        isLoading = true
+        let request = WyRefereeScoreAdjustDetailRequest(
+            matchNo: matchNo,
+            detailNo: detailNo,
+            firstServer: firstServer,
+            courtSwapped: courtSwapped
+        )
+        
+        // 先开始第三局，成功后再结束第三局
+        WyBadmintonRefereeAPI.startMatch(request: request)
+            .flatMap { [weak self] response -> Observable<BaseModel<Bool>> in
+                guard self != nil else { return .empty() }
+                if response.isValid {
+                    return WyBadmintonRefereeAPI.endMatch(request: request)
+                } else {
+                    return .error(NSError(domain: "MatchError", code: -1, userInfo: [NSLocalizedDescriptionKey: response.message ?? "开始第三局失败"]))
+                }
+            }
+            .flatMap { [weak self] response -> Observable<BaseModel<WyRefereeMatchScoreDetailModel>> in
+                guard self != nil else { return .empty() }
+                if response.isValid {
+                    // 同样增加2秒延时确保后端同步
+                    return Observable.just(())
+                        .delay(.seconds(2), scheduler: MainScheduler.instance)
+                        .flatMap { _ in WyBadmintonRefereeAPI.getMatchScoreDetail(matchNo: matchNo) }
+                } else {
+                    return .error(NSError(domain: "MatchError", code: -1, userInfo: [NSLocalizedDescriptionKey: response.message ?? "直接结束第三局失败"]))
+                }
+            }
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] response in
+                guard let self = self else { return }
+                self.isLoading = false
+                if response.isValid, let detail = response.data {
+                    self.isActionSuccess = true
+                    self.scoreDetail = detail
+                    self.syncRunningState()
+                    self.showMatchResult = true
+                }
+            }, onError: { [weak self] error in
+                guard let self = self else { return }
+                self.isLoading = false
+                self.errorMessage = error.localizedDescription
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func cancelEarlyEnd() {
+        self.showEarlyEndConfirm = false
+        self.showMatchResult = true
     }
     
     func actionPlay() -> Void {

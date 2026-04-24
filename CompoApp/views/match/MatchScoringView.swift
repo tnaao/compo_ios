@@ -48,11 +48,11 @@ struct MatchScoringView: View {
   }
 
   var team1SetScore: Int {
-      Int(scoreStore.currentMatch?.pair1Score ?? 0)
+      Int(scoreStore.scoreDetail?.pair1Score ?? scoreStore.currentMatch?.pair1Score ?? 0)
   }
 
   var team2SetScore: Int {
-      Int(scoreStore.currentMatch?.pair2Score ?? 0)
+      Int(scoreStore.scoreDetail?.pair2Score ?? scoreStore.currentMatch?.pair2Score ?? 0)
   }
 
   var currentDetailNo: String? {
@@ -119,6 +119,7 @@ struct MatchScoringView: View {
     .overlay(resultOverlay)
     .overlay(confirmBeginOverlay)
     .overlay(confirmEndOverlay)
+    .overlay(earlyEndOverlay)
     .loginBg()
     .ignoresSafeArea(.all, edges: .bottom)
     .onAppear {
@@ -277,6 +278,33 @@ struct MatchScoringView: View {
           team2Points: team2CurrentScore
         )
         .zIndex(4)
+      }
+    }
+  }
+
+  private var earlyEndOverlay: some View {
+    Group {
+      if scoreStore.showEarlyEndConfirm {
+        EarlyEndMatchPopUpView(
+          winnerName: scoreStore.earlyEndWinnerName,
+          onConfirm: {
+            scoreStore.confirmEarlyEnd()
+          },
+          onSkip: {
+            scoreStore.cancelEarlyEnd()
+          },
+          courtName: courtNameText,
+          matchNumber: matchNumberText,
+          team1ClubName: team1ClubName,
+          team1SetPoints: team1SetScore,
+          team1PlayerNames: team1Name,
+          team1Points: team1CurrentScore,
+          team2ClubName: team2ClubName,
+          team2SetPoints: team2SetScore,
+          team2PlayerNames: team2Name,
+          team2Points: team2CurrentScore
+        )
+        .zIndex(5)
       }
     }
   }

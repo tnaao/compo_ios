@@ -48,7 +48,7 @@ struct WyRefereeMatchScoreDetailModel: Codable, Sendable,Equatable {
 extension WyRefereeMatchScoreDetailModel {
     func getSetScore(by index: Int) -> ScoreDetailItemModel? {
         guard let list = scoreDetailList else { return nil }
-        return list[(index-1).defMaxValue(list.count-1)]
+        return list.first(where: { $0.roundNumber == Int32(index-1) })
     }
 }
 
