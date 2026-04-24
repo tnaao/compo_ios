@@ -365,6 +365,7 @@ struct MatchCardSingleGoingView: View {
   let match: MatchModelSingle
     var resign:()->Void = {}
     var scoring:()->Void = {}
+    var notifyFn:()->Void = {}
     var inputResult:()->Void = {}
   var body: some View {
     VStack(spacing: 0) {
@@ -440,7 +441,7 @@ struct MatchCardSingleGoingView: View {
         Spacer()
 
         // Action Buttons Right Side
-        MatchCardActionsView(isGoing: true,resign: resign, scoring: scoring, inputResult: inputResult)
+        MatchCardActionsView(isGoing: true,resign: resign, scoring: scoring, inputResult: inputResult,notifyFn: notifyFn)
       }
       .padding(.bottom, 24)
     }
@@ -459,6 +460,7 @@ struct MatchCardMultiGoingView: View {
   let match: MatchModel1
     var resign:()->Void = {}
     var scoring:()->Void = {}
+    var notifyFn:()->Void = {}
     var inputResult:()->Void = {}
   var body: some View {
     VStack(spacing: 0) {
@@ -547,7 +549,7 @@ struct MatchCardMultiGoingView: View {
         Spacer()
 
         // Action Buttons Right Side
-        MatchCardActionsView(isGoing: true,resign: resign, scoring: scoring, inputResult: inputResult)
+        MatchCardActionsView(isGoing: true,resign: resign, scoring: scoring, inputResult: inputResult,notifyFn: notifyFn)
       }
       .padding(.bottom, 24)
     }
@@ -598,15 +600,15 @@ struct MatchCardView_Previews: PreviewProvider {
             (pair1List?.count ?? 0) == 1
         }
         
-        private var courtStr: String {
+        var courtStr: String {
             return courtInfo?.courtName ?? courtInfo?.courtNo ?? "--"
         }
         
-        private var matchNumberStr: String {
+        var matchNumberStr: String {
             return matchSession?.sessionNo ?? "--"
         }
         
-        private var matchInfoStr: String {
+        var matchInfoStr: String {
             let name = eventName ?? "--"
             let round = roundType ?? ""
             return "\(name) \(round)"

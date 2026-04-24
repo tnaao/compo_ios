@@ -35,6 +35,9 @@ struct GameDetailHomeView: View {
   @StateObject private var viewModel = GameDetailHomeVm()
     
   @State private var isShowInputResult: Bool = false
+  @State private var isShowMessagePopup: Bool = false
+  @State private var messageReason: String = "弃权"
+  @State private var messageContent: String = ""
 
   var body: some View {
       ZStack(alignment: .topLeading) {
@@ -64,8 +67,13 @@ struct GameDetailHomeView: View {
                         MatchCardSingleGoingView(match: match.toMatchModelSingle,scoring: {
                             scoreStore.currentMatch = match
                             AppRouter.shared.appRouter.navigateTo(.matchScoring(id: ""))
+                        },notifyFn: {
+                            messageReason = "到场"
+                            messageContent = "\(match.courtStr) \(match.matchNumberStr) \(match.eventName ?? "") \(match.roundType ?? "") 场地调整，选手已经到场。当前比分 \(match.pair1Score ?? 0):\(match.pair2Score ?? 0)。"
+                            isShowMessagePopup = true
                         }) {
                             scoreStore.currentMatch = match
+                            scoreStore.fetchMatchScoreDetail(matchNo: match.matchNo ?? "")
                             isShowInputResult = true
                         }
                     } else {
@@ -73,8 +81,13 @@ struct GameDetailHomeView: View {
                                                 scoring: {
                             scoreStore.currentMatch = match
                             AppRouter.shared.appRouter.navigateTo(.matchScoring(id: ""))
+                        },notifyFn: {
+                            messageReason = "到场"
+                            messageContent = "\(match.courtStr) \(match.matchNumberStr) \(match.eventName ?? "") \(match.roundType ?? "") 场地调整，选手已经到场。当前比分 \(match.pair1Score ?? 0):\(match.pair2Score ?? 0)。"
+                            isShowMessagePopup = true
                         },inputResult:  {
                             scoreStore.currentMatch = match
+                            scoreStore.fetchMatchScoreDetail(matchNo: match.matchNo ?? "")
                             isShowInputResult = true
                         })
                     }
@@ -85,6 +98,7 @@ struct GameDetailHomeView: View {
                             AppRouter.shared.appRouter.navigateTo(.matchSignatureConfirm)
                         },inputResult: {
                             scoreStore.currentMatch = match
+                            scoreStore.fetchMatchScoreDetail(matchNo: match.matchNo ?? "")
                             isShowInputResult = true
                         })
                     } else {
@@ -93,6 +107,7 @@ struct GameDetailHomeView: View {
                             AppRouter.shared.appRouter.navigateTo(.matchSignatureConfirm)
                         },inputResult: {
                             scoreStore.currentMatch = match
+                            scoreStore.fetchMatchScoreDetail(matchNo: match.matchNo ?? "")
                             isShowInputResult = true
                         })
                     }
@@ -114,9 +129,9 @@ struct GameDetailHomeView: View {
               onCancel: {
                   isShowInputResult = false
               },
-              onConfirm: {
+              onConfirm: { scores in
                   isShowInputResult = false
-                  // TODO: Call API to submit double match result
+                  submitScores(scores)
               },
               team1Player1Name: currentMatch.pair1List?.first?.playerName ?? "",
               team1Player1Avatar: currentMatch.pair1List?.first?.avatar ?? "",
@@ -129,6 +144,14 @@ struct GameDetailHomeView: View {
           )
       }
     }
+      .messageNotificationPopup(
+          isPresented: $isShowMessagePopup,
+          reason: messageReason,
+          content: messageContent,
+          onConfirm: {
+              print("Notification confirmed")
+          }
+      )
       .enableInjection()
       .onAppear {
           viewModel.competitionNo = scoreStore.currentEvent?.competitionNo ?? ""
@@ -136,6 +159,24 @@ struct GameDetailHomeView: View {
       }
       .onChange(of: selectedTab) { newValue in
           viewModel.refresh(selectedTab: newValue)
+      }
+  }
+
+  private func submitScores(_ scores: [String]) {
+      let sets = scoreStore.scoreDetail?.scoreDetailList ?? []
+      var finalScores: [(detailId: Int64, p1Score: Int32, p2Score: Int32)] = []
+      for (index, set) in sets.enumerated() {
+          if index * 2 + 1 < scores.count {
+              finalScores.append((
+                  detailId: set.detailId,
+                  p1Score: Int32(scores[index * 2]) ?? 0,
+                  p2Score: Int32(scores[index * 2 + 1]) ?? 0
+              ))
+          }
+      }
+      let filtered = finalScores.filter { $0.p1Score + $0.p2Score > 0 }
+      if !filtered.isEmpty {
+          scoreStore.submitFinalResult(scores: filtered)
       }
   }
 

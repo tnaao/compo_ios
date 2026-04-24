@@ -11,6 +11,7 @@ import AdapterSwift
 struct PlayerCourtInfoView: View {
     var name: String = "小李"
     var iconUrl = "https://raw.githubusercontent.com/ghw001/CompoApp/main/Assets/avatar.png"
+    var checkInStatus:CheckInStatus = .checked
     var body: some View {
         ZStack(alignment: .top) {
             RoundedRectangle(cornerRadius: 2.adapter) // 对应：圆角 2pt
@@ -32,12 +33,10 @@ struct PlayerCourtInfoView: View {
                     y: 3            // 对应：Offset Y 3pt
                 )
             
-         
-            
             VStack(alignment: .center, spacing: 0) {
                 HStack {
                     Spacer().frame(height: 1)
-                    Text("已检").font(.system(size: 8.5.adapter)).foregroundStyle(.white)
+                    Text(checkInStatus.title).font(.system(size: 8.5.adapter)).foregroundStyle(.white)
                         .frame(
                             width: 24.adapter,height: 12.adapter
                         ).background(Color(hex: "#33000000"))

@@ -545,13 +545,17 @@ struct MatchScoringView: View {
        
       
       let ox = isLeft ? 36.adapter : -36.adapter
+      
+      let statusValue = (team == 1) ? (scoreStore.scoreDetail?.pair1CheckinStatus ?? 0) : (scoreStore.scoreDetail?.pair2CheckinStatus ?? 0)
+      let status = CheckInStatus(rawValue: Int(statusValue)) ?? .unchecked
+      
       return ZStack(content: {
           MyAssetImage(name: "ball_01",width: 18.adapter,height: 18.adapter).offset(
             x: ox,
           )
           .opacity(scoreStore.firstServerId == playerId ? 1 : 0)
           
-          PlayerCourtInfoView(name: name, iconUrl: avatar)
+          PlayerCourtInfoView(name: name, iconUrl: avatar, checkInStatus: status)
       })
       .offset(x: offsetX.adapter, y: offsetY.adapter)
       .onTapGesture {

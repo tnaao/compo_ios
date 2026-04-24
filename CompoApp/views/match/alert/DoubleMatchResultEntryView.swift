@@ -5,7 +5,9 @@ import SwiftUI
 struct DoubleMatchResultEntryView: View {
   // Callbacks
   var onCancel: (() -> Void)?
-  var onConfirm: (() -> Void)?
+  var onConfirm: (([String]) -> Void)?
+
+  @ObservedObject private var scoreStore = MatchScoringStore.shared
 
   // Team 1 data (2 players)
   let team1Player1Name: String
@@ -208,7 +210,9 @@ struct DoubleMatchResultEntryView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
 
-            Button(action: { onConfirm?() }) {
+            Button(action: { 
+                onConfirm?([set1Score1, set1Score2, set2Score1, set2Score2, set3Score1, set3Score2])
+            }) {
               Text("同意")
                 .font(.system(size: 14.adapter, weight: .medium))
                 .foregroundColor(.white)
@@ -230,7 +234,29 @@ struct DoubleMatchResultEntryView: View {
       .shadow(color: Color.black.opacity(0.15), radius: 14.adapter, x: 0, y: 6.adapter)
     }
     .transition(.opacity.combined(with: .scale(scale: 0.95)))
+    .onAppear {
+        fillScores()
+    }
+    .onChange(of: scoreStore.scoreDetail) { _ in
+        fillScores()
+    }
       .enableInjection()
+  }
+
+  private func fillScores() {
+      guard let sets = scoreStore.scoreDetail?.scoreDetailList else { return }
+      if sets.count > 0 {
+          set1Score1 = "\(sets[0].player1Score ?? 0)"
+          set1Score2 = "\(sets[0].player2Score ?? 0)"
+      }
+      if sets.count > 1 {
+          set2Score1 = "\(sets[1].player1Score ?? 0)"
+          set2Score2 = "\(sets[1].player2Score ?? 0)"
+      }
+      if sets.count > 2 {
+          set3Score1 = "\(sets[2].player1Score ?? 0)"
+          set3Score2 = "\(sets[2].player2Score ?? 0)"
+      }
   }
 
   #if DEBUG
@@ -306,7 +332,7 @@ private struct ScoreTextField: View {
 #Preview {
   DoubleMatchResultEntryView(
     onCancel: {},
-    onConfirm: {},
+    onConfirm: { _ in },
     team1Player1Name: "余苇航",
     team1Player1Avatar: "avatar1",
     team1Player2Name: "吴威航",

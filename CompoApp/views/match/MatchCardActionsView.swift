@@ -13,6 +13,7 @@ struct MatchCardActionsView: View {
     var resign:()->Void = {}
     var scoring:()->Void = {}
     var inputResult:()->Void = {}
+    var notifyFn:()->Void = {}
     var body: some View {
         VStack(spacing: 0) {
           Button(action: {
@@ -29,6 +30,17 @@ struct MatchCardActionsView: View {
               scoring()
           }) {
             Text("计分")
+                  .font(.system(size: 12.adapter, weight: .medium))
+              .foregroundColor(.white)
+              .frame(width: 100.adapter, height: 27.adapter)
+              .background(Color(red: 102 / 255, green: 72 / 255, blue: 255 / 255))
+              .clipShape(Capsule())
+          }.noClickEffect().xVisible(isGoing)
+
+          Button(action: {
+              notifyFn()
+          }) {
+            Text("消息通知")
                   .font(.system(size: 12.adapter, weight: .medium))
               .foregroundColor(.white)
               .frame(width: 100.adapter, height: 27.adapter)

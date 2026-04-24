@@ -57,7 +57,19 @@ struct MatchResultPopupWrapper: View {
             onCancel: {
                 scoreStore.showMatchResult = false
             },
-            onConfirm: {
+            onConfirm: { scores in
+                // We could use the scores passed from the view, 
+                // but since MatchResultPopupWrapper has its own @State s1s1 etc.,
+                // and DoubleMatchResultEntryView is now populating from the store,
+                // we should probably sync them back or just use the passed scores.
+                if scores.count >= 6 {
+                    s1s1 = scores[0]
+                    s1s2 = scores[1]
+                    s2s1 = scores[2]
+                    s2s2 = scores[3]
+                    s3s1 = scores[4]
+                    s3s2 = scores[5]
+                }
                 submitScores()
             },
             team1Player1Name: t1p1Name,

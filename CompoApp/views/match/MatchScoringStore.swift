@@ -19,6 +19,21 @@ enum MatchRunningState: String {
 }
 
 @MainActor
+enum CheckInStatus: Int {
+    case unchecked = 0 // 未检
+    case checked = 1   // 已检
+    case forfeited = 2 // 弃权
+    
+    var title: String {
+        switch self {
+        case .unchecked: return "未检"
+        case .checked: return "已检"
+        case .forfeited: return "弃权"
+        }
+    }
+}
+
+@MainActor
 class MatchScoringStore: ObservableObject {
 
     static let shared = MatchScoringStore()
@@ -60,7 +75,7 @@ class MatchScoringStore: ObservableObject {
     @Published var firstServer: Int32? = nil
     @Published var firstServerId: Int64? = nil
     @Published var courtSwapped: Int32? = 0
-    
+    let autoCourtSwap = false
     @Published var showWarmupPopup: Bool = false
     @Published var showMatchResult: Bool = false
     @Published var showConfirmBegin: Bool = false
@@ -103,7 +118,8 @@ class MatchScoringStore: ObservableObject {
     }
     
     func syncRunningState() {
-        var matchStatus = 0
+        var matchStatus:Int32 = 0
+        let matchParentStatus = scoreDetail?.matchStatus
         if let lastRound = scoreDetail?.scoreDetailList?.first(where: { item in
             guard let s1 = item.player1Score, let s2 = item.player2Score else { return true }
             let notEnd = item.roundStatus != 2
@@ -120,10 +136,12 @@ class MatchScoringStore: ObservableObject {
                     shouldBeSwapped.toggle()
                 }
             }
-            self.courtSwapped = shouldBeSwapped ? 1 : 0
-            matchStatus = Int(lastRound.roundStatus ?? 0)
+            if autoCourtSwap {
+                self.courtSwapped = shouldBeSwapped ? 1 : 0
+            }
+            matchStatus = matchParentStatus ?? Int32(lastRound.roundStatus ?? 0)
         }else {
-            matchStatus = 2
+            matchStatus = matchParentStatus ??  2
         }
         
         let mStatus = matchStatus
@@ -264,6 +282,10 @@ class MatchScoringStore: ObservableObject {
     }
     
     func actionPlay() -> Void {
+        if isWarmingUpNow {
+            ScreenInfo.showInfo("热身中")
+            return
+        }
         if self.currentSetNumber == 1 && !self.isWarmedUp {
             self.showWarmupPopup = true
         }else {
