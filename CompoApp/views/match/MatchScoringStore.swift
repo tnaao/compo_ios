@@ -80,6 +80,7 @@ class MatchScoringStore: ObservableObject {
     @Published var showMatchResult: Bool = false
     @Published var showConfirmBegin: Bool = false
     @Published var showConfirmEnd: Bool = false
+    @Published var isEndingFlow: Bool = false
     
     private var pendingServeTeam: Int32? = nil
     
@@ -138,10 +139,23 @@ class MatchScoringStore: ObservableObject {
             }
             if autoCourtSwap {
                 self.courtSwapped = shouldBeSwapped ? 1 : 0
+            } else {
+                self.courtSwapped = lastRound.courtSwapped
             }
-            matchStatus = matchParentStatus ?? Int32(lastRound.roundStatus ?? 0)
+            
+            self.firstServer = lastRound.firstServer
+            self.pendingServeTeam = lastRound.firstServer
+            
+            let s1 = lastRound.player1Score ?? Int32(0)
+            let s2 = lastRound.player2Score ?? Int32(0)
+            if scoreDetail?.scoreDetailList?.firstIndex(of: lastRound) == 2 && (s1 + s2) >= 1{
+                matchStatus = matchParentStatus ?? Int32(lastRound.roundStatus ?? 0)
+            }else {
+                matchStatus = Int32(lastRound.roundStatus ?? 0)
+            }
         }else {
             matchStatus = matchParentStatus ??  2
+            self.currentSetNumber = scoreDetail?.scoreDetailList?.count ?? 1
         }
         
         let mStatus = matchStatus
@@ -269,7 +283,6 @@ class MatchScoringStore: ObservableObject {
                 if response.isValid {
                     self.isActionSuccess = true
                     self.fetchMatchScoreDetail(matchNo: matchNo)
-                    self.showMatchResult = true
                 } else {
                     self.errorMessage = response.message ?? "结束比赛失败"
                 }
@@ -301,10 +314,9 @@ class MatchScoringStore: ObservableObject {
     }
     
     func confirmStartMatch() {
-        guard let team = pendingServeTeam,
-              let matchNo = currentMatch?.matchNo,
+        let team = pendingServeTeam ?? 1
+        guard let matchNo = currentMatch?.matchNo,
               let detailNo = scoreDetail?.getSetScore(by: currentSetNumber)?.detailNo else {
-            ScreenInfo.showInfo("请点击选择发球选手")
             return
         }
         self.showConfirmBegin = false
@@ -329,7 +341,8 @@ class MatchScoringStore: ObservableObject {
     
     func actionEnd() -> Void {
         guard runningState == .playing else { return }
-        self.showConfirmEnd = true
+        self.isEndingFlow = true
+        self.showMatchResult = true
     }
     
     func confirmEndMatch() {
@@ -364,12 +377,14 @@ class MatchScoringStore: ObservableObject {
                 if response.isValid {
                     self.isActionSuccess = true
                     self.showMatchResult = false
+                    
+                    if self.isEndingFlow {
+                        self.showConfirmEnd = true
+                        self.isEndingFlow = false
+                    }
+                    
                     if let matchNo = self.currentMatch?.matchNo {
-                        self.fetchMatchScoreDetail(matchNo: matchNo)
-                        //返回上一页
-                        if self.currentSetNumber == 3 {
-//                            AppRouter.shared.apprRouter.popNavigation()
-                        }
+//                        self.fetchMatchScoreDetail(matchNo: matchNo)
                     }
                 } else {
                     self.errorMessage = response.message ?? "提交比赛结果失败"

@@ -14,12 +14,19 @@ struct MyNetImage: View {
     var radius:CGFloat = 0
     var contentMode:ContentMode = .fill
     var isOval:Bool = false
+    var bgColor: Color = Color.gray.opacity(0.3)
     
     var body: some View {
         
         let rc = isOval ? height*0.5 : radius
-        RoundedRectangle(cornerRadius: rc)
-        .fill(Color.gray.opacity(0.3))
+        Group {
+            if bgColor != .clear {
+                RoundedRectangle(cornerRadius: rc)
+                    .fill(bgColor)
+            } else {
+                Color.clear
+            }
+        }
         .frame(width: width, height: height)
         .overlay {
             AsyncImage(url: URL(string: url ?? urlDefault)) { phase in

@@ -548,12 +548,13 @@ struct MatchScoringView: View {
       
       let statusValue = (team == 1) ? (scoreStore.scoreDetail?.pair1CheckinStatus ?? 0) : (scoreStore.scoreDetail?.pair2CheckinStatus ?? 0)
       let status = CheckInStatus(rawValue: Int(statusValue)) ?? .unchecked
+      let isDefaultServer = scoreStore.firstServerId == nil && playerId == scoreStore.currentMatch?.pair1List?.first?.playerId
       
       return ZStack(content: {
           MyAssetImage(name: "ball_01",width: 18.adapter,height: 18.adapter).offset(
             x: ox,
           )
-          .opacity(scoreStore.firstServerId == playerId ? 1 : 0)
+          .opacity((scoreStore.firstServerId == playerId || isDefaultServer) ? 1 : 0)
           
           PlayerCourtInfoView(name: name, iconUrl: avatar, checkInStatus: status)
       })

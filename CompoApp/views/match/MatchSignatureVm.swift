@@ -20,11 +20,11 @@ class MatchSignatureVm: ObservableObject {
     private let disposeBag = DisposeBag()
     
     /// 保存签名：先截图上传，再提交签名URL
-    func saveSignature(signatureView: some View, matchNo: String) {
+    func saveSignature(signatureView: some View, size: CGSize, matchNo: String) {
         isLoading = true
         
         // 1. 将签名视图渲染为图片
-        guard let image = renderViewToImage(signatureView),
+        guard let image = renderViewToImage(signatureView, size: size),
               let imageData = image.jpegData(compressionQuality: 0.8) else {
             self.isLoading = false
             self.errorMessage = "签名图片生成失败"
@@ -53,7 +53,6 @@ class MatchSignatureVm: ObservableObject {
             .disposed(by: disposeBag)
     }
     
-    /// 根据角色提交签名
     private func submitSign(matchNo: String, signatureImageUrl: String) {
         let request = WyRefereeSignatureRequest(matchNo: matchNo, signatureImage: signatureImageUrl)
         
@@ -78,18 +77,32 @@ class MatchSignatureVm: ObservableObject {
             })
             .disposed(by: disposeBag)
     }
-    
+
     /// 将 SwiftUI View 渲染为 UIImage
-    private func renderViewToImage(_ view: some View) -> UIImage? {
-        let controller = UIHostingController(rootView: view)
-        let targetSize = CGSize(width: 400, height: 200)
-        controller.view.bounds = CGRect(origin: .zero, size: targetSize)
-        controller.view.backgroundColor = .white
-        controller.view.layoutIfNeeded()
+    private func renderViewToImage(_ view: some View, size: CGSize) -> UIImage? {
+        // 创建一个包装视图，确保有纯白背景且没有任何边界伪影
+        let captureView = ZStack {
+            Color.white
+            view
+        }
+        .frame(width: size.width, height: size.height)
+        .clipped()
         
-        let renderer = UIGraphicsImageRenderer(size: targetSize)
-        return renderer.image { _ in
-            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        if #available(iOS 16.0, *) {
+            let renderer = ImageRenderer(content: captureView)
+            renderer.scale = UIScreen.main.scale
+            renderer.isOpaque = true // 确保不透明
+            return renderer.uiImage
+        } else {
+            let controller = UIHostingController(rootView: captureView)
+            controller.view.bounds = CGRect(origin: .zero, size: size)
+            controller.view.backgroundColor = .white
+            controller.view.layoutIfNeeded()
+            
+            let renderer = UIGraphicsImageRenderer(size: size)
+            return renderer.image { _ in
+                controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+            }
         }
     }
 }

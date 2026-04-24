@@ -68,6 +68,10 @@ struct ScoreDetailItemModel: Codable, Sendable, Identifiable,Equatable {
   let roundStatus: Int32?
   /// 本局获胜者：1-选手1 2-选手2
   let roundWinner: Int32?
+  /// 发球方：1-选手1 2-选手2
+  let firstServer: Int32?
+  /// 场地交换：0-未交换 1-已交换
+  let courtSwapped: Int32?
   
   /// Identifiable id
   var id: Int64 { detailId }

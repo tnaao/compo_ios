@@ -107,6 +107,7 @@ struct MatchSignatureView: View {
     @Environment(\.safeAreaInsets) var safeAreaInsets
     @State private var lines = [[CGPoint]]()
     @State private var hideExistingSignature: Bool = false
+    @State private var signatureSize: CGSize = .zero
     @StateObject private var scoreStore: MatchScoringStore = MatchScoringStore.shared
     @StateObject private var viewModel = MatchSignatureVm()
     
@@ -142,87 +143,95 @@ struct MatchSignatureView: View {
                 navigationBar.padding(.top, safeAreaInsets.top)
                 Spacer().fixedSize().frame(height: 10.adapter)
                 // Signature Area
-                ZStack {
-                    Color.white
-                    
-                    VStack {
-                        HStack {
-                            Text(role.rawValue)
-                                .font(.system(size: 14.adapter, weight: .regular))
-                                .foregroundColor(Color(red: 102 / 255, green: 102 / 255, blue: 102 / 255))
-                                .padding(.leading, 20.adapter)
-                                .padding(.top, 20.adapter)
+                VStack {
+                    ZStack {
+                        // Transparent container, relying on VStack white background
+                        Color.clear
+                        
+                        VStack {
+                            HStack {
+                                Text(role.rawValue)
+                                    .font(.system(size: 14.adapter, weight: .regular))
+                                    .foregroundColor(Color(red: 102 / 255, green: 102 / 255, blue: 102 / 255))
+                                    .padding(.leading, 20.adapter)
+                                    .padding(.top, 20.adapter)
+                                Spacer()
+                            }
                             Spacer()
                         }
-                        Spacer()
+                        
+                        Text(signatureNameText)
+                            .font(.system(size: 20.adapter, weight: .regular))
+                            .foregroundColor(Color(red: 220 / 255, green: 220 / 255, blue: 220 / 255)) // Very faint gray
+                        
+                        if let url = existingSignatureUrl, !url.isEmpty {
+                            MyNetImage(url: url, width: 400.adapter, height: 200.adapter, contentMode: .fit, bgColor: .clear)
+                        }
+                        
+                        SignaturePadView(lines: $lines)
                     }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .clipped()
+                    .background(GeometryReader { geo in
+                        Color.clear.onAppear {
+                            signatureSize = geo.size
+                        }
+                    })
                     
-                    Text(signatureNameText)
-                        .font(.system(size: 20.adapter, weight: .regular))
-                        .foregroundColor(Color(red: 220 / 255, green: 220 / 255, blue: 220 / 255)) // Very faint gray
-                    
-                    if let url = existingSignatureUrl, !url.isEmpty {
-                        MyNetImage(url: url, width: 400.adapter, height: 200.adapter, contentMode: .fit)
+                    // Bottom Action Area
+                    HStack(spacing: 8.adapter) {
+                        // Clear Button
+                        Button(action: {
+                            lines.removeAll()
+                            hideExistingSignature = true
+                        }) {
+                            Text("清除")
+                                .font(.system(size: 14.adapter, weight: .medium))
+                                .foregroundColor(.white)
+                                .frame(width: 90.adapter, height: 36.adapter)
+                                .background(
+                                    SlantedButtonShape(type: .leftRoundedRightSlanted, slantOffset: 12.adapter)
+                                        .fill(Color(red: 255 / 255, green: 90 / 255, blue: 90 / 255))
+                                )
+                        }.noClickEffect()
+                        
+                        // Save Button
+                        Button(action: {
+                            guard let matchNo = scoreStore.currentMatch?.matchNo else { return }
+                            let signatureView = SignaturePadView(lines: .constant(lines))
+                            viewModel.saveSignature(signatureView: signatureView, size: signatureSize, matchNo: matchNo)
+                        }) {
+                            Text("保存")
+                                .font(.system(size: 14.adapter, weight: .medium))
+                                .foregroundColor(.white)
+                                .frame(width: 90.adapter, height: 36.adapter)
+                                .background(
+                                    SlantedButtonShape(type: .bothSlanted, slantOffset: 12.adapter)
+                                        .fill(Color(red: 250 / 255, green: 139 / 255, blue: 44 / 255))
+                                )
+                        }.noClickEffect()
+                        .disabled(viewModel.isLoading)
+                        
+                        // Return Button
+                        Button(action: {
+                            AppRouter.shared.appRouter.popNavigation()
+                        }) {
+                            Text("返回")
+                                .font(.system(size: 14.adapter, weight: .medium))
+                                .foregroundColor(.white)
+                                .frame(width: 90.adapter, height: 36.adapter)
+                                .background(
+                                    SlantedButtonShape(type: .leftSlantedRightRounded, slantOffset: 12.adapter)
+                                        .fill(Color(red: 102 / 255, green: 72 / 255, blue: 255 / 255))
+                                )
+                        }.noClickEffect()
                     }
-                    
-                    SignaturePadView(lines: $lines)
+                    .padding(.vertical, 20.adapter)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.white)
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                
-                // Bottom Action Area
-                HStack(spacing: 8.adapter) {
-                    // Clear Button
-                    Button(action: {
-                        lines.removeAll()
-                        hideExistingSignature = true
-                    }) {
-                        Text("清除")
-                            .font(.system(size: 14.adapter, weight: .medium))
-                            .foregroundColor(.white)
-                            .frame(width: 90.adapter, height: 36.adapter)
-                            .background(
-                                SlantedButtonShape(type: .leftRoundedRightSlanted, slantOffset: 12.adapter)
-                                    .fill(Color(red: 255 / 255, green: 90 / 255, blue: 90 / 255))
-                            )
-                    }.noClickEffect()
-                    
-                    // Save Button
-                    Button(action: {
-                        guard let matchNo = scoreStore.currentMatch?.matchNo else { return }
-                        let signatureView = SignaturePadView(lines: .constant(lines))
-                            .frame(width: 400.adapter, height: 200.adapter)
-                        viewModel.saveSignature(signatureView: signatureView, matchNo: matchNo)
-                    }) {
-                        Text("保存")
-                            .font(.system(size: 14.adapter, weight: .medium))
-                            .foregroundColor(.white)
-                            .frame(width: 90.adapter, height: 36.adapter)
-                            .background(
-                                SlantedButtonShape(type: .bothSlanted, slantOffset: 12.adapter)
-                                    .fill(Color(red: 250 / 255, green: 139 / 255, blue: 44 / 255))
-                            )
-                    }.noClickEffect()
-                    .disabled(viewModel.isLoading)
-                    
-                    // Return Button
-                    Button(action: {
-                        AppRouter.shared.appRouter.popNavigation()
-                    }) {
-                        Text("返回")
-                            .font(.system(size: 14.adapter, weight: .medium))
-                            .foregroundColor(.white)
-                            .frame(width: 90.adapter, height: 36.adapter)
-                            .background(
-                                SlantedButtonShape(type: .leftSlantedRightRounded, slantOffset: 12.adapter)
-                                    .fill(Color(red: 102 / 255, green: 72 / 255, blue: 255 / 255))
-                            )
-                    }.noClickEffect()
-                }
-                .padding(.vertical, 20.adapter)
-                .frame(maxWidth: .infinity)
-                .background(Color.white)
+                .frame(maxHeight: .infinity).background(Color.white)
             }
-            .frame(maxHeight: .infinity)
         }.loginBg()
             .onAppear {
                 viewModel.role = self.role
@@ -253,7 +262,7 @@ struct MatchSignatureView: View {
                 // Return to home or pop view after successful submission
                 AppRouter.shared.appRouter.popNavigation()
             }
-        }
+        }.loginBg()
         .enableInjection()
     }
 
@@ -292,6 +301,7 @@ struct MatchSignatureView: View {
       }
       .padding(.trailing, 16.adapter)
     }
+    
 
 
     #if DEBUG
