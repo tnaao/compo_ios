@@ -84,6 +84,7 @@ class MatchScoringStore: ObservableObject {
     @Published var showEarlyEndConfirm: Bool = false
     @Published var earlyEndWinnerName: String = ""
     
+    private var isNavigatingToSignature: Bool = false
     private var pendingServeTeam: Int32? = nil
     
     var gameStateText:String {
@@ -182,6 +183,26 @@ class MatchScoringStore: ObservableObject {
             } else {
                 self.runningState = .notStarted
             }
+        }
+
+        // 当整场比赛结束时，如果是从计分页触发的，则3秒后自动跳转到签名确认页
+        if scoreDetail?.matchStatus == 2 {
+            self.autoNavigateToSignatureConfirm()
+        }
+    }
+
+    private func autoNavigateToSignatureConfirm() {
+        guard !isNavigatingToSignature else { return }
+        isNavigatingToSignature = true
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
+            guard let self = self else { return }
+            // 确保当前还在计分页
+            let currentPath = AppRouter.shared.appRouter.path
+            if let last = currentPath.last, case .matchScoring = last {
+                AppRouter.shared.appRouter.navigateTo(.matchSignatureConfirm)
+            }
+            self.isNavigatingToSignature = false
         }
     }
     
