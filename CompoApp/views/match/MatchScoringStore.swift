@@ -84,7 +84,7 @@ class MatchScoringStore: ObservableObject {
     @Published var showEarlyEndConfirm: Bool = false
     @Published var earlyEndWinnerName: String = ""
     
-    private var isNavigatingToSignature: Bool = false
+    private var hasTriggeredAutoNav: Bool = false
     private var pendingServeTeam: Int32? = nil
     
     var gameStateText:String {
@@ -192,8 +192,8 @@ class MatchScoringStore: ObservableObject {
     }
 
     private func autoNavigateToSignatureConfirm() {
-        guard !isNavigatingToSignature else { return }
-        isNavigatingToSignature = true
+        guard !hasTriggeredAutoNav else { return }
+        hasTriggeredAutoNav = true
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
             guard let self = self else { return }
@@ -202,7 +202,6 @@ class MatchScoringStore: ObservableObject {
             if let last = currentPath.last, case .matchScoring = last {
                 AppRouter.shared.appRouter.navigateTo(.matchSignatureConfirm)
             }
-            self.isNavigatingToSignature = false
         }
     }
     
@@ -234,6 +233,7 @@ class MatchScoringStore: ObservableObject {
         self.matchTimer = nil
         self.matchElapsedSeconds = 0
         self.isPaused = false
+        self.hasTriggeredAutoNav = false
     }
     
     /// 开始比赛
@@ -402,7 +402,6 @@ class MatchScoringStore: ObservableObject {
     
     func cancelEarlyEnd() {
         self.showEarlyEndConfirm = false
-        self.showMatchResult = true
     }
     
     func actionPlay() -> Void {

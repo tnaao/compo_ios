@@ -19,6 +19,7 @@ struct EarlyEndMatchPopUpView: View {
   var team2SetPoints: Int = 0
   var team2PlayerNames: String = ""
   var team2Points: Int = 0
+    var cancelText:String = "继续"
   
   var body: some View {
     WarmupTimerPopupView(
@@ -35,7 +36,8 @@ struct EarlyEndMatchPopUpView: View {
       team2ClubName: team2ClubName,
       team2SetPoints: team2SetPoints,
       team2PlayerNames: team2PlayerNames,
-      team2Points: team2Points
+      team2Points: team2Points,
+      cancelText: cancelText
     )
       .enableInjection()
   }

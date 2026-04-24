@@ -24,13 +24,12 @@ struct MatchSignatureScoringConfirmView: View {
     }
 
     var team1SetScore: Int {
-        Int(scoreStore.currentMatch?.pair1Score ?? 0)
+        Int(scoreStore.scoreDetail?.pair1Score ?? scoreStore.currentMatch?.pair1Score ?? 0)
     }
 
     var team2SetScore: Int {
-        Int(scoreStore.currentMatch?.pair2Score ?? 0)
+        Int(scoreStore.scoreDetail?.pair2Score ?? scoreStore.currentMatch?.pair2Score ?? 0)
     }
-
     var isSwapped: Bool {
         scoreStore.courtSwapped == 1
     }

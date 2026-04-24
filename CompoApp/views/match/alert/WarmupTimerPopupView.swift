@@ -24,6 +24,8 @@ struct WarmupTimerPopupView<Content: View>: View {
   var team2SetPoints: Int = 0
   var team2PlayerNames: String = ""
   var team2Points: Int = 0
+    
+    var cancelText:String = "跳过"
 
   var body: some View {
     ZStack {
@@ -175,7 +177,7 @@ struct WarmupTimerPopupView<Content: View>: View {
           Button(action: {
             onSkip?()
           }) {
-            Text("跳过")
+            Text(cancelText)
               .font(.system(size: 14.adapter, weight: .medium))
               .foregroundColor(Color(red: 51 / 255, green: 51 / 255, blue: 51 / 255))
               .frame(maxWidth: .infinity, maxHeight: .infinity)
