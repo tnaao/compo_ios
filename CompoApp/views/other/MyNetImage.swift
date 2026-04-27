@@ -9,13 +9,13 @@ import Kingfisher
 
 struct MyNetImage: View {
   var url: String? = nil
-  var placeHolderName: String? = "matchDefault"
   private let urlDefault: String = "https://theportablewife.com/wp-content/uploads/best-places-to-take-pictures-in-paris-newfeatured.jpg"
   var width: CGFloat = CGFloat.infinity
   var height: CGFloat = CGFloat.infinity
   var radius: CGFloat = 0
-  var contentMode: SwiftUI.ContentMode = .fill
   var isOval: Bool = false
+  var contentMode: SwiftUI.ContentMode = .fill
+  var placeHolderName: String? = "matchDefault"
   var bgColor: Color = Color.gray.opacity(0.3)
   var timeOutWait: Double = 5.0
   var onImageLoaded: ((UIImage?) -> Void)? = nil
@@ -60,7 +60,7 @@ struct CustomAsyncImage: View {
   let width: CGFloat
   let height: CGFloat
   let radius: CGFloat
-  var contentMode: ContentMode = .fill
+  var contentMode: SwiftUI.ContentMode = .fill
   var timeOutWait: Double = 5.0
   var onImageLoaded: ((UIImage?) -> Void)?
   var placeHolderName: String? = nil
