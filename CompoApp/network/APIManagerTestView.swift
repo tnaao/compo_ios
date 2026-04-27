@@ -202,7 +202,7 @@ class APIManagerTestViewModel: ObservableObject {
     // 使用空的 Codable 结构来接收任意响应
     struct EmptyData: Codable {}
 
-    APIManager.shared.request<EmptyData>(
+    APIManager.shared.request(
       apiPath,
       method: httpMethod.alamofireMethod,
       params: nil,

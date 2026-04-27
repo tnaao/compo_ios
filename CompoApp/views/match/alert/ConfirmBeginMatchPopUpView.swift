@@ -69,7 +69,6 @@ struct ConfirmBeginMatchPopUpView: View {
   }
 }
 
-#Preview {
+#Preview(traits: .landscapeLeft) {
   ConfirmBeginMatchPopUpView()
-    .previewInterfaceOrientation(.landscapeLeft)
 }

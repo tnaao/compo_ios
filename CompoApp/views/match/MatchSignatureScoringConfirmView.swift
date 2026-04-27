@@ -353,10 +353,7 @@ struct ScoringPlayerCardView: View {
     #endif
 }
 
-struct MatchScoringConfirmView_Previews: PreviewProvider {
-    static var previews: some View {
-        MatchSignatureScoringConfirmView()
-            .previewInterfaceOrientation(.landscapeLeft)
-            .background(Color.gray.opacity(0.1)) // Outline check
-    }
+#Preview(traits: .landscapeLeft) {
+    MatchSignatureScoringConfirmView()
+        .background(Color.gray.opacity(0.1)) // Outline check
 }

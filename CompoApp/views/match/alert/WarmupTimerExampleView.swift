@@ -64,9 +64,6 @@ struct WarmupTimerExampleView: View {
     #endif
 }
 
-struct WarmupTimerExampleView_Previews: PreviewProvider {
-    static var previews: some View {
-        WarmupTimerExampleView()
-            .previewInterfaceOrientation(.landscapeLeft)
-    }
+#Preview(traits: .landscapeLeft) {
+    WarmupTimerExampleView()
 }

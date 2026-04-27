@@ -106,7 +106,6 @@ struct CourtChangePopupView: View {
     #endif
 }
 
-#Preview {
+#Preview(traits: .landscapeLeft) {
     CourtChangePopupView(isPresented: .constant(true))
-        .previewInterfaceOrientation(.landscapeLeft)
 }

@@ -51,7 +51,7 @@ struct SingleMatchResultEntryView: View {
                   .frame(width: 35.adapter, height: 35.adapter)
                   .shadow(color: Color.black.opacity(0.1), radius: 4.adapter, x: 0, y: 2.adapter)
 
-                MyNetImage(width: 27.adapter, height: 27.adapter)
+                MyNetImage(url: player1Avatar, width: 27.adapter, height: 27.adapter, placeHolderName: "avatarDefault")
                   .clipShape(Circle())
               }
 
@@ -91,7 +91,7 @@ struct SingleMatchResultEntryView: View {
                   .frame(width: 35.adapter, height: 35.adapter)
                   .shadow(color: Color.black.opacity(0.1), radius: 4.adapter, x: 0, y: 2.adapter)
 
-                MyNetImage(width: 27.adapter, height: 27.adapter)
+                MyNetImage(url: player2Avatar, width: 27.adapter, height: 27.adapter, placeHolderName: "avatarDefault")
                   .clipShape(Circle())
               }
 
@@ -253,7 +253,7 @@ private struct ScoreTextField: View {
 }
 
 // MARK: - Preview
-#Preview {
+#Preview(traits: .landscapeLeft) {
   SingleMatchResultEntryView(
     onCancel: {},
     onConfirm: {},
@@ -262,5 +262,4 @@ private struct ScoreTextField: View {
     player2Name: "陈泽然",
     player2Avatar: "avatar2"
   )
-  .previewInterfaceOrientation(.landscapeLeft)
 }

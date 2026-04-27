@@ -11,6 +11,7 @@
 		AF076F069DEC319469769714 /* Pods_CompoAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30780D27F8EDDCAB914CFD77 /* Pods_CompoAppTests.framework */; };
 		BA37514C99C52C846A88289E /* Pods_CompoApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69D9AB6EFD5F43D4E22BC1DA /* Pods_CompoApp.framework */; };
 		BE104F342F8957F6006CCB44 /* AppRouter in Frameworks */ = {isa = PBXBuildFile; productRef = BE104F332F8957F6006CCB44 /* AppRouter */; };
+		BE1943982F9F6A1900B28EED /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = BE1943972F9F6A1900B28EED /* Kingfisher */; };
 		BE8B94272F6847B900D8BFA5 /* AdapterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = BE8B94262F6847B900D8BFA5 /* AdapterSwift */; };
 		BEA398832F68CFF00069B1C8 /* DouyinSans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BEA398822F68CD990069B1C8 /* DouyinSans.ttf */; };
 		BED3F95F2F66525D0001DFD9 /* AppRouter in Frameworks */ = {isa = PBXBuildFile; productRef = BED3F95E2F66525D0001DFD9 /* AppRouter */; };
@@ -104,6 +105,7 @@
 				BED3F95F2F66525D0001DFD9 /* AppRouter in Frameworks */,
 				BE8B94272F6847B900D8BFA5 /* AdapterSwift in Frameworks */,
 				BE104F342F8957F6006CCB44 /* AppRouter in Frameworks */,
+				BE1943982F9F6A1900B28EED /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,6 +353,7 @@
 			packageReferences = (
 				BE8B94252F6847B900D8BFA5 /* XCRemoteSwiftPackageReference "AdapterSwift" */,
 				BE104F322F8957F6006CCB44 /* XCLocalSwiftPackageReference "../../acode/AppRouter" */,
+				BE1943962F9F6A1900B28EED /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = BE8A5F612F6651DC002FB3EE /* Products */;
@@ -927,6 +930,14 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		BE1943962F9F6A1900B28EED /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.8.1;
+			};
+		};
 		BE8B94252F6847B900D8BFA5 /* XCRemoteSwiftPackageReference "AdapterSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/intsig171/AdapterSwift.git";
@@ -949,6 +960,11 @@
 		BE104F332F8957F6006CCB44 /* AppRouter */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AppRouter;
+		};
+		BE1943972F9F6A1900B28EED /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BE1943962F9F6A1900B28EED /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 		BE8B94262F6847B900D8BFA5 /* AdapterSwift */ = {
 			isa = XCSwiftPackageProductDependency;

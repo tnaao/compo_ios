@@ -43,7 +43,6 @@ struct CourtChangeExampleView: View {
     #endif
 }
 
-#Preview {
+#Preview(traits: .landscapeLeft) {
     CourtChangeExampleView()
-        .previewInterfaceOrientation(.landscapeLeft)
 }

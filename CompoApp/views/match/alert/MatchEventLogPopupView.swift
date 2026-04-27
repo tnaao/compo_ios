@@ -281,7 +281,7 @@ private struct EventTableCell: View {
 }
 
 // MARK: - Preview
-#Preview {
+#Preview(traits: .landscapeLeft) {
   MatchEventLogPopupView(
     onClose: {},
     onDelete: { _ in },
@@ -302,5 +302,4 @@ private struct EventTableCell: View {
       MatchEventItem(index: 1, name: "换球", player: "—", time: "11:21:03"),
     ]
   )
-  .previewInterfaceOrientation(.landscapeLeft)
 }

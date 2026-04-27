@@ -71,7 +71,6 @@ struct ConfirmEndMatchPopUpView: View {
   }
 }
 
-#Preview {
+#Preview(traits: .landscapeLeft) {
   ConfirmEndMatchPopUpView()
-    .previewInterfaceOrientation(.landscapeLeft)
 }

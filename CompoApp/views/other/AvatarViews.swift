@@ -42,7 +42,7 @@ struct PlayerCourtInfoView: View {
                         ).background(Color(hex: "#33000000"))
                 }.frame(width: 48.adapter)
                 
-                MyNetImage(url: iconUrl, width: 25.adapter,height: 25.adapter,isOval: true)
+                MyNetImage(url: iconUrl, width: 25.adapter,height: 25.adapter,isOval: true, placeHolderName: "avatarDefault")
                     .innerBorderCircle(color: Color.white, lineWidth: 3.adapter)
                     .playerIconShadow(size: 25.adapter)
                     
@@ -70,7 +70,7 @@ struct PlayerIconView:View {
     var size:CGFloat = 35.adapter
     var body: some View {
         ZStack(alignment: .topLeading) {
-            MyNetImage(url: url,width: size,height: size,isOval: true)
+            MyNetImage(url: url,width: size,height: size,isOval: true, placeHolderName: "avatarDefault")
                 .innerBorderCircle(color: Color.white, lineWidth: size < 35.adapter ? 2.adapter : 4.adapter)
                 .playerIconShadow(size: size,)
 

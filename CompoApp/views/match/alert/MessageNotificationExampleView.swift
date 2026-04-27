@@ -42,7 +42,6 @@ struct MessageNotificationExampleView: View {
     #endif
 }
 
-#Preview {
+#Preview(traits: .landscapeLeft) {
     MessageNotificationExampleView()
-        .previewInterfaceOrientation(.landscapeLeft)
 }

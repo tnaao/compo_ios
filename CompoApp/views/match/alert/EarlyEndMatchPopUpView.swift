@@ -67,7 +67,6 @@ struct EarlyEndMatchPopUpView: View {
   }
 }
 
-#Preview {
-    EarlyEndMatchPopUpView(winnerName: "余苇航/吴威航")
-    .previewInterfaceOrientation(.landscapeLeft)
+#Preview(traits: .landscapeLeft) {
+  EarlyEndMatchPopUpView(winnerName: "余苇航/吴威航")
 }

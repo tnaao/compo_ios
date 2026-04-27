@@ -209,7 +209,6 @@ struct MessageNotificationPopupView: View {
     #endif
 }
 
-#Preview {
+#Preview(traits: .landscapeLeft) {
     MessageNotificationPopupView(isPresented: .constant(true))
-        .previewInterfaceOrientation(.landscapeLeft)
 }

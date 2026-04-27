@@ -534,11 +534,6 @@ struct MatchCardMultiGoingView: View {
               Color.clear.frame(height: 14.adapter)
           }
         }
-        .frame(maxWidth: 80.adapter)
-        .padding(.bottom,0.adapter)
-
-        Spacer()
-
         // Right Team Players
         HStack(spacing: 7.adapter) {
           ForEach(match.team2) { player in
@@ -566,82 +561,80 @@ struct MatchCardMultiGoingView: View {
 
 // MARK: - Previews
 
-struct MatchCardView_Previews: PreviewProvider {
-    static var previews: some View {
-        ScrollView(content: {
-            VStack(spacing: 20.adapter) {
-                // Multi View Previews (Completed)
-                MatchCardMultiView(match: .sampleWithCourtChange)
-                MatchCardMultiView(match: .sample)
-                
-                // Multi View Previews (Going)
-                MatchCardMultiGoingView(match: .sampleWithCourtChange)
-                MatchCardMultiGoingView(match: .sample)
-                
-                // Single View Previews (Completed)
-                MatchCardSingleView(match: .sample)
-                MatchCardSingleView(match: .sampleWithCourtChange)
-                
-                // Single View Previews (Going)
-                MatchCardSingleGoingView(match: .sample)
-                MatchCardSingleGoingView(match: .sampleWithCourtChange)
-            }
-        })
-        .padding(.horizontal,12)
-        .padding(.vertical,12)
-        .background(Color.indigo)
-        .previewInterfaceOrientation(.landscapeLeft)
+#Preview(traits: .landscapeLeft) {
+    ScrollView(content: {
+        VStack(spacing: 20.adapter) {
+            // Multi View Previews (Completed)
+            MatchCardMultiView(match: .sampleWithCourtChange)
+            MatchCardMultiView(match: .sample)
+            
+            // Multi View Previews (Going)
+            MatchCardMultiGoingView(match: .sampleWithCourtChange)
+            MatchCardMultiGoingView(match: .sample)
+            
+            // Single View Previews (Completed)
+            MatchCardSingleView(match: .sample)
+            MatchCardSingleView(match: .sampleWithCourtChange)
+            
+            // Single View Previews (Going)
+            MatchCardSingleGoingView(match: .sample)
+            MatchCardSingleGoingView(match: .sampleWithCourtChange)
+        }
+    })
+    .padding(.horizontal,12)
+    .padding(.vertical,12)
+    .background(Color.indigo)
+}
+
+// MARK: - API Model Extensions
+extension WyBadmintonScheduleProgramModel {
+    
+    var isSingle: Bool {
+        (pair1List?.count ?? 0) == 1
+    }
+    
+    var courtStr: String {
+        return courtInfo?.courtName ?? courtInfo?.courtNo ?? "--"
+    }
+    
+    var matchNumberStr: String {
+        return matchSession?.sessionNo ?? "--"
+    }
+    
+    var matchInfoStr: String {
+        let name = eventName ?? "--"
+        let round = roundType ?? ""
+        return "\(name) \(round)"
+    }
+    
+    var toMatchModel1: MatchModel1 {
+        let t1 = (pair1List ?? []).map { PlayerModel(name: $0.playerName, hasCrown: false) }
+        let t2 = (pair2List ?? []).map { PlayerModel(name: $0.playerName, hasCrown: false) }
+        return MatchModel1(
+            court: courtStr,
+            matchNumber: matchNumberStr,
+            matchInfo: matchInfoStr,
+            team1: t1,
+            team2: t2,
+            scoreTeam1: Int(pair1Score ?? 0),
+            scoreTeam2: Int(pair2Score ?? 0),
+            courtChange: nil
+        )
+    }
+    
+    var toMatchModelSingle: MatchModelSingle {
+        let p1 = (pair1List?.first).map { PlayerModel(name: $0.playerName, hasCrown: false) } ?? PlayerModel(name: "--", hasCrown: false)
+        let p2 = (pair2List?.first).map { PlayerModel(name: $0.playerName, hasCrown: false) } ?? PlayerModel(name: "--", hasCrown: false)
+        
+        return MatchModelSingle(
+            court: courtStr,
+            matchNumber: matchNumberStr,
+            matchInfo: matchInfoStr,
+            player1: p1,
+            player2: p2,
+            scoreTeam1: Int(pair1Score ?? 0),
+            scoreTeam2: Int(pair2Score ?? 0),
+            courtChange: nil
+        )
     }
 }
-    // MARK: - API Model Extensions
-    extension WyBadmintonScheduleProgramModel {
-        
-        var isSingle: Bool {
-            (pair1List?.count ?? 0) == 1
-        }
-        
-        var courtStr: String {
-            return courtInfo?.courtName ?? courtInfo?.courtNo ?? "--"
-        }
-        
-        var matchNumberStr: String {
-            return matchSession?.sessionNo ?? "--"
-        }
-        
-        var matchInfoStr: String {
-            let name = eventName ?? "--"
-            let round = roundType ?? ""
-            return "\(name) \(round)"
-        }
-        
-        var toMatchModel1: MatchModel1 {
-            let t1 = (pair1List ?? []).map { PlayerModel(name: $0.playerName, hasCrown: false) }
-            let t2 = (pair2List ?? []).map { PlayerModel(name: $0.playerName, hasCrown: false) }
-            return MatchModel1(
-                court: courtStr,
-                matchNumber: matchNumberStr,
-                matchInfo: matchInfoStr,
-                team1: t1,
-                team2: t2,
-                scoreTeam1: Int(pair1Score ?? 0),
-                scoreTeam2: Int(pair2Score ?? 0),
-                courtChange: nil
-            )
-        }
-        
-        var toMatchModelSingle: MatchModelSingle {
-            let p1 = (pair1List?.first).map { PlayerModel(name: $0.playerName, hasCrown: false) } ?? PlayerModel(name: "--", hasCrown: false)
-            let p2 = (pair2List?.first).map { PlayerModel(name: $0.playerName, hasCrown: false) } ?? PlayerModel(name: "--", hasCrown: false)
-            
-            return MatchModelSingle(
-                court: courtStr,
-                matchNumber: matchNumberStr,
-                matchInfo: matchInfoStr,
-                player1: p1,
-                player2: p2,
-                scoreTeam1: Int(pair1Score ?? 0),
-                scoreTeam2: Int(pair2Score ?? 0),
-                courtChange: nil
-            )
-        }
-    }

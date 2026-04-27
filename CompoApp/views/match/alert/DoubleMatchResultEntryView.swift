@@ -56,7 +56,7 @@ struct DoubleMatchResultEntryView: View {
                     .frame(width: 35.adapter, height: 35.adapter)
                     .shadow(color: Color.black.opacity(0.1), radius: 4.adapter, x: 0, y: 2.adapter)
 
-                  MyNetImage(url: team1Player1Avatar, width: 27.adapter, height: 27.adapter)
+                  MyNetImage(url: team1Player1Avatar, width: 27.adapter, height: 27.adapter, placeHolderName: "avatarDefault")
                     .clipShape(Circle())
                 }
 
@@ -74,7 +74,7 @@ struct DoubleMatchResultEntryView: View {
                         .frame(width: 35.adapter, height: 35.adapter)
                         .shadow(color: Color.black.opacity(0.1), radius: 4.adapter, x: 0, y: 2.adapter)
 
-                      MyNetImage(url: team1Player2Avatar, width: 27.adapter, height: 27.adapter)
+                      MyNetImage(url: team1Player2Avatar, width: 27.adapter, height: 27.adapter, placeHolderName: "avatarDefault")
                         .clipShape(Circle())
                     }
 
@@ -118,7 +118,7 @@ struct DoubleMatchResultEntryView: View {
                     .frame(width: 35.adapter, height: 35.adapter)
                     .shadow(color: Color.black.opacity(0.1), radius: 4.adapter, x: 0, y: 2.adapter)
 
-                  MyNetImage(url: team2Player1Avatar, width: 27.adapter, height: 27.adapter)
+                  MyNetImage(url: team2Player1Avatar, width: 27.adapter, height: 27.adapter, placeHolderName: "avatarDefault")
                     .clipShape(Circle())
                 }
 
@@ -136,7 +136,7 @@ struct DoubleMatchResultEntryView: View {
                         .frame(width: 35.adapter, height: 35.adapter)
                         .shadow(color: Color.black.opacity(0.1), radius: 4.adapter, x: 0, y: 2.adapter)
 
-                      MyNetImage(url: team2Player2Avatar, width: 27.adapter, height: 27.adapter)
+                      MyNetImage(url: team2Player2Avatar, width: 27.adapter, height: 27.adapter, placeHolderName: "avatarDefault")
                         .clipShape(Circle())
                     }
 
@@ -315,7 +315,7 @@ private struct ScoreTextField: View {
 }
 
 // MARK: - Preview
-#Preview {
+#Preview(traits: .landscapeLeft) {
   DoubleMatchResultEntryView(
     onCancel: {},
     onConfirm: { _ in },
@@ -328,5 +328,4 @@ private struct ScoreTextField: View {
     team2Player2Name: "郑泽言",
     team2Player2Avatar: "avatar4"
   )
-  .previewInterfaceOrientation(.landscapeLeft)
 }
