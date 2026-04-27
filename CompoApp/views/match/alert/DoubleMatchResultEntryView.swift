@@ -164,26 +164,35 @@ struct DoubleMatchResultEntryView: View {
         )
 
         // Bottom White Section - Score Input
-        VStack(spacing: 16.adapter) {
-          Spacer().frame(height: 8.adapter)
+        VStack(spacing: 0) {
+          ScrollView(.vertical, showsIndicators: false) {
+            VStack(spacing: 16.adapter) {
+              Spacer().frame(height: 16.adapter)
 
-          ForEach(0..<scoreStore.totalRounds, id: \.self) { index in
-            ScoreInputRow(
-              label: "第\(index + 1)局比分",
-              score1: Binding(
-                get: { index < setScores.count ? setScores[index].s1 : "" },
-                set: { newValue in if index < setScores.count { setScores[index].s1 = newValue } }
-              ),
-              score2: Binding(
-                get: { index < setScores.count ? setScores[index].s2 : "" },
-                set: { newValue in if index < setScores.count { setScores[index].s2 = newValue } }
-              ),
-              placeholder1: "比分",
-              placeholder2: "比分"
-            )
+              ForEach(0..<scoreStore.totalRounds, id: \.self) { index in
+                ScoreInputRow(
+                  label: "第\(index + 1)局比分",
+                  score1: Binding(
+                    get: { index < setScores.count ? setScores[index].s1 : "" },
+                    set: { newValue in if index < setScores.count { setScores[index].s1 = newValue } }
+                  ),
+                  score2: Binding(
+                    get: { index < setScores.count ? setScores[index].s2 : "" },
+                    set: { newValue in if index < setScores.count { setScores[index].s2 = newValue } }
+                  ),
+                  placeholder1: "比分",
+                  placeholder2: "比分"
+                )
+              }
+              
+              Spacer().frame(height: 16.adapter)
+            }
           }
-
-          Spacer().frame(height: 0.adapter)
+          .frame(maxHeight: 220.adapter) // Limit height to trigger scrolling if needed
+          
+          Divider().padding(.horizontal, 20.adapter)
+          
+          Spacer().frame(height: 16.adapter)
 
           // Bottom Buttons
           HStack(spacing: 0) {

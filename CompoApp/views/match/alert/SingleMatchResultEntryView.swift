@@ -13,13 +13,10 @@ struct SingleMatchResultEntryView: View {
   let player2Name: String
   let player2Avatar: String
 
-  // Scores (3 sets)
-  @State var set1Score1: String = ""
-  @State var set1Score2: String = ""
-  @State var set2Score1: String = ""
-  @State var set2Score2: String = ""
-  @State var set3Score1: String = ""
-  @State var set3Score2: String = ""
+  @ObservedObject private var scoreStore = MatchScoringStore.shared
+  
+  // Scores (dynamic sets)
+  @State var setScores: [(s1: String, s2: String)] = []
 
   var body: some View {
     ZStack {
@@ -117,37 +114,35 @@ struct SingleMatchResultEntryView: View {
         )
 
         // Bottom White Section - Score Input
-        VStack(spacing: 16.adapter) {
-          Spacer().frame(height: 8.adapter)
+        VStack(spacing: 0) {
+          ScrollView(.vertical, showsIndicators: false) {
+            VStack(spacing: 16.adapter) {
+              Spacer().frame(height: 16.adapter)
 
-          // Set 1
-          ScoreInputRow(
-            label: "第一局比分",
-            score1: $set1Score1,
-            score2: $set1Score2,
-            placeholder1: "7",
-            placeholder2: "15"
-          )
-
-          // Set 2
-          ScoreInputRow(
-            label: "第二局比分",
-            score1: $set2Score1,
-            score2: $set2Score2,
-            placeholder1: "比分",
-            placeholder2: "比分"
-          )
-
-          // Set 3
-          ScoreInputRow(
-            label: "第三局比分",
-            score1: $set3Score1,
-            score2: $set3Score2,
-            placeholder1: "比分",
-            placeholder2: "比分"
-          )
-
-          Spacer().frame(height: 0.adapter)
+              ForEach(0..<scoreStore.totalRounds, id: \.self) { index in
+                ScoreInputRow(
+                  label: "第\(index + 1)局比分",
+                  score1: Binding(
+                    get: { index < setScores.count ? setScores[index].s1 : "" },
+                    set: { newValue in if index < setScores.count { setScores[index].s1 = newValue } }
+                  ),
+                  score2: Binding(
+                    get: { index < setScores.count ? setScores[index].s2 : "" },
+                    set: { newValue in if index < setScores.count { setScores[index].s2 = newValue } }
+                  ),
+                  placeholder1: "比分",
+                  placeholder2: "比分"
+                )
+              }
+              
+              Spacer().frame(height: 16.adapter)
+            }
+          }
+          .frame(maxHeight: 220.adapter)
+          
+          Divider().padding(.horizontal, 20.adapter)
+          
+          Spacer().frame(height: 16.adapter)
 
           // Bottom Buttons
           HStack(spacing: 0) {
@@ -158,7 +153,11 @@ struct SingleMatchResultEntryView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
 
-            Button(action: { onConfirm?() }) {
+            Button(action: { 
+                let flatScores = setScores.flatMap { [$0.s1, $0.s2] }
+                // onConfirm?() // Original was no-arg, but usually we want to pass scores
+                onConfirm?() 
+            }) {
               Text("同意")
                 .font(.system(size: 14.adapter, weight: .medium))
                 .foregroundColor(.white)
@@ -180,7 +179,30 @@ struct SingleMatchResultEntryView: View {
       .shadow(color: Color.black.opacity(0.15), radius: 14.adapter, x: 0, y: 6.adapter)
     }
     .transition(.opacity.combined(with: .scale(scale: 0.95)))
+    .onAppear {
+        fillScores()
+    }
+    .onChange(of: scoreStore.scoreDetail) { _ in
+        fillScores()
+    }
       .enableInjection()
+  }
+
+  private func fillScores() {
+      let total = scoreStore.totalRounds
+      var newScores: [(s1: String, s2: String)] = Array(repeating: ("", ""), count: total)
+      
+      guard let sets = scoreStore.scoreDetail?.scoreDetailList else {
+          self.setScores = newScores
+          return
+      }
+      
+      for i in 0..<total {
+          if i < sets.count {
+              newScores[i] = ("\(sets[i].player1Score ?? 0)", "\(sets[i].player2Score ?? 0)")
+          }
+      }
+      self.setScores = newScores
   }
 
   #if DEBUG
