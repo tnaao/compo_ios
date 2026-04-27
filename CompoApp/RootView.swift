@@ -43,27 +43,23 @@ struct RootView: View {
                             router.navigateTo(rootDestination)
                         }
                     }
-        }.onChange(of: screenInfo.orientation) { newValue in
-            if ScreenInfo.shared.ratio > 1 {
+        }.onChange(of: screenInfo.ratio) { newValue in
+            if newValue > 1 {
+                // Landscape logic
                 Adapter.share.mode = .width
-                Adapter.share.base = ScreenInfo.shared.baseW
-                Verticaldapter.share.base = ScreenInfo.shared.baseW
+                Adapter.share.base = screenInfo.baseW
                 Verticaldapter.share.mode = .width
-                let path = router.path.last
-                guard let path = path else {
-                    return
-                }
-                router.popToRoot()
-                router.path.append(path)
-            }else {
+                Verticaldapter.share.base = screenInfo.baseW
+            } else {
+                // Portrait logic
                 Adapter.share.mode = .height
-                Adapter.share.base = ScreenInfo.shared.baseH
-                Verticaldapter.share.base = ScreenInfo.shared.baseH
+                Adapter.share.base = screenInfo.baseH
                 Verticaldapter.share.mode = .height
-                let path = router.path.last
-                guard let path = path else {
-                    return
-                }
+                Verticaldapter.share.base = screenInfo.baseH
+            }
+            
+            // Force re-render of current view to pick up new adapter settings
+            if let path = router.path.last {
                 router.popToRoot()
                 router.path.append(path)
             }

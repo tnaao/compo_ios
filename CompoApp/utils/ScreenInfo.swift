@@ -21,24 +21,25 @@ class ScreenInfo: ObservableObject {
   private var cancellables = Set<AnyCancellable>()
 
   static var shared: ScreenInfo = .init()
-  var ratio = 1.5
+  @Published
+  var ratio: Double = 1.5
   let baseW = Double(683)
   var baseH:Double{
      Double(683 / ratio)
   }
 
   var width: CGFloat {
-      false ? UIScreen.main.bounds.width : UIScreen.main.bounds.height
+      UIScreen.main.bounds.width
   }
   var height: CGFloat {
-      false ? UIScreen.main.bounds.height : UIScreen.main.bounds.width
+      UIScreen.main.bounds.height
   }
     
     func calculateRatio(){
-        let width = ScreenInfo.shared.width
-        let height = ScreenInfo.shared.height
+        let width = self.width
+        let height = self.height
         let ratio = width * 1.0 / height
-        ScreenInfo.shared.ratio = ratio
+        self.ratio = ratio
     }
 
   var isLandscape: Bool {
@@ -54,8 +55,10 @@ class ScreenInfo: ObservableObject {
       .publisher(for: UIDevice.orientationDidChangeNotification)
       .sink { [weak self] _ in
         guard let self = self else { return }
-        self.orientation = UIDevice.current.orientation
-        calculateRatio()
+        DispatchQueue.main.async {
+            self.orientation = UIDevice.current.orientation
+            self.calculateRatio()
+        }
       }
       .store(in: &cancellables)
   }

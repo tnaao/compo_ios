@@ -12,8 +12,8 @@ struct APIConfig {
   static let timeout: TimeInterval = 20
   // Keep disabled by default; when this host is unreachable all debug traffic fails before reaching the backend.
   static let enableDebugProxy = true
-//  static let debugProxyHost = "192.168.0.203"
-  static let debugProxyHost = "192.168.124.14"
+  static let debugProxyHost = "192.168.0.203"
+//  static let debugProxyHost = "192.168.124.14"
   static let debugProxyPort = 9090
   static let noOrderDetailApi = true
   static let shouldAutoLogin = false

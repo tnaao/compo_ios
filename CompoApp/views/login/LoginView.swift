@@ -12,6 +12,11 @@ struct LoginView: View {
     
     @Environment(\.safeAreaInsets) var safeAreaInsets
     @StateObject private var vm = LoginVm()
+    @FocusState private var focusedField: FocusField?
+    
+    enum FocusField {
+        case phone, code
+    }
 
   var body: some View {
       ZStack(alignment: .center) {
@@ -72,7 +77,8 @@ struct LoginView: View {
             .frame(width: 10.adapter, height: 10.adapter)
 
           TextField("请输入手机号", text: $vm.phoneNumber)
-            .font(.system(size: 15))
+                .font(.system(size: 10.adapter))
+                .focused($focusedField, equals: .phone)
             .keyboardType(.phonePad)
         }
         .padding(.horizontal, 16)
@@ -80,6 +86,9 @@ struct LoginView: View {
         .background(Color.white)
         .cornerRadius(41.adapter)
         .padding(.top, 21.5.adapter)
+        .onTapGesture {
+            focusedField = .phone
+        }
 
         // Verification code input
         HStack(spacing: 12) {
@@ -90,7 +99,8 @@ struct LoginView: View {
             .foregroundColor(Color.gray)
 
           TextField("请输入验证码", text: $vm.verificationCode)
-            .font(.system(size: 15))
+                .font(.system(size: 10.adapter))
+                .focused($focusedField, equals: .code)
             .keyboardType(.numberPad)
         }
         .padding(.horizontal, 16)
@@ -98,6 +108,9 @@ struct LoginView: View {
         .background(Color.white)
         .cornerRadius(41.adapter)
         .padding(.top, 8.adapter)
+        .onTapGesture {
+            focusedField = .code
+        }
 
         Spacer()
 
@@ -110,8 +123,11 @@ struct LoginView: View {
                   .progressViewStyle(CircularProgressViewStyle(tint: .white))
           } else {
               Text("立即登录")
-                .font(.system(size: 16, weight: .medium))
-                .foregroundColor(.white)
+                  .font(.system(size: 14.adapter, weight: .medium))
+                .foregroundColor(.white).frame(width: 190.adapter, height: 30.adapter)
+                .background(
+                  Color(hex: vm.isLoading ? "#FFAAAAAA" : "#FF887BF7")
+                )
           }
         }
         .disabled(vm.isLoading)
@@ -132,6 +148,12 @@ struct LoginView: View {
       .clipShape(RoundedRectangle(cornerRadius: 12.4.adapter))
 
     }
+      .onAppear {
+          // Auto-focus phone number field when view appears
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+              focusedField = .phone
+          }
+      }
       .enableInjection()
   }
 
