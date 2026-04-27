@@ -106,6 +106,7 @@ extension View {
 
     func messageNotificationPopup(
         isPresented: Binding<Bool>,
+        matchNo: String = "",
         reason: String = "弃权",
         content: String = "",
         onConfirm: (() -> Void)? = nil
@@ -114,6 +115,7 @@ extension View {
             if isPresented.wrappedValue {
                 MessageNotificationPopupView(
                     isPresented: isPresented,
+                    matchNo: matchNo,
                     selectedReason: reason,
                     messageContent: content,
                     onConfirm: onConfirm

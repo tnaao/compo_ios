@@ -4,12 +4,13 @@ import AdapterSwift
 struct MessageNotificationPopupView: View {
     @Binding var isPresented: Bool
     var title: String = "消息通知"
-    @State var selectedReason: String = "弃权"
-    @State private var isDropdownExpanded: Bool = false
-    var messageContent: String = "场地8 第13场 小学E组男子单打 8进4[XEMS218]场地调整，选手王吴苇航【原创体育】已经到场。当前得分0.0。场地裁判:张三|"
+    var matchNo: String = ""
+    var selectedReason: String = ""
+    var messageContent: String = "场地8 第13场 小学E组男子单打 选手王吴苇航【原创体育】已经到场。当前得分0.0。场地裁判:张三"
     var onConfirm: (() -> Void)?
     
-    let reasonOptions = ["到场", "弃权", "受伤", "暂停"]
+    @StateObject private var vm = MessageNotificationPopupVm()
+    @State private var isDropdownExpanded: Bool = false
     
     var body: some View {
         ZStack {
@@ -17,7 +18,9 @@ struct MessageNotificationPopupView: View {
             Color.black.opacity(0.4)
                 .edgesIgnoringSafeArea(.all)
                 .onTapGesture {
-                    isPresented = false
+                    if !vm.isLoading {
+                        isPresented = false
+                    }
                 }
             
             // Popup Container
@@ -45,14 +48,16 @@ struct MessageNotificationPopupView: View {
                 VStack(spacing: 16.adapter) {
                     // Reason Dropdown/Selection
                     Button(action: {
-                        withAnimation(.easeInOut(duration: 0.15)) {
-                            isDropdownExpanded.toggle()
+                        if !vm.isLoading {
+                            withAnimation(.easeInOut(duration: 0.15)) {
+                                isDropdownExpanded.toggle()
+                            }
                         }
                     }) {
                         HStack {
-                            Text(selectedReason)
+                            Text(vm.selectedReason.isEmpty ? "消息类型" : vm.selectedReason)
                                 .font(.system(size: 16.adapter))
-                                .foregroundColor(.black)
+                                .foregroundColor(vm.selectedReason.isEmpty ? Color(hex: "#999999") : .black)
                             Spacer()
                             Image(systemName: isDropdownExpanded ? "chevron.up" : "chevron.down")
                                 .font(.system(size: 14.adapter))
@@ -78,9 +83,9 @@ struct MessageNotificationPopupView: View {
                                     
                                     Divider()
                                     
-                                    ForEach(reasonOptions, id: \.self) { option in
+                                    ForEach(vm.reasonOptions, id: \.self) { option in
                                         Button(action: {
-                                            selectedReason = option
+                                            vm.selectedReason = option
                                             withAnimation(.easeInOut(duration: 0.15)) {
                                                 isDropdownExpanded = false
                                             }
@@ -88,9 +93,9 @@ struct MessageNotificationPopupView: View {
                                             HStack {
                                                 Text(option)
                                                     .font(.system(size: 16.adapter))
-                                                    .foregroundColor(selectedReason == option ? Color(hex: "#6E5DFF") : .black)
+                                                    .foregroundColor(vm.selectedReason == option ? Color(hex: "#6E5DFF") : .black)
                                                 Spacer()
-                                                if selectedReason == option {
+                                                if vm.selectedReason == option {
                                                     Image(systemName: "checkmark")
                                                         .foregroundColor(Color(hex: "#6E5DFF"))
                                                 }
@@ -98,7 +103,7 @@ struct MessageNotificationPopupView: View {
                                         }
                                         .padding(.horizontal, 16.adapter)
                                         .frame(height: 44.adapter)
-                                        .background(selectedReason == option ? Color(hex: "#F5F3FF") : Color.white)
+                                        .background(vm.selectedReason == option ? Color(hex: "#F5F3FF") : Color.white)
                                     }
                                 }
                                 .frame(width: 160.adapter)
@@ -122,18 +127,32 @@ struct MessageNotificationPopupView: View {
                             .font(.system(size: 18.adapter, weight: .bold))
                             .foregroundColor(Color(hex: "#6E5DFF"))
                         
-                        Text(messageContent)
-                            .font(.system(size: 16.adapter))
-                            .foregroundColor(.black)
-                            .lineSpacing(4.adapter)
-                            .padding(12.adapter)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .frame(minHeight: 140.adapter, alignment: .topLeading)
-                            .background(Color.white)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8.adapter)
-                                    .stroke(Color(hex: "#DCDFE6"), lineWidth: 1.adapter)
-                            )
+                        ZStack(alignment: .topLeading) {
+                            if vm.messageContent.isEmpty {
+                                Text("场地8 第13场 小学E组男子单打 选手王吴苇航【原创体育】已经到场。当前得分0.0。场地裁判:张三")
+                                    .font(.system(size: 16.adapter))
+                                    .foregroundColor(Color(hex: "#FFAFB6C4"))
+                                    .lineSpacing(4.adapter)
+                                    .padding(12.adapter)
+                                    .zIndex(1)
+                            }
+                            
+                            TextEditor(text: $vm.messageContent)
+                                .font(.system(size: 16.adapter))
+                                .foregroundColor(.black)
+                                .lineSpacing(4.adapter)
+                                .padding(8.adapter)
+                                .frame(minHeight: 140.adapter)
+                                .scrollContentBackground(.hidden)
+                                .background(Color.clear)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .frame(minHeight: 140.adapter, alignment: .topLeading)
+                        .background(Color.white)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8.adapter)
+                                .stroke(Color(hex: "#DCDFE6"), lineWidth: 1.adapter)
+                        )
                     }
                     .zIndex(1)
                 }
@@ -142,28 +161,44 @@ struct MessageNotificationPopupView: View {
                 
                 // Confirm Button
                 Button(action: {
-                    onConfirm?()
-                    isPresented = false
+                    vm.submitMessage()
                 }) {
-                    Text("确定")
-                        .font(.system(size: 16.adapter, weight: .medium))
-                        .foregroundColor(.white)
-                        .frame(width: 240.adapter, height: 44.adapter)
-                        .background(
-                            LinearGradient(
-                                colors: [Color(hex: "#7D60FF"), Color(hex: "#6E5DFF")],
-                                startPoint: .top,
-                                endPoint: .bottom
-                            )
+                    ZStack {
+                        if vm.isLoading {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        } else {
+                            Text("确定")
+                                .font(.system(size: 16.adapter, weight: .medium))
+                                .foregroundColor(.white)
+                        }
+                    }
+                    .frame(width: 240.adapter, height: 44.adapter)
+                    .background(
+                        LinearGradient(
+                            colors: [Color(hex: "#7D60FF"), Color(hex: "#6E5DFF")],
+                            startPoint: .top,
+                            endPoint: .bottom
                         )
-                        .clipShape(Capsule())
+                    )
+                    .clipShape(Capsule())
                 }
+                .disabled(vm.isLoading)
                 .padding(.bottom, 24.adapter)
             }
             .frame(width: 417.adapter)
             .background(Color.white)
             .cornerRadius(16.adapter)
             .shadow(color: Color.black.opacity(0.1), radius: 10.adapter, x: 0, y: 5.adapter)
+        }
+        .onAppear {
+            vm.setup(matchNo: matchNo, content: messageContent, reason: selectedReason, onConfirm: onConfirm)
+            vm.isPresented = true
+        }
+        .onChange(of: vm.isPresented) { newValue in
+            if !newValue {
+                isPresented = false
+            }
         }
         .transition(.opacity.combined(with: .scale(scale: 0.95)))
         .enableInjection()

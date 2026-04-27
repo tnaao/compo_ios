@@ -36,8 +36,9 @@ struct GameDetailHomeView: View {
     
   @State private var isShowInputResult: Bool = false
   @State private var isShowMessagePopup: Bool = false
-  @State private var messageReason: String = "弃权"
+  @State private var messageReason: String = ""
   @State private var messageContent: String = ""
+  @State private var currentMatchNo: String = ""
 
   var body: some View {
       ZStack(alignment: .topLeading) {
@@ -68,8 +69,7 @@ struct GameDetailHomeView: View {
                             scoreStore.currentMatch = match
                             AppRouter.shared.appRouter.navigateTo(.matchScoring(id: ""))
                         },notifyFn: {
-                            messageReason = "到场"
-                            messageContent = "\(match.courtStr) \(match.matchNumberStr) \(match.eventName ?? "") \(match.roundType ?? "") 场地调整，选手已经到场。当前比分 \(match.pair1Score ?? 0):\(match.pair2Score ?? 0)。"
+                            currentMatchNo = match.matchNo ?? ""
                             isShowMessagePopup = true
                         }) {
                             scoreStore.currentMatch = match
@@ -82,8 +82,7 @@ struct GameDetailHomeView: View {
                             scoreStore.currentMatch = match
                             AppRouter.shared.appRouter.navigateTo(.matchScoring(id: ""))
                         },notifyFn: {
-                            messageReason = "到场"
-                            messageContent = "\(match.courtStr) \(match.matchNumberStr) \(match.eventName ?? "") \(match.roundType ?? "") 场地调整，选手已经到场。当前比分 \(match.pair1Score ?? 0):\(match.pair2Score ?? 0)。"
+                            currentMatchNo = match.matchNo ?? ""
                             isShowMessagePopup = true
                         },inputResult:  {
                             scoreStore.currentMatch = match
@@ -146,6 +145,7 @@ struct GameDetailHomeView: View {
     }
       .messageNotificationPopup(
           isPresented: $isShowMessagePopup,
+          matchNo: currentMatchNo,
           reason: messageReason,
           content: messageContent,
           onConfirm: {
@@ -265,5 +265,5 @@ struct GameDetailTabItem: View {
 }
 
 #Preview {
-    RootView(rootDestination: .gamedetailHome, )
+    RootView(rootDestination: .gamedetailHome)
 }
