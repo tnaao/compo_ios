@@ -81,8 +81,13 @@ class MatchScoringStore: ObservableObject {
     @Published var showConfirmBegin: Bool = false
     @Published var showConfirmEnd: Bool = false
     @Published var isEndingFlow: Bool = false
-    @Published var showEarlyEndConfirm: Bool = false
     @Published var earlyEndWinnerName: String = ""
+    
+    // Court Message Polling
+    private var messagePollingTimer: AnyCancellable?
+    @Published var unreadMessage: AppBadmintonCourtMessageRespVO? = nil
+    @Published var unreadCount: Int = 0
+    @Published var showMessageDetailPopup: Bool = false
     
     private var hasTriggeredAutoNav: Bool = false
     private var pendingServeTeam: Int32? = nil
@@ -644,5 +649,57 @@ class MatchScoringStore: ObservableObject {
     func stopMatchTimer() {
         self.matchTimer?.cancel()
         self.matchTimer = nil
+    }
+    
+    // MARK: - Court Message Polling Logic
+    
+    func startMessagePolling() {
+        self.stopMessagePolling()
+        
+        // Initial fetch
+        self.fetchUnreadMessages()
+        
+        // Setup timer for 2 minutes (120 seconds)
+        self.messagePollingTimer = Timer.publish(every: 120, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self] _ in
+                self?.fetchUnreadMessages()
+            }
+    }
+    
+    func stopMessagePolling() {
+        self.messagePollingTimer?.cancel()
+        self.messagePollingTimer = nil
+    }
+    
+    func fetchUnreadMessages() {
+        guard let competitionNo = currentEvent?.competitionNo else { return }
+        
+        WyBadmintonRefereeAPI.getMatchMessagePage(competitionNo: competitionNo, readStatus: "0", pageNo: 1, pageSize: 1)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] response in
+                guard let self = self else { return }
+                if response.isValid {
+                    self.unreadCount = Int(response.data?.total ?? 0)
+                    if let list = response.data?.list, !list.isEmpty {
+                        let firstMsg = list[0]
+                        self.fetchMessageDetail(messageId: firstMsg.messageId)
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func fetchMessageDetail(messageId: Int64) {
+        WyBadmintonRefereeAPI.getMessageDetailById(messageId: messageId)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] response in
+                guard let self = self else { return }
+                if response.isValid {
+                    self.unreadMessage = response.data
+                    self.showMessageDetailPopup = true
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }

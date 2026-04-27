@@ -143,6 +143,22 @@ extension View {
             }
         }
     }
+
+    func courtMessageDetailPopup(
+        isPresented: Binding<Bool>,
+        message: AppBadmintonCourtMessageRespVO?,
+        onDismiss: (() -> Void)? = nil
+    ) -> some View {
+        self.overlay {
+            if isPresented.wrappedValue {
+                CourtMessageDetailPopupView(
+                    isPresented: isPresented,
+                    message: message,
+                    onDismiss: onDismiss
+                )
+            }
+        }
+    }
 }
 
 extension Button {

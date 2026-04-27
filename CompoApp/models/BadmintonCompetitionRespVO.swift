@@ -130,16 +130,22 @@ extension BadmintonCompetitionRespVO {
   }
   var uiStatusTitle: String {
     switch status {
-    case 3: return "进行中"
-    case 4: return "已完成"
+    case 0: return "待发布"
+    case 1: return "报名中"
+    case 2: return "排赛中"
+    case 3: return "比赛中"
+    case 4: return "已结束"
     default: return "报名中"
     }
   }
   var uiStatusColor: Color {
     switch status {
-    case 3: return Color(red: 0.2, green: 0.8, blue: 0.4)
-    case 4: return Color(red: 0.6, green: 0.6, blue: 0.6)
-    default: return Color(red: 1.0, green: 0.4, blue: 0.2)
+    case 0: return Color(hex: "#999999") // Gray
+    case 1: return Color(hex: "#FF6B00") // Orange
+    case 2: return Color(hex: "#2F80ED") // Blue
+    case 3: return Color(hex: "#27AE60") // Green
+    case 4: return Color(hex: "#828282") // Dark Gray
+    default: return Color(hex: "#FF6B00")
     }
   }
   var uiImageName: String { coverPoster ?? "" }

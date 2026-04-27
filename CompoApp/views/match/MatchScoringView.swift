@@ -120,9 +120,15 @@ struct MatchScoringView: View {
     .overlay(confirmBeginOverlay)
     .overlay(confirmEndOverlay)
     .overlay(earlyEndOverlay)
+    .courtMessageDetailPopup(isPresented: $scoreStore.showMessageDetailPopup, message: scoreStore.unreadMessage) {
+        if scoreStore.unreadCount > 1 {
+            scoreStore.fetchUnreadMessages()
+        }
+    }
     .loginBg()
     .ignoresSafeArea(.all, edges: .bottom)
     .onAppear {
+        scoreStore.startMessagePolling()
         if let match = scoreStore.currentMatch, let matchNo = match.matchNo {
             scoreStore.fetchMatchScoreDetail(matchNo: matchNo)
             // 如果比赛未开始 (matchStatus == 0)，再查询热身状态
@@ -130,6 +136,9 @@ struct MatchScoringView: View {
                 scoreStore.checkWarmupStatus(matchNo: matchNo)
             }
         }
+    }
+    .onDisappear {
+        scoreStore.stopMessagePolling()
     }
     .onChange(of: scoreStore.currentMatch) { match in
         if let match = match, let matchNo = match.matchNo {
