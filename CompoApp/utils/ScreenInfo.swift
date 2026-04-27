@@ -8,6 +8,7 @@
  import Combine
 import SVProgressHUD
 import SwiftUI
+import AdapterSwift
 import UIKit
 
 class ScreenInfo: ObservableObject {
@@ -38,8 +39,9 @@ class ScreenInfo: ObservableObject {
     func calculateRatio(){
         let width = self.width
         let height = self.height
-        let ratio = width * 1.0 / height
-        self.ratio = ratio
+        if height > 0 {
+            self.ratio = width / height
+        }
     }
 
   var isLandscape: Bool {

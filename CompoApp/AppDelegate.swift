@@ -14,7 +14,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         configHotReload()
         #endif
         ScreenInfo.shared.calculateRatio()
-        if ScreenInfo.shared.ratio > 1 {
+        if ScreenInfo.shared.ratio > 1 || true {
             Adapter.share.mode = .width
             Adapter.share.base = ScreenInfo.shared.baseW
             Verticaldapter.share.base = ScreenInfo.shared.baseW

@@ -39,32 +39,32 @@ struct RootView: View {
                     .environment(\.isLandscape, screenInfo.isLandscape)
                     .onAppear {
                         AppRouter.shared.appRouter = router
-                        if(router.path.isEmpty || rootDestination != router.path.last){
+                        if router.path.isEmpty {
                             router.navigateTo(rootDestination)
                         }
+                        updateAdapters(ratio: screenInfo.ratio)
                     }
         }.onChange(of: screenInfo.ratio) { newValue in
-            if newValue > 1 {
-                // Landscape logic
-                Adapter.share.mode = .width
-                Adapter.share.base = screenInfo.baseW
-                Verticaldapter.share.mode = .width
-                Verticaldapter.share.base = screenInfo.baseW
-            } else {
-                // Portrait logic
-                Adapter.share.mode = .height
-                Adapter.share.base = screenInfo.baseH
-                Verticaldapter.share.mode = .height
-                Verticaldapter.share.base = screenInfo.baseH
-            }
-            
-            // Force re-render of current view to pick up new adapter settings
-            if let path = router.path.last {
-                router.popToRoot()
-                router.path.append(path)
-            }
+            updateAdapters(ratio: newValue)
         }
+        .id(screenInfo.ratio) // Force full view re-render when ratio changes
         .enableInjection()
+    }
+    
+    private func updateAdapters(ratio: Double) {
+        if ratio > 1 {
+            // Landscape logic
+            Adapter.share.mode = .width
+            Adapter.share.base = screenInfo.baseW
+            Verticaldapter.share.mode = .width
+            Verticaldapter.share.base = screenInfo.baseW
+        } else {
+            // Portrait logic
+            Adapter.share.mode = .height
+            Adapter.share.base = screenInfo.baseH
+            Verticaldapter.share.mode = .height
+            Verticaldapter.share.base = screenInfo.baseH
+        }
     }
 
     #if DEBUG
