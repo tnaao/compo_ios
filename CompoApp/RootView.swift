@@ -53,17 +53,18 @@ struct RootView: View {
     
     private func updateAdapters(ratio: Double) {
         if ratio > 1 {
-            // Landscape logic
+            // Landscape logic: Use width as reference (the long side)
             Adapter.share.mode = .width
-            Adapter.share.base = screenInfo.baseW
+            Adapter.share.base = screenInfo.baseW // 683
             Verticaldapter.share.mode = .width
             Verticaldapter.share.base = screenInfo.baseW
         } else {
-            // Portrait logic
+            // Portrait logic: Use height as reference (the long side)
+            // This makes the scale factor (height / base) identical to landscape's (width / base)
             Adapter.share.mode = .height
-            Adapter.share.base = screenInfo.baseH
+            Adapter.share.base = screenInfo.baseW // 683
             Verticaldapter.share.mode = .height
-            Verticaldapter.share.base = screenInfo.baseH
+            Verticaldapter.share.base = screenInfo.baseW
         }
     }
 
