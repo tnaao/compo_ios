@@ -42,6 +42,7 @@ class MatchScoringStore: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
     @Published var isActionSuccess: Bool = false
+    @Published var showEarlyEndConfirm: Bool = false
     
     @Published var currentEvent:BadmintonCompetitionRespVO? = nil
     @Published var currentMatch:WyBadmintonScheduleProgramModel? = nil {

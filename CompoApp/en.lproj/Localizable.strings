@@ -1,0 +1,11 @@
+/* 
+  Localizable.strings
+  CompoApp
+
+  Created by Antigravity on 4/27/26.
+*/
+
+"OK" = "OK";
+"Cancel" = "Cancel";
+"Back" = "Back";
+"Loading" = "Loading...";
