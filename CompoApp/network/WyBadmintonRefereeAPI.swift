@@ -271,4 +271,65 @@ struct WyBadmintonRefereeAPI {
       params: params
     )
   }
+
+  /// 创建比赛消息（入参：matchNo、消息类型、消息内容）
+  /// - Parameter request: 创建消息请求参数
+  /// - Returns: Observable<BaseModel<Int64>>
+  static func createMatchMessage(
+    request: AppBadmintonCourtMessageCreateReqVO
+  ) -> Observable<BaseModel<Int64>> {
+    let params: [String: Any] = [
+      "matchNo": request.matchNo,
+      "messageType": request.messageType,
+      "messageContent": request.messageContent
+    ]
+    
+    return APIManager.shared.request(
+      "/app-api/badminton/app/court-message/create",
+      method: .post,
+      params: params
+    )
+  }
+
+  /// 根据消息ID查询详情（查询后自动已读）
+  /// - Parameter messageId: 消息ID
+  /// - Returns: Observable<BaseModel<AppBadmintonCourtMessageRespVO>>
+  static func getMessageDetailById(
+    messageId: Int64
+  ) -> Observable<BaseModel<AppBadmintonCourtMessageRespVO>> {
+    let params: [String: Any] = ["messageId": messageId]
+    
+    return APIManager.shared.request(
+      "/app-api/badminton/app/court-message/get",
+      method: .get,
+      params: params
+    )
+  }
+
+  /// 根据赛事编号分页查询场地消息列表（按创建时间倒序）
+  /// - Parameters:
+  ///   - competitionNo: 赛事编号
+  ///   - readStatus: 阅读状态：0-未读 1-已读
+  ///   - pageNo: 页码
+  ///   - pageSize: 每页条数
+  /// - Returns: Observable<BaseModel<PagedWrapper<AppBadmintonCourtMessageRespVO>>>
+  static func getMatchMessagePage(
+    competitionNo: String? = nil,
+    readStatus: String? = nil,
+    pageNo: Int = 1,
+    pageSize: Int = 20
+  ) -> Observable<BaseModel<PagedWrapper<AppBadmintonCourtMessageRespVO>>> {
+    var params: [String: Any] = [
+      "pageNo": pageNo,
+      "pageSize": pageSize
+    ]
+    if let competitionNo = competitionNo { params["competitionNo"] = competitionNo }
+    if let readStatus = readStatus { params["readStatus"] = readStatus }
+    
+    return APIManager.shared.request(
+      "/app-api/badminton/app/court-message/page",
+      method: .get,
+      params: params
+    )
+  }
 }

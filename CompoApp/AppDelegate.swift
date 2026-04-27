@@ -21,9 +21,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
             Verticaldapter.share.mode = .width
         }else {
             Adapter.share.mode = .height
-            Adapter.share.base = ScreenInfo.shared.baseH
-            Verticaldapter.share.base = ScreenInfo.shared.baseH
+            Adapter.share.base = ScreenInfo.shared.baseW // 683
             Verticaldapter.share.mode = .height
+            Verticaldapter.share.base = ScreenInfo.shared.baseW
         }
         print("did finish launch")
         return true

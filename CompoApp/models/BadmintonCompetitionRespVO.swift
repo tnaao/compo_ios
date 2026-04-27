@@ -110,7 +110,24 @@ struct BadmintonCompetitionRespVO: Codable, Identifiable, Sendable {
 extension BadmintonCompetitionRespVO {
   var uiTitle: String { competitionName }
   var uiDateTime: String { competitionDate ?? "待定" }
-  var uiLocation: String { venue ?? "待定" }
+  var uiLocation: String {
+    let parts = [province, city, district, addressDetail]
+      .compactMap { $0?.trimmingCharacters(in: .whitespaces) }
+      .filter { !$0.isEmpty }
+    
+    var uniqueParts: [String] = []
+    for part in parts {
+      if !uniqueParts.contains(part) {
+        uniqueParts.append(part)
+      }
+    }
+    
+    if !uniqueParts.isEmpty {
+      return uniqueParts.joined()
+    }
+    
+    return venue ?? "待定"
+  }
   var uiStatusTitle: String {
     switch status {
     case 3: return "进行中"

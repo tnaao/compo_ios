@@ -59,7 +59,7 @@ struct GameCard: View {
       // Content
           VStack(alignment: .leading, spacing: 12.verticaldapter) {
         Text(match.uiTitle)
-                  .font(.system(size: 16.adapter, weight: .bold))
+                  .font(.system(size: 13.adapter, weight: .semibold))
           .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
           .lineLimit(2)
           .multilineTextAlignment(.leading)
@@ -67,22 +67,22 @@ struct GameCard: View {
         // Date & Time
               HStack(spacing: 6.adapter) {
           Image(systemName: "clock")
-                       .font(.system(size: 14.adapter))
+                       .font(.system(size: 12.adapter))
             .foregroundColor(Color.gray)
 
           Text(match.uiDateTime)
-                       .font(.system(size: 14.adapter))
+                       .font(.system(size: 12.adapter))
             .foregroundColor(Color.gray)
         }
 
         // Location
               HStack(spacing: 6.adapter) {
           Image(systemName: "mappin.circle")
-                       .font(.system(size: 14.adapter))
+                       .font(.system(size: 12.adapter))
             .foregroundColor(Color.gray)
 
           Text(match.uiLocation)
-                       .font(.system(size: 14.adapter))
+                       .font(.system(size: 12.adapter))
             .foregroundColor(Color.gray)
         }
       }
