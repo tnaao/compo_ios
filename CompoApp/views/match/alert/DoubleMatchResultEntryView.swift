@@ -315,6 +315,7 @@ private struct ScoreTextField: View {
 }
 
 // MARK: - Preview
+@available(iOS 17.0, *)
 #Preview(traits: .landscapeLeft) {
   DoubleMatchResultEntryView(
     onCancel: {},

@@ -67,6 +67,7 @@ struct EarlyEndMatchPopUpView: View {
   }
 }
 
+@available(iOS 17.0, *)
 #Preview(traits: .landscapeLeft) {
   EarlyEndMatchPopUpView(winnerName: "余苇航/吴威航")
 }

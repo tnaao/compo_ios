@@ -42,6 +42,7 @@ struct MessageNotificationExampleView: View {
     #endif
 }
 
+@available(iOS 17.0, *)
 #Preview(traits: .landscapeLeft) {
     MessageNotificationExampleView()
 }

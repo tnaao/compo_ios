@@ -91,6 +91,7 @@ struct PlayerIconView:View {
     #endif
 }
 
+@available(iOS 17.0, *)
 #Preview {
     VStack(spacing: 20.adapter) {
         PlayerIconView(url: nil, hasWinnerBadge: true)

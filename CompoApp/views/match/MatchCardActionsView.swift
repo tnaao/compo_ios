@@ -77,6 +77,7 @@ struct MatchCardActionsView: View {
     #endif
 }
 
+@available(iOS 17.0, *)
 #Preview {
     Group {
         MatchCardActionsView(isGoing: true)

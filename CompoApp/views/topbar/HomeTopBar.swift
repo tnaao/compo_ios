@@ -87,6 +87,7 @@ struct HomeTopBar_PreviewView :View {
     #endif
 }
 
+@available(iOS 17.0, *)
 #Preview {
     HomeTopBar_PreviewView()
 }

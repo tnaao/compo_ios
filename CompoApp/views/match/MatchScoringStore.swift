@@ -141,6 +141,7 @@ class MatchScoringStore: ObservableObject {
     func syncRunningState() {
         var matchStatus:Int32 = 0
         let matchParentStatus = scoreDetail?.matchStatus
+        self.totalRounds = Int(scoreDetail?.totalRounds ?? 3)
         if let lastRound = scoreDetail?.scoreDetailList?.first(where: { item in
             guard let s1 = item.player1Score, let s2 = item.player2Score else { return true }
             let notEnd = item.roundStatus != 2
@@ -148,8 +149,6 @@ class MatchScoringStore: ObservableObject {
         }) {
             let setNumber = lastRound.roundNumber ?? 1
             self.currentSetNumber = Int(setNumber)
-            self.totalRounds = Int(scoreDetail?.totalRounds ?? 3)
-            
             // Automatically detect court swap based on badminton rules
             var shouldBeSwapped = (setNumber % 2 == 0)
             if setNumber >= totalRounds && totalRounds > 1 {
@@ -382,13 +381,13 @@ class MatchScoringStore: ObservableObject {
                 )
                 return WyBadmintonRefereeAPI.skipScoreDetail(request: request)
             }
-            .last() // Wait for all to complete
-            .flatMap { _ in
-                // Delay and fetch final detail
+            .ignoreElements()
+            .asCompletable()
+            .andThen(
                 Observable.just(())
                     .delay(.seconds(2), scheduler: MainScheduler.instance)
                     .flatMap { _ in WyBadmintonRefereeAPI.getMatchScoreDetail(matchNo: matchNo) }
-            }
+            )
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] response in
                 guard let self = self else { return }

@@ -45,6 +45,7 @@ struct ScoreCenterView: View {
 }
 
 
+@available(iOS 17.0, *)
 #Preview {
     ScoreCenterView()
 }

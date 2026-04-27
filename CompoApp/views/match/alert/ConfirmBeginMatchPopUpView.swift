@@ -69,6 +69,7 @@ struct ConfirmBeginMatchPopUpView: View {
   }
 }
 
+@available(iOS 17.0, *)
 #Preview(traits: .landscapeLeft) {
   ConfirmBeginMatchPopUpView()
 }

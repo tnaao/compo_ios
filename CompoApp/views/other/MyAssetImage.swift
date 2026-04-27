@@ -29,6 +29,7 @@ struct MyAssetImage: View {
     #endif
 }
 
+@available(iOS 17.0, *)
 #Preview {
     MyAssetImage(name:  "brCircleBg"
                  ,width: 100.adapter,height: 100.adapter,contentMode: .fit,bgColor: Color.clear)

@@ -162,6 +162,7 @@ struct LoginView: View {
   #endif
 }
 
+@available(iOS 17.0, *)
 #Preview {
   RootView()
 }

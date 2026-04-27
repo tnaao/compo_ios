@@ -86,6 +86,7 @@ struct ScreenRotationExampleView: View {
   }
 }
 
+@available(iOS 17.0, *)
 #Preview {
   ScreenRotationExampleView()
 }

@@ -100,6 +100,7 @@ struct BgAlertActions:View {
 }
 
 
+@available(iOS 17.0, *)
 #Preview {
     VStack {
         MyScorePlusBtn {

@@ -366,6 +366,7 @@ struct SwipeToRefreshExample: View {
   #endif
 }
 
+@available(iOS 17.0, *)
 #Preview {
   SwipeToRefreshExample()
 }

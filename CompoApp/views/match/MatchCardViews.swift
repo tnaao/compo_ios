@@ -561,6 +561,7 @@ struct MatchCardMultiGoingView: View {
 
 // MARK: - Previews
 
+@available(iOS 17.0, *)
 #Preview(traits: .landscapeLeft) {
     ScrollView(content: {
         VStack(spacing: 20.adapter) {

@@ -281,6 +281,7 @@ private struct EventTableCell: View {
 }
 
 // MARK: - Preview
+@available(iOS 17.0, *)
 #Preview(traits: .landscapeLeft) {
   MatchEventLogPopupView(
     onClose: {},

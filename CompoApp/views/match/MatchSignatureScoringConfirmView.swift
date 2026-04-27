@@ -353,6 +353,7 @@ struct ScoringPlayerCardView: View {
     #endif
 }
 
+@available(iOS 17.0, *)
 #Preview(traits: .landscapeLeft) {
     MatchSignatureScoringConfirmView()
         .background(Color.gray.opacity(0.1)) // Outline check

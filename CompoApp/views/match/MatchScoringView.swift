@@ -634,6 +634,7 @@ enum PlayerPosition {
   case bottomRight
 }
 
+@available(iOS 17.0, *)
 #Preview {
   MatchScoringView(heightOffset: 0)
 }

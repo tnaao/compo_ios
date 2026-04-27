@@ -66,6 +66,7 @@ struct HeaderPreviewView :View {
     #endif
 }
 
+@available(iOS 17.0, *)
 #Preview {
     RootView(rootDestination: .HeaderPreviewView)
 }

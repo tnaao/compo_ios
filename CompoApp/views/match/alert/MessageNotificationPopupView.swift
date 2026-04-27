@@ -209,6 +209,7 @@ struct MessageNotificationPopupView: View {
     #endif
 }
 
+@available(iOS 17.0, *)
 #Preview(traits: .landscapeLeft) {
     MessageNotificationPopupView(isPresented: .constant(true))
 }

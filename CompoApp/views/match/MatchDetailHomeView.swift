@@ -264,6 +264,7 @@ struct GameDetailTabItem: View {
 
 }
 
+@available(iOS 17.0, *)
 #Preview {
     RootView(rootDestination: .gamedetailHome)
 }

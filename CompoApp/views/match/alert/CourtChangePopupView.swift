@@ -106,6 +106,7 @@ struct CourtChangePopupView: View {
     #endif
 }
 
+@available(iOS 17.0, *)
 #Preview(traits: .landscapeLeft) {
     CourtChangePopupView(isPresented: .constant(true))
 }
