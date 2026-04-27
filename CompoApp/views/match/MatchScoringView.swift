@@ -333,23 +333,12 @@ struct MatchScoringView: View {
       let t2p2Name = p2List.count > 1 ? p2List[1].playerName : ""
       let t2p2Avatar = p2List.count > 1 ? (p2List[1].avatar ?? "") : ""
       
-      let sets = scoreStore.scoreDetail?.scoreDetailList ?? []
-      let s1s1 = sets.count > 0 ? "\(sets[0].player1Score ?? 0)" : ""
-      let s1s2 = sets.count > 0 ? "\(sets[0].player2Score ?? 0)" : ""
-      let s2s1 = sets.count > 1 ? "\(sets[1].player1Score ?? 0)" : ""
-      let s2s2 = sets.count > 1 ? "\(sets[1].player2Score ?? 0)" : ""
-      let s3s1 = sets.count > 2 ? "\(sets[2].player1Score ?? 0)" : ""
-      let s3s2 = sets.count > 2 ? "\(sets[2].player2Score ?? 0)" : ""
-      
       return MatchResultPopupWrapper(
           scoreStore: scoreStore,
           t1p1Name: t1p1Name, t1p1Avatar: t1p1Avatar,
           t1p2Name: t1p2Name, t1p2Avatar: t1p2Avatar,
           t2p1Name: t2p1Name, t2p1Avatar: t2p1Avatar,
-          t2p2Name: t2p2Name, t2p2Avatar: t2p2Avatar,
-          initS1S1: s1s1, initS1S2: s1s2,
-          initS2S1: s2s1, initS2S2: s2s2,
-          initS3S1: s3s1, initS3S2: s3s2
+          t2p2Name: t2p2Name, t2p2Avatar: t2p2Avatar
       )
   }
 

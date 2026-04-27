@@ -43,6 +43,9 @@ struct WyRefereeMatchScoreDetailModel: Codable, Sendable,Equatable {
   
   /// 每局详细比分列表
   let scoreDetailList: [ScoreDetailItemModel]?
+  
+  /// 总局数
+  let totalRounds: Int32?
 }
 
 extension WyRefereeMatchScoreDetailModel {

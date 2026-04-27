@@ -20,37 +20,8 @@ struct MatchResultPopupWrapper: View {
     let t2p2Name: String
     let t2p2Avatar: String
     
-    @State var s1s1: String
-    @State var s1s2: String
-    @State var s2s1: String
-    @State var s2s2: String
-    @State var s3s1: String
-    @State var s3s2: String
-    
-    init(scoreStore: MatchScoringStore,
-         t1p1Name: String, t1p1Avatar: String,
-         t1p2Name: String, t1p2Avatar: String,
-         t2p1Name: String, t2p1Avatar: String,
-         t2p2Name: String, t2p2Avatar: String,
-         initS1S1: String, initS1S2: String,
-         initS2S1: String, initS2S2: String,
-         initS3S1: String, initS3S2: String) {
-        self.scoreStore = scoreStore
-        self.t1p1Name = t1p1Name
-        self.t1p1Avatar = t1p1Avatar
-        self.t1p2Name = t1p2Name
-        self.t1p2Avatar = t1p2Avatar
-        self.t2p1Name = t2p1Name
-        self.t2p1Avatar = t2p1Avatar
-        self.t2p2Name = t2p2Name
-        self.t2p2Avatar = t2p2Avatar
-        _s1s1 = State(initialValue: initS1S1)
-        _s1s2 = State(initialValue: initS1S2)
-        _s2s1 = State(initialValue: initS2S1)
-        _s2s2 = State(initialValue: initS2S2)
-        _s3s1 = State(initialValue: initS3S1)
-        _s3s2 = State(initialValue: initS3S2)
-    }
+    // We'll let DoubleMatchResultEntryView handle its own state now
+    // and just provide the confirmation logic
     
     var body: some View {
         DoubleMatchResultEntryView(
@@ -58,19 +29,7 @@ struct MatchResultPopupWrapper: View {
                 scoreStore.showMatchResult = false
             },
             onConfirm: { scores in
-                // We could use the scores passed from the view, 
-                // but since MatchResultPopupWrapper has its own @State s1s1 etc.,
-                // and DoubleMatchResultEntryView is now populating from the store,
-                // we should probably sync them back or just use the passed scores.
-                if scores.count >= 6 {
-                    s1s1 = scores[0]
-                    s1s2 = scores[1]
-                    s2s1 = scores[2]
-                    s2s2 = scores[3]
-                    s3s1 = scores[4]
-                    s3s2 = scores[5]
-                }
-                submitScores()
+                submitScores(scores: scores)
             },
             team1Player1Name: t1p1Name,
             team1Player1Avatar: t1p1Avatar,
@@ -79,43 +38,26 @@ struct MatchResultPopupWrapper: View {
             team2Player1Name: t2p1Name,
             team2Player1Avatar: t2p1Avatar,
             team2Player2Name: t2p2Name,
-            team2Player2Avatar: t2p2Avatar,
-            set1Score1: s1s1,
-            set1Score2: s1s2,
-            set2Score1: s2s1,
-            set2Score2: s2s2,
-            set3Score1: s3s1,
-            set3Score2: s3s2
+            team2Player2Avatar: t2p2Avatar
         )
     }
     
-    private func submitScores() {
+    private func submitScores(scores: [String]) {
         let sets = scoreStore.scoreDetail?.scoreDetailList ?? []
-        var scores: [(detailId: Int64, p1Score: Int32, p2Score: Int32)] = []
+        var resultScores: [(detailId: Int64, p1Score: Int32, p2Score: Int32)] = []
         
-        if sets.count > 0 {
-            scores.append((
-                detailId: sets[0].detailId,
-                p1Score: Int32(s1s1) ?? sets[0].player1Score ?? 0,
-                p2Score: Int32(s1s2) ?? sets[0].player2Score ?? 0
-            ))
-        }
-        if sets.count > 1 {
-            scores.append((
-                detailId: sets[1].detailId,
-                p1Score: Int32(s2s1) ?? sets[1].player1Score ?? 0,
-                p2Score: Int32(s2s2) ?? sets[1].player2Score ?? 0
-            ))
-        }
-        if sets.count > 2 {
-            scores.append((
-                detailId: sets[2].detailId,
-                p1Score: Int32(s3s1) ?? sets[2].player1Score ?? 0,
-                p2Score: Int32(s3s2) ?? sets[2].player2Score ?? 0
-            ))
+        for i in 0..<sets.count {
+            let scoreIdx = i * 2
+            if scoreIdx + 1 < scores.count {
+                resultScores.append((
+                    detailId: sets[i].detailId,
+                    p1Score: Int32(scores[scoreIdx]) ?? sets[i].player1Score ?? 0,
+                    p2Score: Int32(scores[scoreIdx+1]) ?? sets[i].player2Score ?? 0
+                ))
+            }
         }
         
-        let scoresFiltered = scores.filter { $0.p1Score + $0.p2Score > 0 }
+        let scoresFiltered = resultScores.filter { $0.p1Score + $0.p2Score > 0 }
         if !scoresFiltered.isEmpty {
             scoreStore.submitFinalResult(scores: scoresFiltered)
         }

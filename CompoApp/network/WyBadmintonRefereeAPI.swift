@@ -221,6 +221,26 @@ struct WyBadmintonRefereeAPI {
     )
   }
 
+  /// 跳过局次（如三局两胜已决出胜方时，允许将第三局记为0:0并结束）
+  /// - Parameter request: 请求参数
+  /// - Returns: Observable<BaseModel<Bool>>
+  static func skipScoreDetail(
+    request: WyRefereeScoreAdjustDetailRequest
+  ) -> Observable<BaseModel<Bool>> {
+    var params: [String: Any] = [
+      "matchNo": request.matchNo,
+      "detailNo": request.detailNo
+    ]
+    if let firstServer = request.firstServer { params["firstServer"] = firstServer }
+    if let courtSwapped = request.courtSwapped { params["courtSwapped"] = courtSwapped }
+    
+    return APIManager.shared.request(
+      "/app-api/badminton/referee/schedule/skip-score-detail",
+      method: .post,
+      params: params
+    )
+  }
+
   /// 根据比赛编号查询是否已热身
   /// - Parameter matchNo: 比赛编号
   /// - Returns: Observable<BaseModel<Bool>>

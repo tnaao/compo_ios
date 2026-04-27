@@ -21,13 +21,8 @@ struct DoubleMatchResultEntryView: View {
   let team2Player2Name: String
   let team2Player2Avatar: String
 
-  // Scores (3 sets)
-  @State var set1Score1: String = ""
-  @State var set1Score2: String = ""
-  @State var set2Score1: String = ""
-  @State var set2Score2: String = ""
-  @State var set3Score1: String = ""
-  @State var set3Score2: String = ""
+  // Scores (dynamic sets)
+  @State var setScores: [(s1: String, s2: String)] = []
 
   var body: some View {
     ZStack {
@@ -172,32 +167,21 @@ struct DoubleMatchResultEntryView: View {
         VStack(spacing: 16.adapter) {
           Spacer().frame(height: 8.adapter)
 
-          // Set 1
-          ScoreInputRow(
-            label: "第一局比分",
-            score1: $set1Score1,
-            score2: $set1Score2,
-            placeholder1: "比分",
-            placeholder2: "比分"
-          )
-
-          // Set 2
-          ScoreInputRow(
-            label: "第二局比分",
-            score1: $set2Score1,
-            score2: $set2Score2,
-            placeholder1: "比分",
-            placeholder2: "比分"
-          )
-
-          // Set 3
-          ScoreInputRow(
-            label: "第三局比分",
-            score1: $set3Score1,
-            score2: $set3Score2,
-            placeholder1: "比分",
-            placeholder2: "比分"
-          )
+          ForEach(0..<scoreStore.totalRounds, id: \.self) { index in
+            ScoreInputRow(
+              label: "第\(index + 1)局比分",
+              score1: Binding(
+                get: { index < setScores.count ? setScores[index].s1 : "" },
+                set: { newValue in if index < setScores.count { setScores[index].s1 = newValue } }
+              ),
+              score2: Binding(
+                get: { index < setScores.count ? setScores[index].s2 : "" },
+                set: { newValue in if index < setScores.count { setScores[index].s2 = newValue } }
+              ),
+              placeholder1: "比分",
+              placeholder2: "比分"
+            )
+          }
 
           Spacer().frame(height: 0.adapter)
 
@@ -211,7 +195,8 @@ struct DoubleMatchResultEntryView: View {
             }
 
             Button(action: { 
-                onConfirm?([set1Score1, set1Score2, set2Score1, set2Score2, set3Score1, set3Score2])
+                let flatScores = setScores.flatMap { [$0.s1, $0.s2] }
+                onConfirm?(flatScores)
             }) {
               Text("同意")
                 .font(.system(size: 14.adapter, weight: .medium))
@@ -244,19 +229,20 @@ struct DoubleMatchResultEntryView: View {
   }
 
   private func fillScores() {
-      guard let sets = scoreStore.scoreDetail?.scoreDetailList else { return }
-      if sets.count > 0 {
-          set1Score1 = "\(sets[0].player1Score ?? 0)"
-          set1Score2 = "\(sets[0].player2Score ?? 0)"
+      let total = scoreStore.totalRounds
+      var newScores: [(s1: String, s2: String)] = Array(repeating: ("", ""), count: total)
+      
+      guard let sets = scoreStore.scoreDetail?.scoreDetailList else {
+          self.setScores = newScores
+          return
       }
-      if sets.count > 1 {
-          set2Score1 = "\(sets[1].player1Score ?? 0)"
-          set2Score2 = "\(sets[1].player2Score ?? 0)"
+      
+      for i in 0..<total {
+          if i < sets.count {
+              newScores[i] = ("\(sets[i].player1Score ?? 0)", "\(sets[i].player2Score ?? 0)")
+          }
       }
-      if sets.count > 2 {
-          set3Score1 = "\(sets[2].player1Score ?? 0)"
-          set3Score2 = "\(sets[2].player2Score ?? 0)"
-      }
+      self.setScores = newScores
   }
 
   #if DEBUG

@@ -70,6 +70,7 @@ class MatchScoringStore: ObservableObject {
     
     @Published var timerString: String = "00:00:00"
     
+    @Published var totalRounds: Int = 3
     @Published var currentSetNumber: Int = 1
     @Published var runningState: MatchRunningState = .notStarted
     
@@ -147,9 +148,11 @@ class MatchScoringStore: ObservableObject {
         }) {
             let setNumber = lastRound.roundNumber ?? 1
             self.currentSetNumber = Int(setNumber)
+            self.totalRounds = Int(scoreDetail?.totalRounds ?? 3)
+            
             // Automatically detect court swap based on badminton rules
             var shouldBeSwapped = (setNumber % 2 == 0)
-            if setNumber >= 3 {
+            if setNumber >= totalRounds && totalRounds > 1 {
                 let p1s = lastRound.player1Score ?? 0
                 let p2s = lastRound.player2Score ?? 0
                 if p1s >= 11 || p2s >= 11 {
@@ -335,12 +338,13 @@ class MatchScoringStore: ObservableObject {
                     self.scoreDetail = detail
                     self.syncRunningState()
                     
-                    // Check for 2-0 early end after finishing set 2
-                    if oldSetNumber == 2 {
+                    // Check for early end after winning required number of sets
+                    let winThreshold = (totalRounds / 2) + 1
+                    if oldSetNumber < totalRounds {
                         let s1 = detail.pair1Score ?? 0
                         let s2 = detail.pair2Score ?? 0
-                        if s1 == 2 || s2 == 2 {
-                            self.earlyEndWinnerName = (s1 == 2) ? self.team1Name : self.team2Name
+                        if s1 == winThreshold || s2 == winThreshold {
+                            self.earlyEndWinnerName = (s1 == winThreshold) ? self.team1Name : self.team2Name
                             self.showEarlyEndConfirm = true
                             return
                         }
@@ -357,36 +361,33 @@ class MatchScoringStore: ObservableObject {
     func confirmEarlyEnd() {
         self.showEarlyEndConfirm = false
         guard let matchNo = currentMatch?.matchNo,
-              let detailNo = scoreDetail?.getSetScore(by: 3)?.detailNo else { return }
+              let scoreDetail = scoreDetail,
+              let scoreDetailList = scoreDetail.scoreDetailList else { return }
+        
+        let remainingSets = scoreDetailList.filter { ($0.roundStatus ?? 0) == 0 }
+        
+        if remainingSets.isEmpty { return }
         
         isLoading = true
-        let request = WyRefereeScoreAdjustDetailRequest(
-            matchNo: matchNo,
-            detailNo: detailNo,
-            firstServer: firstServer,
-            courtSwapped: courtSwapped
-        )
         
-        // 先开始第三局，成功后再结束第三局
-        WyBadmintonRefereeAPI.startMatch(request: request)
-            .flatMap { [weak self] response -> Observable<BaseModel<Bool>> in
-                guard self != nil else { return .empty() }
-                if response.isValid {
-                    return WyBadmintonRefereeAPI.endMatch(request: request)
-                } else {
-                    return .error(NSError(domain: "MatchError", code: -1, userInfo: [NSLocalizedDescriptionKey: response.message ?? "开始第三局失败"]))
-                }
+        // Skip all remaining sets
+        Observable.from(remainingSets)
+            .concatMap { [weak self] set -> Observable<BaseModel<Bool>> in
+                guard let self = self else { return .empty() }
+                let request = WyRefereeScoreAdjustDetailRequest(
+                    matchNo: matchNo,
+                    detailNo: set.detailNo ?? "",
+                    firstServer: self.firstServer,
+                    courtSwapped: self.courtSwapped
+                )
+                return WyBadmintonRefereeAPI.skipScoreDetail(request: request)
             }
-            .flatMap { [weak self] response -> Observable<BaseModel<WyRefereeMatchScoreDetailModel>> in
-                guard self != nil else { return .empty() }
-                if response.isValid {
-                    // 同样增加2秒延时确保后端同步
-                    return Observable.just(())
-                        .delay(.seconds(2), scheduler: MainScheduler.instance)
-                        .flatMap { _ in WyBadmintonRefereeAPI.getMatchScoreDetail(matchNo: matchNo) }
-                } else {
-                    return .error(NSError(domain: "MatchError", code: -1, userInfo: [NSLocalizedDescriptionKey: response.message ?? "直接结束第三局失败"]))
-                }
+            .last() // Wait for all to complete
+            .flatMap { _ in
+                // Delay and fetch final detail
+                Observable.just(())
+                    .delay(.seconds(2), scheduler: MainScheduler.instance)
+                    .flatMap { _ in WyBadmintonRefereeAPI.getMatchScoreDetail(matchNo: matchNo) }
             }
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] response in
@@ -514,7 +515,7 @@ class MatchScoringStore: ObservableObject {
     }
     
     func nextSetNumber(){
-        if self.currentSetNumber >= 3 { return }
+        if self.currentSetNumber >= totalRounds { return }
         self.currentSetNumber += 1
         self.runningState = .notStarted
     }
