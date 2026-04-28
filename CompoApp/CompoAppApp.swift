@@ -15,6 +15,7 @@ struct CompoAppApp: App {
     var body: some Scene {
         WindowGroup {
             RootView(rootDestination: .launch)
+                .foregroundColor(.black)
         }
     }
 }
